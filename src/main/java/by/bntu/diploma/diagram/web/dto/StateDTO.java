@@ -28,16 +28,16 @@ public class StateDTO {
     @JsonProperty("template")
     private String template;
 
-    @JsonProperty("endpointStyle")
-    private EndpointStyleDTO endpointStyle;
+    @JsonProperty("style")
+    private StyleDTO style;
 
     @JsonProperty("sources")
     @Builder.Default
-    private List<SourceEndpointDTO> sourceEndpoints = new LinkedList<>();
+    private List<SourceDTO> sources = new LinkedList<>();
 
     @JsonProperty("targets")
     @Builder.Default
-    private List<TargetEndpointDTO> targetEndpoints = new LinkedList<>();
+    private List<TargetDTO> targets = new LinkedList<>();
 
     @JsonProperty("inputContainer")
     @Builder.Default

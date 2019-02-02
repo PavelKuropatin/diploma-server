@@ -3,7 +3,7 @@ package by.bntu.diploma.diagram.service.impl;
 import by.bntu.diploma.diagram.entity.Connection;
 import by.bntu.diploma.diagram.repository.ConnectionRepository;
 import by.bntu.diploma.diagram.service.ConnectionService;
-import by.bntu.diploma.diagram.service.TargetEndpointService;
+import by.bntu.diploma.diagram.service.TargetService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,19 @@ import java.util.stream.Collectors;
 public class ConnectionServiceImpl implements ConnectionService {
 
     private ConnectionRepository connectionRepo;
-    private TargetEndpointService targetEndpointService;
+    private TargetService targetService;
 
     @Override
     @Transactional
-    public Connection save(@Valid Connection connection) {
-        connection.setTargetEndpoint(this.targetEndpointService.save(connection.getTargetEndpoint()));
+    public Connection saveConnection(@Valid Connection connection) {
+        connection.setTarget(this.targetService.saveTarget(connection.getTarget()));
         return this.connectionRepo.save(connection);
     }
 
     @Override
     @Transactional
-    public List<Connection> saveAll(List<Connection> connections) {
-        return connections.stream().map(this::save).collect(Collectors.toList());
+    public List<Connection> saveAllConnections(List<Connection> connections) {
+        return connections.stream().map(this::saveConnection).collect(Collectors.toList());
     }
 
 }

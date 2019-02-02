@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface ConnectionService {
 
-    Connection save(Connection connection);
+    Connection saveConnection(Connection connection);
 
-    List<Connection> saveAll(List<Connection> connections);
+    List<Connection> saveAllConnections(List<Connection> connections);
 
 }

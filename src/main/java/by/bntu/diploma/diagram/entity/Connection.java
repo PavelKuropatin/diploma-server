@@ -15,13 +15,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "connection")
 public class Connection {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "uuid", nullable = false)
     private Long uuid;
 
     @NotNull
-    @ManyToOne(targetEntity = TargetEndpoint.class)
-    private TargetEndpoint targetEndpoint;
+    @ManyToOne(targetEntity = Target.class)
+    private Target target;
 
 }

@@ -1,7 +1,7 @@
 package by.bntu.diploma.diagram.web.dto.mapper.impl;
 
 import by.bntu.diploma.diagram.entity.Connection;
-import by.bntu.diploma.diagram.entity.TargetEndpoint;
+import by.bntu.diploma.diagram.entity.Target;
 import by.bntu.diploma.diagram.web.dto.ConnectionDTO;
 import by.bntu.diploma.diagram.web.dto.mapper.Mapper;
 import org.mapstruct.AfterMapping;
@@ -11,7 +11,7 @@ import org.mapstruct.MappingTarget;
 @org.mapstruct.Mapper(componentModel = "spring")
 public abstract class ConnectionMapper implements Mapper<Connection, ConnectionDTO> {
 
-    @Mapping(target = "targetEndpoint", ignore = true)
+    @Mapping(target = "target", ignore = true)
     @Mapping(target = "uuid", ignore = true)
     @Override
     public abstract Connection fromDTO(ConnectionDTO connectionDTO);
@@ -22,12 +22,12 @@ public abstract class ConnectionMapper implements Mapper<Connection, ConnectionD
 
     @AfterMapping
     void setValuesToObj(ConnectionDTO connectionDTO, @MappingTarget Connection connection) {
-        connection.setTargetEndpoint(TargetEndpoint.builder().uuid(connectionDTO.getTargetPointUUID()).build());
+        connection.setTarget(Target.builder().uuid(connectionDTO.getTargetPointUUID()).build());
     }
 
     @AfterMapping
     void setValuesToDTO(Connection connection, @MappingTarget ConnectionDTO connectionDTO) {
-        connectionDTO.setTargetPointUUID(connection.getTargetEndpoint().getUuid());
+        connectionDTO.setTargetPointUUID(connection.getTarget().getUuid());
     }
 
 

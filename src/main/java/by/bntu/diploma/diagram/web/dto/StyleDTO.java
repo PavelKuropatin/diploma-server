@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class EndpointStyleDTO {
+public class StyleDTO {
 
     @JsonProperty("uuid")
     private Long uuid;
 
     @JsonProperty("sourceEndpoint")
-    private String sourceEndpointStyle;
+    private String sourceStyle;
 
     @JsonProperty("targetEndpoint")
-    private String targetEndpointStyle;
+    private String targetStyle;
 
     @JsonProperty("sourceAnchor")
     private String sourceAnchorStyle;

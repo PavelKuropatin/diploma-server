@@ -1,14 +1,14 @@
 package by.bntu.diploma.diagram.service;
 
-import by.bntu.diploma.diagram.entity.SourceEndpoint;
+import by.bntu.diploma.diagram.entity.Source;
 import by.bntu.diploma.diagram.entity.State;
-import by.bntu.diploma.diagram.entity.TargetEndpoint;
+import by.bntu.diploma.diagram.entity.Target;
 
 import java.util.List;
 
 public interface StateService {
 
-    List<State> saveAll(List<State> states);
+    List<State> saveAllStates(List<State> states);
 
     State saveState(State state);
 
@@ -16,7 +16,11 @@ public interface StateService {
 
     State newState();
 
-    SourceEndpoint newStateSourceEndpoint(Long stateUUID);
+    Source newSource(Long stateUUID);
 
-    TargetEndpoint newStateTargetEndpoint(Long stateUUID);
+    Target newTarget(Long stateUUID);
+
+    void deleteSource(Long stateUUID, Long sourceUUID);
+
+    void deleteTarget(Long stateUUID, Long targetUUID);
 }

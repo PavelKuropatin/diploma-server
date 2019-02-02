@@ -29,10 +29,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <guava.version>26.0-jre</guava.version>
         <lombok.version>1.18.4</lombok.version>
+
         <postgresql.version>42.2.5</postgresql.version>
         <h2.version>1.4.197</h2.version>
+        <mysql.version>8.0.14</mysql.version>
+
         <validation-api.version>2.0.1.Final</validation-api.version>
 
         <start-class>by.bntu.diploma.diagram.Boot</start-class>
@@ -49,33 +51,25 @@
         <lombok.version>1.18.4</lombok.version>
     </properties>
 
-    <!--<dependencyManagement>-->
-    <!--<dependencies>-->
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-dependencies</artifactId>-->
-    <!--<type>pom</type>-->
-    <!--<version>2.0.2.RELEASE</version>-->
-    <!--<scope>import</scope>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
-    <!--</dependencyManagement>-->
-
-
     <dependencies>
-        <!--#############CORE#############-->
+        <!--############SOCKET############-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!--##############################-->
+
+
         <!--###########DATABASE###########-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -100,21 +94,10 @@
 
         <!--#############UTIL#############-->
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>${validation-api.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.springtestdbunit</groupId>
-            <artifactId>spring-test-dbunit</artifactId>
-            <version>1.2.1</version>
-            <scope>test</scope>
         </dependency>
         <!--##############################-->
 
@@ -140,9 +123,6 @@
         </dependency>
         <!--#############################-->
 
-        <!--############TEST##############-->
-
-
         <!--#############UTIL#############-->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -152,10 +132,6 @@
         <!--##############################-->
 
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

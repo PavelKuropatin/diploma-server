@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-@org.mapstruct.Mapper(componentModel = "spring", uses = {SourceEndpointMapper.class, TargetEndpointMapper.class, EndpointStyleMapper.class})
+@org.mapstruct.Mapper(componentModel = "spring", uses = {SourceMapper.class, TargetMapper.class, StyleMapper.class})
 public abstract class StateMapper implements Mapper<State, StateDTO> {
 
 

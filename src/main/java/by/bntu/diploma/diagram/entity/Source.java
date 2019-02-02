@@ -17,8 +17,8 @@ import java.util.List;
 @Builder
 @Data
 @Entity
-@Table(name = "source_endpoint")
-public class SourceEndpoint {
+@Table(name = "source")
+public class Source {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +27,8 @@ public class SourceEndpoint {
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "source_endpoints__connections",
-            joinColumns = @JoinColumn(name = "source_endpoint_uuid", nullable = false),
+    @JoinTable(name = "sources__connections",
+            joinColumns = @JoinColumn(name = "source_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "connection_uuid", nullable = false)
     )
     @Builder.Default

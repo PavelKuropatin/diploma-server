@@ -13,8 +13,8 @@ import javax.validation.constraints.NotBlank;
 @Builder
 @Data
 @Entity
-@Table(name = "endpoint_style")
-public class EndpointStyle {
+@Table(name = "style")
+public class Style {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,12 +22,12 @@ public class EndpointStyle {
     private Long uuid;
 
     @NotBlank
-    @Column(name = "source_endpoint_style", nullable = false)
-    private String sourceEndpointStyle;
+    @Column(name = "source_style", nullable = false)
+    private String sourceStyle;
 
     @NotBlank
-    @Column(name = "target_endpoint_style", nullable = false)
-    private String targetEndpointStyle;
+    @Column(name = "target_style", nullable = false)
+    private String targetStyle;
 
     @NotBlank
     @Column(name = "source_anchor_style", nullable = false)

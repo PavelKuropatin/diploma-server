@@ -30,7 +30,7 @@ public class DiagramController {
                                     @RequestBody DiagramDTO diagramDTO) {
         Diagram diagram = this.diagramMapper.fromDTO(diagramDTO);
         diagram.setUuid(diagramUUID);
-        diagram = this.diagramService.update(diagram);
+        diagram = this.diagramService.updateDiagram(diagram);
         return this.diagramMapper.toDTO(diagram);
     }
 
@@ -39,7 +39,7 @@ public class DiagramController {
     public DiagramDTO findDiagramByUUID(@PathVariable(name = "uuid") Long diagramUUID) {
         Diagram diagram = this.diagramService.findDiagramByUUID(diagramUUID);
         if (diagram == null) {
-            throw new RestException(HttpStatus.NOT_FOUND, "Diagram not found (uuid = " + diagramUUID + ")");
+            throw new RestException(HttpStatus.NOT_FOUND, "Diagram[" + diagramUUID + "] not found.");
         }
         return this.diagramMapper.toDTO(diagram);
     }
@@ -47,7 +47,7 @@ public class DiagramController {
     @ResponseStatus(HttpStatus.CREATED)
     @GetMapping
     public List<ViewSchemaDTO> getDiagramsInfo() {
-        return this.diagramService.findAll()
+        return this.diagramService.findAllDiagrams()
                 .stream()
                 .map(viewSchemaMapper::toDTO)
                 .collect(Collectors.toList());
@@ -59,13 +59,13 @@ public class DiagramController {
     public DiagramDTO saveDiagram(@RequestBody DiagramDTO diagramDTO) {
         Diagram diagram;
         diagram = this.diagramMapper.fromDTO(diagramDTO);
-        diagram = this.diagramService.save(diagram);
+        diagram = this.diagramService.saveDiagram(diagram);
         return this.diagramMapper.toDTO(diagram);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/{uuid}")
-    public void deleteSchema(@PathVariable(name = "uuid") Long diagramUUID) {
+    public void deleteDiagram(@PathVariable(name = "uuid") Long diagramUUID) {
         this.diagramService.deleteDiagramByUUID(diagramUUID);
     }
 

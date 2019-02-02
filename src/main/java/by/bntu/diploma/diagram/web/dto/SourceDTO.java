@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Data
-public class SourceEndpointDTO {
+public class SourceDTO {
 
     @JsonProperty("uuid")
     private Long uuid;

@@ -45,7 +45,7 @@ public class State {
 
     @Valid
     @OneToOne
-    private EndpointStyle endpointStyle;
+    private Style style;
 
     @NotNull
     @Column(name = "position_y", nullable = false)
@@ -53,21 +53,21 @@ public class State {
 
     @Valid
     @OneToMany
-    @JoinTable(name = "states__source_endpoints",
+    @JoinTable(name = "states__sources",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "source_endpoint_uuid", nullable = false)
+            inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
     )
     @Builder.Default
-    private List<SourceEndpoint> sourceEndpoints = new LinkedList<>();
+    private List<Source> sources = new LinkedList<>();
 
     @Valid
     @OneToMany
-    @JoinTable(name = "states__target_endpoints",
+    @JoinTable(name = "states__targets",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "target_endpoint_uuid", nullable = false)
+            inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)
     )
     @Builder.Default
-    private List<TargetEndpoint> targetEndpoints = new LinkedList<>();
+    private List<Target> targets = new LinkedList<>();
 
     @ElementCollection
     @MapKeyColumn(name = "variable_name")
@@ -97,17 +97,17 @@ public class State {
         }
     }
 
-    public void setSourceEndpoints(List<SourceEndpoint> sourceEndpoints) {
-        this.sourceEndpoints.clear();
-        if (sourceEndpoints != null) {
-            this.sourceEndpoints.addAll(sourceEndpoints);
+    public void setSources(List<Source> sources) {
+        this.sources.clear();
+        if (sources != null) {
+            this.sources.addAll(sources);
         }
     }
 
-    public void setTargetEndpoints(List<TargetEndpoint> targetEndpoints) {
-        this.targetEndpoints.clear();
-        if (targetEndpoints != null) {
-            this.targetEndpoints.addAll(targetEndpoints);
+    public void setTargets(List<Target> targets) {
+        this.targets.clear();
+        if (targets != null) {
+            this.targets.addAll(targets);
         }
     }
 

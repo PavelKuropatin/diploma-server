@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Builder
 @Data
 @Entity
-@Table(name = "target_endpoint")
-public class TargetEndpoint {
+@Table(name = "target")
+public class Target {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

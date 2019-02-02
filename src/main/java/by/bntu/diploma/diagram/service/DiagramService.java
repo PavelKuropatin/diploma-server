@@ -9,15 +9,17 @@ public interface DiagramService {
 
     Diagram findDiagramByUUID(Long diagramUUID);
 
-    Diagram save(Diagram diagram);
+    Diagram saveDiagram(Diagram diagram);
 
-    Diagram update(Diagram diagram);
+    Diagram updateDiagram(Diagram diagram);
 
     void deleteDiagramByUUID(Long diagramUUID);
 
-    List<Diagram> findAll();
+    List<Diagram> findAllDiagrams();
 
-    Diagram createNewDiagram();
+    Diagram newDiagram();
 
-    State newDiagramState(Long diagramUUID);
+    State newState(Long diagramUUID);
+
+    void deleteState(Long diagramUUID, Long stateUUID);
 }
