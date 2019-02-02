@@ -53,20 +53,4 @@ public class DiagramController {
                 .collect(Collectors.toList());
     }
 
-
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping
-    public DiagramDTO saveDiagram(@RequestBody DiagramDTO diagramDTO) {
-        Diagram diagram;
-        diagram = this.diagramMapper.fromDTO(diagramDTO);
-        diagram = this.diagramService.saveDiagram(diagram);
-        return this.diagramMapper.toDTO(diagram);
-    }
-
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{uuid}")
-    public void deleteDiagram(@PathVariable(name = "uuid") Long diagramUUID) {
-        this.diagramService.deleteDiagramByUUID(diagramUUID);
-    }
-
 }
