@@ -28,7 +28,7 @@ public class StateDTO {
     @JsonProperty("template")
     private String template;
 
-    @JsonProperty("style")
+    @JsonProperty("endpointStyle")
     private StyleDTO style;
 
     @JsonProperty("sources")
