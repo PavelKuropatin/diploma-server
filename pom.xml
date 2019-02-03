@@ -6,177 +6,42 @@
 
     <groupId>by.bntu.diploma</groupId>
     <artifactId>diploma-server</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>domain</module>
+        <module>repository</module>
+        <module>web</module>
+        <module>socket</module>
+        <module>service</module>
+    </modules>
+    <packaging>pom</packaging>
 
-
-    <!--<packaging>pom</packaging>-->
-    <!--<version>1.0-SNAPSHOT</version>-->
-    <!--<modules>-->
-    <!--<module>data-source</module>-->
-    <!--<module>web-controller</module>-->
-    <!--<module>web-socket</module>-->
-    <!--</modules>-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.4.RELEASE</version>
-        <relativePath/> <!-- lookup parent from diagramRepo -->
+        <relativePath/>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <lombok.version>1.18.4</lombok.version>
 
+        <hibernate.version>5.4.1.Final</hibernate.version>
+        <m.hibernate-validator.version>6.0.13.Final</m.hibernate-validator.version>
         <postgresql.version>42.2.5</postgresql.version>
-        <h2.version>1.4.197</h2.version>
         <mysql.version>8.0.14</mysql.version>
 
-        <validation-api.version>2.0.1.Final</validation-api.version>
+        <javax-persistence.version>2.2</javax-persistence.version>
+        <javax-validation.version>2.0.1.Final</javax-validation.version>
 
-        <start-class>by.bntu.diploma.diagram.Boot</start-class>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <start-class>by.bntu.diploma.diagram.web.Boot</start-class>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
-        <common.lang3.version>3.8</common.lang3.version>
-        <lombok.version>1.18.4</lombok.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
-        <common.lang3.version>3.8</common.lang3.version>
+
+        <commons-lang3.version>3.8</commons-lang3.version>
         <lombok.version>1.18.4</lombok.version>
     </properties>
 
-    <dependencies>
-        <!--############SOCKET############-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
-        <!--##############################-->
-
-
-        <!--###########DATABASE###########-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>${postgresql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>${h2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>6.0.13.Final</version>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator-annotation-processor</artifactId>
-            <version>6.0.13.Final</version>
-        </dependency>
-        <!--##############################-->
-
-        <!--#############UTIL#############-->
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>${validation-api.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <!--##############################-->
-
-
-        <!--############TEST##############-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <!--##############################-->
-
-
-        <!--#############WEB#############-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-jdk8</artifactId>
-            <version>${mapstruct.version}</version>
-        </dependency>
-        <!--#############################-->
-
-        <!--#############UTIL#############-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${common.lang3.version}</version>
-        </dependency>
-        <!--##############################-->
-
-
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>${mapstruct.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-            </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--</plugin>-->
-        </plugins>
-    </build>
 </project>
