@@ -79,6 +79,7 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
+    @Transactional
     public State newState(Long diagramUUID) {
         Diagram diagram = this.findDiagramByUUID(diagramUUID);
         if (diagram == null) {
@@ -91,6 +92,7 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
+    @Transactional
     public void deleteState(Long diagramUUID, Long stateUUID) {
         Diagram diagram = this.findDiagramByUUID(diagramUUID);
         State state = this.stateService.findByStateUUID(stateUUID);

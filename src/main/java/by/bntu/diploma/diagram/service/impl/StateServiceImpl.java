@@ -61,7 +61,8 @@ public class StateServiceImpl implements StateService {
     @Override
     @Transactional
     public State newState() {
-        State state = State.builder()
+        State state;
+        state = State.builder()
                 .color("#CC1A55")
                 .name("New State")
                 .style(Style.builder()
@@ -74,7 +75,10 @@ public class StateServiceImpl implements StateService {
                 .positionY(10)
                 .template("action")
                 .build();
-        return this.saveState(state);
+        state = this.saveState(state);
+        this.newSource(state.getUuid());
+        this.newTarget(state.getUuid());
+        return state;
     }
 
     @Override
@@ -104,6 +108,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
+    @Transactional
     public void deleteSource(Long stateUUID, Long sourceUUID) {
         State state = this.findByStateUUID(stateUUID);
         Source source = this.sourceService.findBySourceUUID(sourceUUID);
@@ -121,6 +126,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
+    @Transactional
     public void deleteTarget(Long stateUUID, Long targetUUID) {
         State state = this.findByStateUUID(stateUUID);
         Target target = this.targetService.findByTargetUUID(targetUUID);
