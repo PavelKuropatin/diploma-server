@@ -3,7 +3,7 @@ package by.bntu.diploma.diagram.web.controller;
 import by.bntu.diploma.diagram.entity.Diagram;
 import by.bntu.diploma.diagram.service.DiagramService;
 import by.bntu.diploma.diagram.web.dto.DiagramDTO;
-import by.bntu.diploma.diagram.web.dto.ViewSchemaDTO;
+import by.bntu.diploma.diagram.web.dto.ViewDiagramDTO;
 import by.bntu.diploma.diagram.web.dto.mapper.Mapper;
 import by.bntu.diploma.diagram.web.exception.RestException;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class DiagramController {
 
     private DiagramService diagramService;
     private Mapper<Diagram, DiagramDTO> diagramMapper;
-    private Mapper<Diagram, ViewSchemaDTO> viewSchemaMapper;
+    private Mapper<Diagram, ViewDiagramDTO> viewSchemaMapper;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/{uuid}")
@@ -46,7 +46,7 @@ public class DiagramController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @GetMapping
-    public List<ViewSchemaDTO> getDiagramsInfo() {
+    public List<ViewDiagramDTO> getDiagramsInfo() {
         return this.diagramService.findAllDiagrams()
                 .stream()
                 .map(viewSchemaMapper::toDTO)

@@ -1,9 +1,6 @@
 package by.bntu.diploma.diagram.service.impl;
 
-import by.bntu.diploma.diagram.entity.Source;
-import by.bntu.diploma.diagram.entity.State;
-import by.bntu.diploma.diagram.entity.Style;
-import by.bntu.diploma.diagram.entity.Target;
+import by.bntu.diploma.diagram.entity.*;
 import by.bntu.diploma.diagram.repository.StateRepository;
 import by.bntu.diploma.diagram.service.SourceService;
 import by.bntu.diploma.diagram.service.StateService;
@@ -11,6 +8,7 @@ import by.bntu.diploma.diagram.service.StyleService;
 import by.bntu.diploma.diagram.service.TargetService;
 import by.bntu.diploma.diagram.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -141,5 +140,17 @@ public class StateServiceImpl implements StateService {
         }
         state.getTargets().removeIf(t -> t.equals(target));
         this.saveState(state);
+    }
+
+    @Override
+    public State putContainerValue(Long stateUUID, ContainerType type, String param, Double value) {
+        State state = this.findByStateUUID(stateUUID);
+        if (!ObjectUtils.allNotNull(type, param, value)) {
+            throw new IllegalArgumentException("Type[" + type + "] param[" + value + "] or value[" + value + "] is null.");
+        }
+        Map<String, Double> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
+        container.put(param, value);
+        state = this.saveState(state);
+        return state;
     }
 }

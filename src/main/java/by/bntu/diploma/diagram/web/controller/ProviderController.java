@@ -10,10 +10,7 @@ import by.bntu.diploma.diagram.web.dto.DiagramDTO;
 import by.bntu.diploma.diagram.web.dto.SourceDTO;
 import by.bntu.diploma.diagram.web.dto.StateDTO;
 import by.bntu.diploma.diagram.web.dto.TargetDTO;
-import by.bntu.diploma.diagram.web.dto.mapper.impl.DiagramMapper;
-import by.bntu.diploma.diagram.web.dto.mapper.impl.SourceMapper;
-import by.bntu.diploma.diagram.web.dto.mapper.impl.StateMapper;
-import by.bntu.diploma.diagram.web.dto.mapper.impl.TargetMapper;
+import by.bntu.diploma.diagram.web.dto.mapper.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,10 +24,10 @@ public class ProviderController {
     private DiagramService diagramService;
     private StateService stateService;
 
-    private DiagramMapper diagramMapper;
-    private StateMapper stateMapper;
-    private SourceMapper sourceMapper;
-    private TargetMapper targetMapper;
+    private Mapper<Diagram, DiagramDTO> diagramMapper;
+    private Mapper<State, StateDTO> stateMapper;
+    private Mapper<Source, SourceDTO> sourceMapper;
+    private Mapper<Target, TargetDTO> targetMapper;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/diagram")
@@ -45,7 +42,6 @@ public class ProviderController {
         State state = this.diagramService.newState(diagramUUID);
         return this.stateMapper.toDTO(state);
     }
-
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/state/{state_uuid}/source")

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class ViewSchemaDTO {
+public class ViewDiagramDTO {
 
     @JsonProperty("uuid")
     private Long uuid;

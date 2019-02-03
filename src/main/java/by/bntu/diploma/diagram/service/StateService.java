@@ -1,5 +1,6 @@
 package by.bntu.diploma.diagram.service;
 
+import by.bntu.diploma.diagram.entity.ContainerType;
 import by.bntu.diploma.diagram.entity.Source;
 import by.bntu.diploma.diagram.entity.State;
 import by.bntu.diploma.diagram.entity.Target;
@@ -23,4 +24,6 @@ public interface StateService {
     void deleteSource(Long stateUUID, Long sourceUUID);
 
     void deleteTarget(Long stateUUID, Long targetUUID);
+
+    State putContainerValue(Long stateUUID, ContainerType type, String param, Double value);
 }
