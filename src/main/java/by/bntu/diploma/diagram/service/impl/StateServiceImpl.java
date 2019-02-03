@@ -69,7 +69,7 @@ public class StateServiceImpl implements StateService {
                         .sourceAnchorStyle("RightMiddle")
                         .targetAnchorStyle("LeftMiddle")
                         .sourceStyle("endpoint-style-right")
-                        .targetStyle("endpoint-circle-style-left")
+                        .targetStyle("endpoint-style-left")
                         .build())
                 .positionX(10)
                 .positionY(10)
