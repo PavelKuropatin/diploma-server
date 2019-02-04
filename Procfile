@@ -1,0 +1,1 @@
+web: ls & java -Dserver.port=$PORT -jar /app/web/target/web-1.0.jar
