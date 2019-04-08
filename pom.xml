@@ -11,7 +11,6 @@
         <module>domain</module>
         <module>repository</module>
         <module>web</module>
-        <module>socket</module>
         <module>service</module>
     </modules>
     <packaging>pom</packaging>
@@ -25,6 +24,8 @@
     </parent>
 
     <properties>
+        <mssql-jdbc.version>7.2.1.jre8</mssql-jdbc.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
