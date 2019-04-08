@@ -23,7 +23,7 @@ public class Connection {
     private Long uuid;
 
     @Valid
-    @NotNull
+    @NotNull(message = "{target.null}")
     @ManyToOne(targetEntity = Target.class)
     private Target target;
 

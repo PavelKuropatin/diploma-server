@@ -21,20 +21,20 @@ public class Style {
     @Column(name = "uuid", nullable = false)
     private Long uuid;
 
-    @NotBlank
     @Column(name = "source_style", nullable = false)
+    @NotBlank(message = "{style.source-style.blank}")
     private String sourceStyle;
 
-    @NotBlank
     @Column(name = "target_style", nullable = false)
+    @NotBlank(message = "{style.target-style.blank}")
     private String targetStyle;
 
-    @NotBlank
     @Column(name = "source_anchor_style", nullable = false)
+    @NotBlank(message = "{style.source-anchor-style.blank}")
     private String sourceAnchorStyle;
 
-    @NotBlank
     @Column(name = "target_anchor_style", nullable = false)
+    @NotBlank(message = "{style.target-anchor-style.blank}")
     private String targetAnchorStyle;
 
 }

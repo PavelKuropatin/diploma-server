@@ -4,23 +4,34 @@ import by.bntu.diploma.diagram.domain.Diagram;
 import by.bntu.diploma.diagram.domain.State;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface DiagramService {
 
-    Diagram findDiagramByUUID(Long diagramUUID);
+    Diagram findDiagramByUUID(
+            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+    );
 
     Diagram saveDiagram(@Valid Diagram diagram);
 
     Diagram updateDiagram(@Valid Diagram diagram);
 
-    void deleteDiagramByUUID(Long diagramUUID);
+    void deleteDiagramByUUID(
+            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+    );
 
     List<Diagram> findAllDiagrams();
 
     Diagram newDiagram();
 
-    State newState(Long diagramUUID);
+    State newState(
+            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+    );
 
-    void deleteState(Long diagramUUID, Long stateUUID);
+    void deleteState(
+            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID,
+            @NotNull(message = "{state.uuid.null}") @Min(value = 1, message = "{state.uuid.min}") Long stateUUID
+    );
 }

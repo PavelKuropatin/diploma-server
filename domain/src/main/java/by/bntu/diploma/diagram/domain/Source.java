@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class Source {
             joinColumns = @JoinColumn(name = "source_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "connection_uuid", nullable = false)
     )
+    @NotNull(message = "{source.connections.null}")
     @Builder.Default
     private List<Connection> connections = new LinkedList<>();
 

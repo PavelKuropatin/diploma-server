@@ -28,9 +28,6 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     public Diagram findDiagramByUUID(Long diagramUUID) {
-        if (diagramUUID == null || diagramUUID < 1) {
-            throw new IllegalArgumentException("Diagram UUID is null or less then 1. Got " + diagramUUID);
-        }
         return this.diagramRepo.findById(diagramUUID).orElse(null);
     }
 
@@ -44,9 +41,6 @@ public class DiagramServiceImpl implements DiagramService {
     @Transactional
     public Diagram updateDiagram(Diagram diagram) {
         Long diagramUUID = diagram.getUuid();
-        if (diagramUUID == null || diagramUUID < 1) {
-            throw new IllegalArgumentException("Diagram UUID is null or less then 1. Got " + diagramUUID);
-        }
         if (!this.diagramRepo.existsById(diagramUUID)) {
             throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
         }
@@ -56,9 +50,6 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     @Transactional
     public void deleteDiagramByUUID(Long diagramUUID) {
-        if (diagramUUID == null || diagramUUID < 1) {
-            throw new IllegalArgumentException("Diagram UUID is null or less then 1.");
-        }
         this.diagramRepo.deleteById(diagramUUID);
     }
 

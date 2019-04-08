@@ -27,28 +27,29 @@ public class State {
     @Column(name = "uuid", nullable = false)
     private Long uuid;
 
-    @NotBlank
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "{state.name.blank}")
     private String name;
 
-    @NotBlank
     @Column(name = "template", nullable = false)
+    @NotBlank(message = "{state.template.blank}")
     private String template;
 
-    @NotBlank
     @Column(name = "color", nullable = false)
+    @NotBlank(message = "{state.color.blank}")
     private String color;
-
-    @NotNull
-    @Column(name = "position_x", nullable = false)
-    private Integer positionX;
 
     @Valid
     @OneToOne
+    @NotNull(message = "{style.null}")
     private Style style;
 
-    @NotNull
+    @Column(name = "position_x", nullable = false)
+    @NotNull(message = "{state.position-x.null}")
+    private Integer positionX;
+
     @Column(name = "position_y", nullable = false)
+    @NotNull(message = "{state.position-y.null}")
     private Integer positionY;
 
     @Valid
@@ -57,6 +58,7 @@ public class State {
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
     )
+    @NotNull(message = "{state.sources.null}")
     @Builder.Default
     private List<Source> sources = new LinkedList<>();
 
@@ -66,6 +68,7 @@ public class State {
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)
     )
+    @NotNull(message = "{state.targets.null}")
     @Builder.Default
     private List<Target> targets = new LinkedList<>();
 
@@ -73,6 +76,7 @@ public class State {
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value", nullable = false)
     @CollectionTable(name = "input_container", joinColumns = @JoinColumn(name = "state_uuid"))
+    @NotNull(message = "{state.input-container.null}")
     @Builder.Default
     private Map<String, Double> inputContainer = new LinkedHashMap<>();
 
@@ -80,6 +84,7 @@ public class State {
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value", nullable = false)
     @CollectionTable(name = "output_container", joinColumns = @JoinColumn(name = "state_uuid"))
+    @NotNull(message = "{state.output-container.null}")
     @Builder.Default
     private Map<String, Double> outputContainer = new LinkedHashMap<>();
 

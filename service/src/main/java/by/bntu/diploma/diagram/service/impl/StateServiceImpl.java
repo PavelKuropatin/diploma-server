@@ -8,12 +8,12 @@ import by.bntu.diploma.diagram.service.StyleService;
 import by.bntu.diploma.diagram.service.TargetService;
 import by.bntu.diploma.diagram.service.exception.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StateServiceImpl implements StateService {
 
@@ -34,9 +35,6 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public State findByStateUUID(Long stateUUID) {
-        if (stateUUID == null || stateUUID < 1) {
-            throw new IllegalArgumentException("State UUID is null or less then 1. Got " + stateUUID);
-        }
         Optional<State> stateOptional = this.stateRepo.findById(stateUUID);
         return stateOptional.orElse(null);
     }
@@ -145,9 +143,6 @@ public class StateServiceImpl implements StateService {
     @Override
     public State putContainerValue(Long stateUUID, ContainerType type, String param, Double value) {
         State state = this.findByStateUUID(stateUUID);
-        if (!ObjectUtils.allNotNull(type, param, value)) {
-            throw new IllegalArgumentException("Type[" + type + "] param[" + value + "] or value[" + value + "] is null.");
-        }
         Map<String, Double> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
         container.put(param, value);
         state = this.saveState(state);

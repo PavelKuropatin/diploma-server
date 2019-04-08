@@ -1,6 +1,5 @@
 package by.bntu.diploma.diagram.web.dto;
 
-import by.bntu.diploma.diagram.domain.ContainerType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class ContainerValueDTO {
 
     @JsonProperty("type")
-    private ContainerType type;
+    private String type;
 
     @JsonProperty("param")
     private String param;

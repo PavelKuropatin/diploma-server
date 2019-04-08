@@ -8,6 +8,7 @@ import by.bntu.diploma.diagram.web.dto.StateDTO;
 import by.bntu.diploma.diagram.web.dto.mapper.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +19,13 @@ public class StateController {
 
     private StateService stateService;
     private Mapper<State, StateDTO> stateMapper;
+    private Converter<String, ContainerType> converter;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{uuid}/container")
     public StateDTO putContainerValue(@PathVariable(name = "uuid") Long stateUUID,
                                       @RequestBody ContainerValueDTO containerValue) {
-        ContainerType type = containerValue.getType();
+        ContainerType type = this.converter.convert(containerValue.getType());
         String param = containerValue.getParam();
         Double value = containerValue.getValue();
         State state = this.stateService.putContainerValue(stateUUID, type, param, value);

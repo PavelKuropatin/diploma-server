@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +26,12 @@ public class Diagram {
     @Column(name = "uuid", nullable = false)
     private Long uuid;
 
-    @NotBlank
     @Column(name = "name", nullable = false)
+    @NotBlank(message = "{diagram.name.blank}")
     private String name;
 
-    @NotBlank
     @Column(name = "description", columnDefinition = "TEXT")
+    @NotBlank(message = "{diagram.description.blank}")
     private String description;
 
     @Valid
@@ -39,6 +40,7 @@ public class Diagram {
             joinColumns = @JoinColumn(name = "diagram_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "state_uuid", nullable = false)
     )
+    @NotNull(message = "{diagram.states.null}")
     @Builder.Default
     private List<State> states = new ArrayList<>();
 

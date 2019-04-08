@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class TargetServiceImpl implements TargetService {
 
@@ -41,9 +43,6 @@ public class TargetServiceImpl implements TargetService {
 
     @Override
     public Target findByTargetUUID(Long targetUUID) {
-        if (targetUUID == null || targetUUID < 1) {
-            throw new IllegalArgumentException("Target UUID is null or less then 1. Got " + targetUUID);
-        }
         Optional<Target> targetEndpointOptional = this.targetRepo.findById(targetUUID);
         return targetEndpointOptional.orElse(null);
     }

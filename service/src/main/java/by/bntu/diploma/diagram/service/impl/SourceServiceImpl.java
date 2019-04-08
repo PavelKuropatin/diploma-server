@@ -8,12 +8,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class SourceServiceImpl implements SourceService {
 
@@ -42,9 +44,6 @@ public class SourceServiceImpl implements SourceService {
 
     @Override
     public Source findBySourceUUID(Long sourceUUID) {
-        if (sourceUUID == null || sourceUUID < 1) {
-            throw new IllegalArgumentException("Source UUID is null or less then 1. Got" + sourceUUID);
-        }
         Optional<Source> sourceEndpointOptional = this.sourceRepo.findById(sourceUUID);
         return sourceEndpointOptional.orElse(null);
     }

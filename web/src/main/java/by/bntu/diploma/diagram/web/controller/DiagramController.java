@@ -63,4 +63,10 @@ public class DiagramController {
         return this.diagramMapper.toDTO(diagram);
     }
 
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/{uuid}")
+    public void deleteDiagram(@PathVariable(name = "uuid") Long diagramUUID) {
+        this.diagramService.deleteDiagramByUUID(diagramUUID);
+    }
+
 }

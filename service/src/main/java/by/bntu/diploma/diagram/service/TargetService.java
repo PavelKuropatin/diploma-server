@@ -3,6 +3,8 @@ package by.bntu.diploma.diagram.service;
 import by.bntu.diploma.diagram.domain.Target;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface TargetService {
@@ -13,5 +15,7 @@ public interface TargetService {
 
     Target newTarget();
 
-    Target findByTargetUUID(Long targetUUID);
+    Target findByTargetUUID(
+            @NotNull(message = "{target.uuid.null}") @Min(value = 1, message = "{target.uuid.min}") Long targetUUID
+    );
 }
