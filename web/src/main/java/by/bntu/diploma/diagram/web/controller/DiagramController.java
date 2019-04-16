@@ -55,10 +55,17 @@ public class DiagramController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping
-    public DiagramDTO saveDiagram(@RequestBody DiagramDTO diagramDTO) {
+    public DiagramDTO saveDiagram(@RequestParam(name = "external_source", required = false) Boolean isExternal,
+                                  @RequestBody DiagramDTO diagramDTO) {
         Diagram diagram;
         diagram = this.diagramMapper.fromDTO(diagramDTO);
-        diagram = this.diagramService.saveDiagram(diagram);
+
+        if (isExternal) {
+            diagram = this.diagramService.saveExternalDiagram(diagram);
+        } else {
+            diagram = this.diagramService.saveDiagram(diagram);
+        }
+
         return this.diagramMapper.toDTO(diagram);
     }
 

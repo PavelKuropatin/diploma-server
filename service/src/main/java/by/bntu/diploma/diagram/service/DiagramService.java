@@ -2,6 +2,7 @@ package by.bntu.diploma.diagram.service;
 
 import by.bntu.diploma.diagram.domain.Diagram;
 import by.bntu.diploma.diagram.domain.State;
+import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -11,7 +12,8 @@ import java.util.List;
 public interface DiagramService {
 
     Diagram findDiagramByUUID(
-            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
     );
 
     Diagram saveDiagram(@Valid Diagram diagram);
@@ -19,7 +21,8 @@ public interface DiagramService {
     Diagram updateDiagram(@Valid Diagram diagram);
 
     void deleteDiagramByUUID(
-            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
     );
 
     List<Diagram> findAllDiagrams();
@@ -27,11 +30,17 @@ public interface DiagramService {
     Diagram newDiagram();
 
     State newState(
-            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
     );
 
     void deleteState(
-            @NotNull(message = "{diagram.uuid.null}") @Min(value = 1, message = "{diagram.uuid.min}") Long diagramUUID,
-            @NotNull(message = "{state.uuid.null}") @Min(value = 1, message = "{state.uuid.min}") Long stateUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID,
+            @NotNull(message = ValidationMessage.State.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.State.UUID_MIN) Long stateUUID
     );
+
+    Diagram saveExternalDiagram(@Valid Diagram diagram);
+
 }

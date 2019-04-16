@@ -34,7 +34,7 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     @Transactional
     public Diagram saveDiagram(Diagram diagram) {
-        diagram.setStates(this.stateService.saveAllStates(diagram.getStates()));
+        this.stateService.saveAllStates(diagram.getStates());
         return this.diagramRepo.save(diagram);
     }
 
@@ -97,5 +97,13 @@ public class DiagramServiceImpl implements DiagramService {
         }
         diagram.getStates().removeIf(s -> s.equals(state));
         this.saveDiagram(diagram);
+    }
+
+    @Override
+    @Transactional
+    public Diagram saveExternalDiagram(Diagram diagram) {
+        diagram.getStates().forEach(state -> state.setUuid(null));
+        this.stateService.saveExternalStates(diagram.getStates());
+        return this.diagramRepo.save(diagram);
     }
 }

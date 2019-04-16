@@ -1,6 +1,7 @@
 package by.bntu.diploma.diagram.service;
 
 import by.bntu.diploma.diagram.domain.Source;
+import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -16,6 +17,7 @@ public interface SourceService {
     Source newSource();
 
     Source findBySourceUUID(
-            @NotNull(message = "{source.uuid.null}") @Min(value = 1, message = "{source.uuid.min}") Long sourceUUID
+            @NotNull(message = ValidationMessage.Source.UUID_NULL)
+            @Min(value = 1, message = ValidationMessage.Source.UUID_MIN) Long sourceUUID
     );
 }

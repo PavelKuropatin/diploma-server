@@ -7,6 +7,7 @@ import by.bntu.diploma.diagram.service.StateService;
 import by.bntu.diploma.diagram.service.StyleService;
 import by.bntu.diploma.diagram.service.TargetService;
 import by.bntu.diploma.diagram.service.exception.NotFoundException;
+import by.bntu.diploma.diagram.service.utils.DomainUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,16 +43,38 @@ public class StateServiceImpl implements StateService {
     @Override
     @Transactional
     public List<State> saveAllStates(List<State> states) {
-        return states.stream().map(this::saveState).collect(Collectors.toList());
+        return states.stream()
+                .map(this::saveState)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<State> saveExternalStates(List<State> states) {
+
+        List<Style> styles = DomainUtils.extractStyleFromStates(states);
+        styles.forEach(style -> style.setUuid(null));
+
+        List<Target> targets = DomainUtils.extractTargetsFromStates(states);
+
+        DomainUtils.dropDuplicateTargets(states, targets);
+
+        targets.forEach(target -> target.setUuid(null));
+
+        List<Source> sources = DomainUtils.extractSourcesFromStates(states);
+        sources.forEach(source -> source.setUuid(null));
+
+
+        return this.saveAllStates(states);
     }
 
 
     @Override
     @Transactional
     public State saveState(State state) {
-        state.setStyle(this.styleService.saveStyle(state.getStyle()));
-        state.setTargets(this.targetService.saveAllTargets(state.getTargets()));
-        state.setSources(this.sourceService.saveAllSources(state.getSources()));
+        this.styleService.saveStyle(state.getStyle());
+        this.targetService.saveAllTargets(state.getTargets());
+        this.sourceService.saveAllSources(state.getSources());
         return this.stateRepo.save(state);
     }
 

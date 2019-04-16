@@ -1,5 +1,7 @@
 package by.bntu.diploma.diagram.domain;
 
+import by.bntu.diploma.diagram.domain.constraint.ValidContainer;
+import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,28 +31,31 @@ public class State {
     private Long uuid;
 
     @Column(name = "name", nullable = false)
-    @NotBlank(message = "{state.name.blank}")
+    @Size(min = 3, max = 255, message = ValidationMessage.State.NAME_SIZE)
+    @NotBlank(message = ValidationMessage.State.NAME_BLANK)
     private String name;
 
     @Column(name = "template", nullable = false)
-    @NotBlank(message = "{state.template.blank}")
+    @Size(min = 3, max = 255, message = ValidationMessage.State.TEMPLATE_SIZE)
+    @NotBlank(message = ValidationMessage.State.TEMPLATE_BLANK)
     private String template;
 
     @Column(name = "color", nullable = false)
-    @NotBlank(message = "{state.color.blank}")
+    @Size(min = 3, max = 255, message = ValidationMessage.State.COLOR_SIZE)
+    @NotBlank(message = ValidationMessage.State.COLOR_BLANK)
     private String color;
 
     @Valid
     @OneToOne
-    @NotNull(message = "{style.null}")
+    @NotNull(message = ValidationMessage.State.STYLE_NULL)
     private Style style;
 
     @Column(name = "position_x", nullable = false)
-    @NotNull(message = "{state.position-x.null}")
+    @NotNull(message = ValidationMessage.State.POS_X_NULL)
     private Integer positionX;
 
     @Column(name = "position_y", nullable = false)
-    @NotNull(message = "{state.position-y.null}")
+    @NotNull(message = ValidationMessage.State.POS_Y_NULL)
     private Integer positionY;
 
     @Valid
@@ -58,7 +64,7 @@ public class State {
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
     )
-    @NotNull(message = "{state.sources.null}")
+    @NotNull(message = ValidationMessage.State.SOURCES_NULL)
     @Builder.Default
     private List<Source> sources = new LinkedList<>();
 
@@ -68,7 +74,7 @@ public class State {
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)
     )
-    @NotNull(message = "{state.targets.null}")
+    @NotNull(message = ValidationMessage.State.TARGETS_NULL)
     @Builder.Default
     private List<Target> targets = new LinkedList<>();
 
@@ -76,7 +82,7 @@ public class State {
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value", nullable = false)
     @CollectionTable(name = "input_container", joinColumns = @JoinColumn(name = "state_uuid"))
-    @NotNull(message = "{state.input-container.null}")
+    @ValidContainer(type = ContainerType.INPUT)
     @Builder.Default
     private Map<String, Double> inputContainer = new LinkedHashMap<>();
 
@@ -84,7 +90,7 @@ public class State {
     @MapKeyColumn(name = "variable_name")
     @Column(name = "variable_value", nullable = false)
     @CollectionTable(name = "output_container", joinColumns = @JoinColumn(name = "state_uuid"))
-    @NotNull(message = "{state.output-container.null}")
+    @ValidContainer(type = ContainerType.OUTPUT)
     @Builder.Default
     private Map<String, Double> outputContainer = new LinkedHashMap<>();
 

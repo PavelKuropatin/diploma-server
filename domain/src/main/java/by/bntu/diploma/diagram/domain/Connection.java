@@ -1,5 +1,6 @@
 package by.bntu.diploma.diagram.domain;
 
+import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Connection {
     private Long uuid;
 
     @Valid
-    @NotNull(message = "{target.null}")
+    @NotNull(message = ValidationMessage.Connection.TARGET_NULL)
     @ManyToOne(targetEntity = Target.class)
     private Target target;
 
