@@ -7,44 +7,43 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
+@Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class TargetServiceImpl implements TargetService {
 
-    private TargetRepository targetRepo;
+    private TargetRepository targetRepository;
 
     @Valid
     @Override
     @Transactional
     public Target saveTarget(Target target) {
-        return this.targetRepo.save(target);
+        return targetRepository.save(target);
     }
 
     @Override
     @Transactional
     public List<Target> saveAllTargets(List<Target> targets) {
-        return targets.stream().map(this::saveTarget).collect(Collectors.toList());
+        return targetRepository.saveAll(targets);
     }
 
     @Override
     @Transactional
     public Target newTarget() {
         Target target = Target.builder().build();
-        return this.saveTarget(target);
+        return saveTarget(target);
     }
 
     @Override
     public Target findByTargetUUID(Long targetUUID) {
-        if (targetUUID == null || targetUUID < 1) {
-            throw new IllegalArgumentException("Target UUID is null or less then 1. Got " + targetUUID);
-        }
-        Optional<Target> targetEndpointOptional = this.targetRepo.findById(targetUUID);
+        Optional<Target> targetEndpointOptional = targetRepository.findById(targetUUID);
         return targetEndpointOptional.orElse(null);
     }
+
 }

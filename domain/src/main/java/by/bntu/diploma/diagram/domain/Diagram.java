@@ -1,5 +1,6 @@
 package by.bntu.diploma.diagram.domain;
 
+import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +28,14 @@ public class Diagram {
     @Column(name = "uuid", nullable = false)
     private Long uuid;
 
-    @NotBlank
     @Column(name = "name", nullable = false)
+    @Size(min = 3, max = 255, message = ValidationMessage.Diagram.NAME_SIZE)
+    @NotBlank(message = ValidationMessage.Diagram.NAME_BLANK)
     private String name;
 
-    @NotBlank
     @Column(name = "description", columnDefinition = "TEXT")
+    @Size(min = 3, max = 255, message = ValidationMessage.Diagram.DESCRIPTION_SIZE)
+    @NotBlank(message = ValidationMessage.Diagram.DESCRIPTION_BLANK)
     private String description;
 
     @Valid
@@ -39,13 +44,14 @@ public class Diagram {
             joinColumns = @JoinColumn(name = "diagram_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "state_uuid", nullable = false)
     )
+    @NotNull(message = ValidationMessage.Diagram.STATES_NULL)
     @Builder.Default
     private List<State> states = new ArrayList<>();
 
-    public void setStates(List<State> states) {
-        if (states != null) {
-            this.states.clear();
-            this.states.addAll(states);
+    public void setStates(List<State> otherStates) {
+        states.clear();
+        if (otherStates != null) {
+            states.addAll(otherStates);
         }
     }
 
