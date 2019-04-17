@@ -9,16 +9,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Service
 @Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StyleServiceImpl implements StyleService {
 
-    private StyleRepository styleRepo;
+    private StyleRepository styleRepository;
 
     @Override
     @Transactional
     public Style saveStyle(Style style) {
-        return this.styleRepo.save(style);
+        return styleRepository.save(style);
+    }
+
+    @Override
+    @Transactional
+    public List<Style> saveAllStyles(List<@Valid Style> styles) {
+        return styleRepository.saveAll(styles);
     }
 }

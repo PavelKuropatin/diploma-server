@@ -48,10 +48,10 @@ public class Diagram {
     @Builder.Default
     private List<State> states = new ArrayList<>();
 
-    public void setStates(List<State> states) {
-        if (states != null) {
-            this.states.clear();
-            this.states.addAll(states);
+    public void setStates(List<State> otherStates) {
+        states.clear();
+        if (otherStates != null) {
+            states.addAll(otherStates);
         }
     }
 

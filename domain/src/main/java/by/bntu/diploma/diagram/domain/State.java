@@ -94,31 +94,31 @@ public class State {
     @Builder.Default
     private Map<String, Double> outputContainer = new LinkedHashMap<>();
 
-    public void setInputContainer(Map<String, Double> inputContainer) {
-        this.inputContainer.clear();
-        if (inputContainer != null) {
-            this.inputContainer.putAll(inputContainer);
+    public void setInputContainer(Map<String, Double> otherInputContainer) {
+        inputContainer.clear();
+        if (otherInputContainer != null) {
+            inputContainer.putAll(otherInputContainer);
         }
     }
 
-    public void setOutputContainer(Map<String, Double> outputContainer) {
-        this.outputContainer.clear();
-        if (outputContainer != null) {
-            this.outputContainer.putAll(outputContainer);
+    public void setOutputContainer(Map<String, Double> otherOutputContainer) {
+        outputContainer.clear();
+        if (otherOutputContainer != null) {
+            outputContainer.putAll(otherOutputContainer);
         }
     }
 
-    public void setSources(List<Source> sources) {
-        this.sources.clear();
-        if (sources != null) {
-            this.sources.addAll(sources);
+    public void setSources(List<Source> otherSources) {
+        sources.clear();
+        if (otherSources != null) {
+            sources.addAll(otherSources);
         }
     }
 
-    public void setTargets(List<Target> targets) {
-        this.targets.clear();
-        if (targets != null) {
-            this.targets.addAll(targets);
+    public void setTargets(List<Target> otherTargets) {
+        targets.clear();
+        if (otherTargets != null) {
+            targets.addAll(otherTargets);
         }
     }
 

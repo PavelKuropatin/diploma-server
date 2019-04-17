@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class DiagramTest {
 
     private static final String VALID_STR = RandomStringUtils.random(127, true, true);
@@ -100,7 +99,8 @@ class DiagramTest {
                 .map(ConstraintViolation::getMessage)
                 .sorted()
                 .collect(Collectors.toList());
-
+        // todo
+//        assertThat(actual, hasItems(new String[]{ValidationMessage.Diagram.NAME_BLANK, ValidationMessage.Diagram.NAME_SIZE}));
         assertEquals(expected, actual);
     }
 

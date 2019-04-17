@@ -23,39 +23,39 @@ public class DiagramServiceImpl implements DiagramService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagramServiceImpl.class);
 
-    private DiagramRepository diagramRepo;
+    private DiagramRepository diagramRepository;
     private StateService stateService;
 
     @Override
     public Diagram findDiagramByUUID(Long diagramUUID) {
-        return this.diagramRepo.findById(diagramUUID).orElse(null);
+        return diagramRepository.findById(diagramUUID).orElse(null);
     }
 
     @Override
     @Transactional
     public Diagram saveDiagram(Diagram diagram) {
-        this.stateService.saveAllStates(diagram.getStates());
-        return this.diagramRepo.save(diagram);
+        stateService.saveAllStates(diagram.getStates());
+        return diagramRepository.save(diagram);
     }
 
     @Transactional
     public Diagram updateDiagram(Diagram diagram) {
         Long diagramUUID = diagram.getUuid();
-        if (!this.diagramRepo.existsById(diagramUUID)) {
+        if (!diagramRepository.existsById(diagramUUID)) {
             throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
         }
-        return this.saveDiagram(diagram);
+        return saveDiagram(diagram);
     }
 
     @Override
     @Transactional
     public void deleteDiagramByUUID(Long diagramUUID) {
-        this.diagramRepo.deleteById(diagramUUID);
+        diagramRepository.deleteById(diagramUUID);
     }
 
     @Override
     public List<Diagram> findAllDiagrams() {
-        return this.diagramRepo.findAll();
+        return diagramRepository.findAll();
     }
 
     @Override
@@ -65,27 +65,27 @@ public class DiagramServiceImpl implements DiagramService {
                 .name("Diagram name")
                 .description("Diagram description")
                 .build();
-        return this.saveDiagram(diagram);
+        return saveDiagram(diagram);
     }
 
     @Override
     @Transactional
     public State newState(Long diagramUUID) {
-        Diagram diagram = this.findDiagramByUUID(diagramUUID);
+        Diagram diagram = findDiagramByUUID(diagramUUID);
         if (diagram == null) {
             throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
         }
-        State newState = this.stateService.newState();
+        State newState = stateService.newState();
         diagram.getStates().add(newState);
-        this.saveDiagram(diagram);
+        saveDiagram(diagram);
         return newState;
     }
 
     @Override
     @Transactional
     public void deleteState(Long diagramUUID, Long stateUUID) {
-        Diagram diagram = this.findDiagramByUUID(diagramUUID);
-        State state = this.stateService.findByStateUUID(stateUUID);
+        Diagram diagram = findDiagramByUUID(diagramUUID);
+        State state = stateService.findByStateUUID(stateUUID);
         if (diagram == null) {
             throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
         }
@@ -94,16 +94,18 @@ public class DiagramServiceImpl implements DiagramService {
         }
         if (!diagram.getStates().contains(state)) {
             LOGGER.info("Diagram[" + diagramUUID + "] not contain State[" + stateUUID + "]. Deleting useless.");
+        } else {
+            diagram.getStates().remove(state);
         }
-        diagram.getStates().removeIf(s -> s.equals(state));
-        this.saveDiagram(diagram);
+        saveDiagram(diagram);
     }
 
     @Override
     @Transactional
     public Diagram saveExternalDiagram(Diagram diagram) {
+        diagram.setUuid(null);
         diagram.getStates().forEach(state -> state.setUuid(null));
-        this.stateService.saveExternalStates(diagram.getStates());
-        return this.diagramRepo.save(diagram);
+        stateService.saveExternalStates(diagram.getStates());
+        return diagramRepository.save(diagram);
     }
 }

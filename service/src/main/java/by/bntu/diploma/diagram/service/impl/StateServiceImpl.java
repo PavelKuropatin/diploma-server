@@ -19,7 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Validated
@@ -28,7 +27,7 @@ public class StateServiceImpl implements StateService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StateServiceImpl.class);
 
-    private StateRepository stateRepo;
+    private StateRepository stateRepository;
     private TargetService targetService;
     private SourceService sourceService;
     private StyleService styleService;
@@ -36,22 +35,26 @@ public class StateServiceImpl implements StateService {
 
     @Override
     public State findByStateUUID(Long stateUUID) {
-        Optional<State> stateOptional = this.stateRepo.findById(stateUUID);
+        Optional<State> stateOptional = stateRepository.findById(stateUUID);
         return stateOptional.orElse(null);
     }
 
     @Override
     @Transactional
     public List<State> saveAllStates(List<State> states) {
-        return states.stream()
-                .map(this::saveState)
-                .collect(Collectors.toList());
+        List<Style> styles = DomainUtils.extractStyleFromStates(states);
+        List<Target> targets = DomainUtils.extractTargetsFromStates(states);
+        List<Source> sources = DomainUtils.extractSourcesFromStates(states);
+        styleService.saveAllStyles(styles);
+        targetService.saveAllTargets(targets);
+        sourceService.saveAllSources(sources);
+        return stateRepository.saveAll(states);
     }
 
     @Override
     @Transactional
     public List<State> saveExternalStates(List<State> states) {
-
+        states.forEach(state -> state.setUuid(null));
         List<Style> styles = DomainUtils.extractStyleFromStates(states);
         styles.forEach(style -> style.setUuid(null));
 
@@ -65,17 +68,17 @@ public class StateServiceImpl implements StateService {
         sources.forEach(source -> source.setUuid(null));
 
 
-        return this.saveAllStates(states);
+        return saveAllStates(states);
     }
 
 
     @Override
     @Transactional
     public State saveState(State state) {
-        this.styleService.saveStyle(state.getStyle());
-        this.targetService.saveAllTargets(state.getTargets());
-        this.sourceService.saveAllSources(state.getSources());
-        return this.stateRepo.save(state);
+        styleService.saveStyle(state.getStyle());
+        targetService.saveAllTargets(state.getTargets());
+        sourceService.saveAllSources(state.getSources());
+        return stateRepository.save(state);
     }
 
     @Override
@@ -95,43 +98,43 @@ public class StateServiceImpl implements StateService {
                 .positionY(10)
                 .template("action")
                 .build();
-        state = this.saveState(state);
-        this.newSource(state.getUuid());
-        this.newTarget(state.getUuid());
+        state = saveState(state);
+        newSource(state.getUuid());
+        newTarget(state.getUuid());
         return state;
     }
 
     @Override
     @Transactional
     public Source newSource(Long stateUUID) {
-        State state = this.findByStateUUID(stateUUID);
+        State state = findByStateUUID(stateUUID);
         if (state == null) {
             throw new NotFoundException("State[" + stateUUID + "] not found.");
         }
-        Source source = this.sourceService.newSource();
+        Source source = sourceService.newSource();
         state.getSources().add(source);
-        this.saveState(state);
+        saveState(state);
         return source;
     }
 
     @Override
     @Transactional
     public Target newTarget(Long stateUUID) {
-        State state = this.findByStateUUID(stateUUID);
+        State state = findByStateUUID(stateUUID);
         if (state == null) {
             throw new NotFoundException("State[" + stateUUID + "] not found.");
         }
-        Target target = this.targetService.newTarget();
+        Target target = targetService.newTarget();
         state.getTargets().add(target);
-        this.saveState(state);
+        saveState(state);
         return target;
     }
 
     @Override
     @Transactional
     public void deleteSource(Long stateUUID, Long sourceUUID) {
-        State state = this.findByStateUUID(stateUUID);
-        Source source = this.sourceService.findBySourceUUID(sourceUUID);
+        State state = findByStateUUID(stateUUID);
+        Source source = sourceService.findBySourceUUID(sourceUUID);
         if (state == null) {
             throw new NotFoundException("State[" + stateUUID + "] not found.");
         }
@@ -140,16 +143,17 @@ public class StateServiceImpl implements StateService {
         }
         if (!state.getSources().contains(source)) {
             LOGGER.info("State[" + stateUUID + "] not contain Source[" + sourceUUID + "]. Deleting useless.");
+        } else {
+            state.getSources().remove(source);
         }
-        state.getSources().removeIf(s -> s.equals(source));
-        this.saveState(state);
+        saveState(state);
     }
 
     @Override
     @Transactional
     public void deleteTarget(Long stateUUID, Long targetUUID) {
-        State state = this.findByStateUUID(stateUUID);
-        Target target = this.targetService.findByTargetUUID(targetUUID);
+        State state = findByStateUUID(stateUUID);
+        Target target = targetService.findByTargetUUID(targetUUID);
         if (state == null) {
             throw new NotFoundException("State[" + stateUUID + "] not found.");
         }
@@ -158,17 +162,19 @@ public class StateServiceImpl implements StateService {
         }
         if (!state.getTargets().contains(target)) {
             LOGGER.info("State[" + stateUUID + "] not contain Target[" + targetUUID + "]. Deleting useless.");
+        } else {
+            state.getTargets().remove(target);
         }
-        state.getTargets().removeIf(t -> t.equals(target));
-        this.saveState(state);
+        saveState(state);
     }
 
     @Override
+    @Transactional
     public State putContainerValue(Long stateUUID, ContainerType type, String param, Double value) {
-        State state = this.findByStateUUID(stateUUID);
+        State state = findByStateUUID(stateUUID);
         Map<String, Double> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
         container.put(param, value);
-        state = this.saveState(state);
+        state = saveState(state);
         return state;
     }
 }

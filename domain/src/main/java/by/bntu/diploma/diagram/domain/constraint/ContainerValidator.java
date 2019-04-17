@@ -37,20 +37,20 @@ public final class ContainerValidator implements ConstraintValidator<ValidContai
 
     @Override
     public void initialize(ValidContainer constraintAnnotation) {
-        this.type = constraintAnnotation.type();
+        type = constraintAnnotation.type();
         if (type == ContainerType.INPUT) {
-            this.nullMessage = ValidationMessage.State.IC_NULL;
-            this.valuesMessage = ValidationMessage.State.IC_VALUES;
+            nullMessage = ValidationMessage.State.IC_NULL;
+            valuesMessage = ValidationMessage.State.IC_VALUES;
         } else {
-            this.nullMessage = ValidationMessage.State.OC_NULL;
-            this.valuesMessage = ValidationMessage.State.OC_VALUES;
+            nullMessage = ValidationMessage.State.OC_NULL;
+            valuesMessage = ValidationMessage.State.OC_VALUES;
         }
     }
 
     @Override
     public boolean isValid(Map<String, Double> container, ConstraintValidatorContext context) {
         if (container == null) {
-            applyMessage(context, this.nullMessage);
+            applyMessage(context, nullMessage);
             return false;
         }
         if (container.isEmpty()) {
@@ -62,9 +62,7 @@ public final class ContainerValidator implements ConstraintValidator<ValidContai
         if (invalidKeys.isEmpty()) {
             return true;
         }
-        String message = context.getDefaultConstraintMessageTemplate();
-
-        message = this.valuesMessage + invalidKeys.stream()
+        String message = valuesMessage + invalidKeys.stream()
                 .map(key -> buildMessage(key, container.get(key)))
                 .collect(Collectors.joining(";", "[", "]"));
 
