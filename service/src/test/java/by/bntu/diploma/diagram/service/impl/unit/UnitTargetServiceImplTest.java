@@ -144,7 +144,10 @@ class UnitTargetServiceImplTest {
     @Test
     @DisplayName("new target")
     void newTarget__returnObj() {
+        when(targetRepository.count()).thenReturn(0L, 1L);
         when(targetRepository.save(any(Target.class))).thenAnswer(setTargetUuid);
+
+        assertEquals(0, targetRepository.count());
         Target target = targetService.newTarget();
         assertEquals(1L, (long) target.getUuid());
         assertEquals(1, targetRepository.count());
