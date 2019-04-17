@@ -25,11 +25,11 @@ public class StateController {
     @PutMapping("/{uuid}/container")
     public StateDTO putContainerValue(@PathVariable(name = "uuid") Long stateUUID,
                                       @RequestBody ContainerValueDTO containerValue) {
-        ContainerType type = this.converter.convert(containerValue.getType());
+        ContainerType type = converter.convert(containerValue.getType());
         String param = containerValue.getParam();
         Double value = containerValue.getValue();
-        State state = this.stateService.putContainerValue(stateUUID, type, param, value);
-        return this.stateMapper.toDTO(state);
+        State state = stateService.putContainerValue(stateUUID, type, param, value);
+        return stateMapper.toDTO(state);
     }
 
 
