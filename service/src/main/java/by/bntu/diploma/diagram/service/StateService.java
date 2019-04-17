@@ -14,11 +14,12 @@ import java.util.List;
 
 public interface StateService {
 
+    State saveState(@Valid State state);
+
     List<State> saveAllStates(List<@Valid State> states);
 
     List<State> saveExternalStates(List<@Valid State> states);
 
-    State saveState(@Valid State state);
 
     State findByStateUUID(
             @NotNull(message = ValidationMessage.State.UUID_NULL)

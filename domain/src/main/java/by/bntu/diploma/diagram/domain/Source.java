@@ -37,10 +37,10 @@ public class Source {
     @Builder.Default
     private List<Connection> connections = new LinkedList<>();
 
-    public void setConnections(List<Connection> connections) {
-        if (connections != null) {
-            this.connections.clear();
-            this.connections.addAll(connections);
+    public void setConnections(List<Connection> otherConnections) {
+        connections.clear();
+        if (otherConnections != null) {
+            connections.addAll(otherConnections);
         }
     }
 }

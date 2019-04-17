@@ -17,7 +17,7 @@ public class Handler {
 
     @ExceptionHandler(RestException.class)
     public ResponseEntity<ResponseError> handleRestException(RestException e) {
-        ResponseEntity<ResponseError> responseEntity = this.from(e);
+        ResponseEntity<ResponseError> responseEntity = from(e);
         LOGGER.error("{} caught.", e.getClass().getSimpleName(), e);
         return responseEntity;
     }

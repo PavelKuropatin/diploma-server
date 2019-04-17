@@ -32,42 +32,42 @@ public class ProviderController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/diagram")
     public DiagramDTO createDiagram() {
-        Diagram diagram = this.diagramService.newDiagram();
-        return this.diagramMapper.toDTO(diagram);
+        Diagram diagram = diagramService.newDiagram();
+        return diagramMapper.toDTO(diagram);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/diagram/{diagram_uuid}/state")
     public StateDTO createState(@PathVariable(name = "diagram_uuid") Long diagramUUID) {
-        State state = this.diagramService.newState(diagramUUID);
-        return this.stateMapper.toDTO(state);
+        State state = diagramService.newState(diagramUUID);
+        return stateMapper.toDTO(state);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/state/{state_uuid}/source")
     public SourceDTO createSource(@PathVariable(name = "state_uuid") Long stateUUID) {
-        Source source = this.stateService.newSource(stateUUID);
-        return this.sourceMapper.toDTO(source);
+        Source source = stateService.newSource(stateUUID);
+        return sourceMapper.toDTO(source);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/state/{state_uuid}/target")
     public TargetDTO createTarget(@PathVariable(name = "state_uuid") Long stateUUID) {
-        Target target = this.stateService.newTarget(stateUUID);
-        return this.targetMapper.toDTO(target);
+        Target target = stateService.newTarget(stateUUID);
+        return targetMapper.toDTO(target);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/diagram/{diagram_uuid}")
     public void deleteDiagram(@PathVariable(name = "diagram_uuid") Long diagramUUID) {
-        this.diagramService.deleteDiagramByUUID(diagramUUID);
+        diagramService.deleteDiagramByUUID(diagramUUID);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/diagram/{diagram_uuid}/state/{state_uuid}")
     public void deleteState(@PathVariable(name = "diagram_uuid") Long diagramUUID,
                             @PathVariable(name = "state_uuid") Long stateUUID) {
-        this.diagramService.deleteState(diagramUUID, stateUUID);
+        diagramService.deleteState(null, stateUUID);
     }
 
 
@@ -75,14 +75,14 @@ public class ProviderController {
     @DeleteMapping("/state/{state_uuid}/source/{source_uuid}")
     public void deleteSource(@PathVariable(name = "state_uuid") Long stateUUID,
                              @PathVariable(name = "source_uuid") Long sourceUUID) {
-        this.stateService.deleteSource(stateUUID, sourceUUID);
+        stateService.deleteSource(stateUUID, sourceUUID);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping("/state/{state_uuid}/target/{target_uuid}")
     public void deleteTarget(@PathVariable(name = "state_uuid") Long stateUUID,
                              @PathVariable(name = "target_uuid") Long targetUUID) {
-        this.stateService.deleteTarget(stateUUID, targetUUID);
+        stateService.deleteTarget(stateUUID, targetUUID);
     }
 
 }

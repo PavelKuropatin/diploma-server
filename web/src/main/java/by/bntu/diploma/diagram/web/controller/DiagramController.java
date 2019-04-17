@@ -28,26 +28,26 @@ public class DiagramController {
     @PutMapping("/{uuid}")
     public DiagramDTO updateDiagram(@PathVariable(name = "uuid") Long diagramUUID,
                                     @RequestBody DiagramDTO diagramDTO) {
-        Diagram diagram = this.diagramMapper.fromDTO(diagramDTO);
+        Diagram diagram = diagramMapper.fromDTO(diagramDTO);
         diagram.setUuid(diagramUUID);
-        diagram = this.diagramService.updateDiagram(diagram);
-        return this.diagramMapper.toDTO(diagram);
+        diagram = diagramService.updateDiagram(diagram);
+        return diagramMapper.toDTO(diagram);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{uuid}")
     public DiagramDTO findDiagramByUUID(@PathVariable(name = "uuid") Long diagramUUID) {
-        Diagram diagram = this.diagramService.findDiagramByUUID(diagramUUID);
+        Diagram diagram = diagramService.findDiagramByUUID(diagramUUID);
         if (diagram == null) {
             throw new RestException(HttpStatus.NOT_FOUND, "Diagram[" + diagramUUID + "] not found.");
         }
-        return this.diagramMapper.toDTO(diagram);
+        return diagramMapper.toDTO(diagram);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @GetMapping
     public List<ViewDiagramDTO> getDiagramsInfo() {
-        return this.diagramService.findAllDiagrams()
+        return diagramService.findAllDiagrams()
                 .stream()
                 .map(viewSchemaMapper::toDTO)
                 .collect(Collectors.toList());
@@ -58,15 +58,15 @@ public class DiagramController {
     public DiagramDTO saveDiagram(@RequestParam(name = "external_source", required = false) Boolean isExternal,
                                   @RequestBody DiagramDTO diagramDTO) {
         Diagram diagram;
-        diagram = this.diagramMapper.fromDTO(diagramDTO);
+        diagram = diagramMapper.fromDTO(diagramDTO);
 
         if (isExternal) {
-            diagram = this.diagramService.saveExternalDiagram(diagram);
+            diagram = diagramService.saveExternalDiagram(diagram);
         } else {
-            diagram = this.diagramService.saveDiagram(diagram);
+            diagram = diagramService.saveDiagram(diagram);
         }
 
-        return this.diagramMapper.toDTO(diagram);
+        return diagramMapper.toDTO(diagram);
     }
 
 }

@@ -14,13 +14,13 @@ public class RestException extends RuntimeException {
         this(httpStatus, null, e);
     }
 
-    public RestException(HttpStatus httpStatus, String message, Throwable e) {
+    public RestException(HttpStatus otherHttpStatus, String message, Throwable e) {
         super(message, e);
-        this.httpStatus = httpStatus;
+        httpStatus = otherHttpStatus;
     }
 
     public HttpStatus getHttpStatus() {
-        return this.httpStatus;
+        return httpStatus;
     }
 
 }
