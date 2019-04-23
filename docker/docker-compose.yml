@@ -15,6 +15,7 @@ services:
       - diploma-server
 
   mysql:
+    restart: always
     image: mysql/mysql-server:5.7
     environment:
       MYSQL_DATABASE: diploma
@@ -22,24 +23,59 @@ services:
       MYSQL_ROOT_HOST: '%'
     ports:
       - 3306:3306
-    restart: always
+
+#  postgres:
+#    restart: always
+#    image: postgres
+#    environment:
+#      POSTGRES_DB: diploma
+#      POSTGRES_USER: Pavel_Kuropatin
+#      POSTGRES_PASSWORD: VA2216w1!
+#    ports:
+#      - 5432:5432
+
+#  mssql:
+#    restart: always
+#    image: mcr.microsoft.com/mssql/server:2017-latest
+#    environment:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: VA2216w1!
+#    ports:
+#      - 1433:1433
+#    todo proxy container or docker file https://github.com/mcmoe/mssqldocker/blob/master/Dockerfile
+#    command: /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'VA2216w1!' -q 'if not exists(select * from sys.databases where name = "diploma") CREATE DATABASE IF NOT EXISTS diploma;'
 
   diploma-server:
-#    restart: always
+    restart: always
     build:
-      context: server
+      context: .
     working_dir: /diploma-server/
     volumes:
       - ./server/artifacts:/diploma-server
     ports:
       - 8085:8085
     environment:
+#      mysql
       - DB_URL=jdbc:mysql://mysql:3306/diploma?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - DB_USER=root
       - DB_PASSWORD=VA2216w1!
       - DB_DIALECT=org.hibernate.dialect.MySQL57Dialect
       - DB_DRIVER=com.mysql.cj.jdbc.Driver
+#      postgres
+#      - DB_URL=jdbc:postgresql://postgres:5432/diploma
+#      - DB_USER=Pavel_Kuropatin
+#      - DB_PASSWORD=VA2216w1!
+#      - DB_DIALECT=org.hibernate.dialect.PostgreSQL95Dialect
+#      - DB_DRIVER=org.postgresql.Driver
+#      mssql
+#      - DB_URL=jdbc:sqlserver://mssql:1433;database=diploma
+#      - DB_USER=SA
+#      - DB_PASSWORD=VA2216w1!
+#      - DB_DIALECT=org.hibernate.dialect.SQLServer2012Dialect
+#      - DB_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
       - SERVER_PORT=8085
     command: java -jar /diploma-server/diploma-server.jar
     depends_on:
       - mysql
+#      - postgres
+#      - mssql
