@@ -60,7 +60,7 @@
                                     <goal>repackage</goal>
                                 </goals>
                                 <configuration>
-                                    <outputDirectory>${project.parent.basedir}/docker/server/artifacts</outputDirectory>
+                                    <outputDirectory>${project.parent.basedir}/docker/server/</outputDirectory>
                                 </configuration>
                             </execution>
                         </executions>

@@ -13,14 +13,15 @@ services:
     depends_on:
       - diploma-server
 
-  mssql:
+  mysql:
     restart: always
-    image: mcr.microsoft.com/mssql/server:2017-latest
+    image: mysql/mysql-server:5.7
     environment:
-      ACCEPT_EULA: Y
-      SA_PASSWORD: VA2216w1!
+      MYSQL_DATABASE: diploma
+      MYSQL_ROOT_PASSWORD: VA2216w1!
+      MYSQL_ROOT_HOST: '%'
     ports:
-      - 1433:1433
+      - 3306:3306
 
   diploma-server:
     restart: always
@@ -31,12 +32,13 @@ services:
     ports:
       - 8085:8085
     environment:
-      - DB_URL=jdbc:sqlserver://mssql:1433;database=master
-      - DB_USER=sa
+      mysql
+      - DB_URL=jdbc:mysql://mysql:3306/diploma?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USER=root
       - DB_PASSWORD=VA2216w1!
-      - DB_DIALECT=org.hibernate.dialect.SQLServer2012Dialect
-      - DB_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - DB_DIALECT=org.hibernate.dialect.MySQL57Dialect
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
       - SERVER_PORT=8085
     command: java -jar /diploma-server/diploma-server.jar
     depends_on:
-      - mssql
+      - mysql
