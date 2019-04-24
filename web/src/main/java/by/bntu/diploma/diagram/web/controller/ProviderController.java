@@ -67,7 +67,7 @@ public class ProviderController {
     @DeleteMapping("/diagram/{diagram_uuid}/state/{state_uuid}")
     public void deleteState(@PathVariable(name = "diagram_uuid") Long diagramUUID,
                             @PathVariable(name = "state_uuid") Long stateUUID) {
-        diagramService.deleteState(null, stateUUID);
+        diagramService.deleteState(diagramUUID, stateUUID);
     }
 
 

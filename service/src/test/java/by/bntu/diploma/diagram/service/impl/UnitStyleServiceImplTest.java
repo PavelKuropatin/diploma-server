@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.service.impl.unit;
+package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Style;
 import by.bntu.diploma.diagram.repository.StyleRepository;

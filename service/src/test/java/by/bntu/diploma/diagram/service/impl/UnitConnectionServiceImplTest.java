@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.service.impl.unit;
+package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Connection;
 import by.bntu.diploma.diagram.domain.Target;

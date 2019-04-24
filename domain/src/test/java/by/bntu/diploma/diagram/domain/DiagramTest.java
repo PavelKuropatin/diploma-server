@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class DiagramTest {
 
     private static final String VALID_STR = RandomStringUtils.random(127, true, true);

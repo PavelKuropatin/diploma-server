@@ -42,7 +42,7 @@ public class DiagramServiceImpl implements DiagramService {
     public Diagram updateDiagram(Diagram diagram) {
         Long diagramUUID = diagram.getUuid();
         if (!diagramRepository.existsById(diagramUUID)) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+            throw new NotFoundException(Diagram.class, diagramUUID);
         }
         return saveDiagram(diagram);
     }
@@ -73,7 +73,7 @@ public class DiagramServiceImpl implements DiagramService {
     public State newState(Long diagramUUID) {
         Diagram diagram = findDiagramByUUID(diagramUUID);
         if (diagram == null) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+            throw new NotFoundException(Diagram.class, diagramUUID);
         }
         State newState = stateService.newState();
         diagram.getStates().add(newState);
@@ -87,10 +87,10 @@ public class DiagramServiceImpl implements DiagramService {
         Diagram diagram = findDiagramByUUID(diagramUUID);
         State state = stateService.findByStateUUID(stateUUID);
         if (diagram == null) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+            throw new NotFoundException(Diagram.class, diagramUUID);
         }
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUUID);
         }
         if (!diagram.getStates().contains(state)) {
             LOGGER.info("Diagram[" + diagramUUID + "] not contain State[" + stateUUID + "]. Deleting useless.");

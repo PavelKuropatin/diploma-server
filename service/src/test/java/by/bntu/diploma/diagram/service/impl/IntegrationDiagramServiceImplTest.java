@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.service.impl.integration;
+package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Diagram;
 import by.bntu.diploma.diagram.domain.State;
@@ -87,7 +87,7 @@ class IntegrationDiagramServiceImplTest {
     @DisplayName("update valid diagram")
     void updateDiagram_validObj_returnObj() {
         diagramService.saveDiagram(diagram);
-        assertEquals(diagram.getName(), VALID_STR);
+        assertEquals(VALID_STR, diagram.getName());
 
         String newName = RandomStringUtils.random(127, true, true);
         diagram.setName(newName);

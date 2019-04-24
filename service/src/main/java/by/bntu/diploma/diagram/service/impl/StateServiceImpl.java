@@ -109,7 +109,7 @@ public class StateServiceImpl implements StateService {
     public Source newSource(Long stateUUID) {
         State state = findByStateUUID(stateUUID);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUUID);
         }
         Source source = sourceService.newSource();
         state.getSources().add(source);
@@ -122,7 +122,7 @@ public class StateServiceImpl implements StateService {
     public Target newTarget(Long stateUUID) {
         State state = findByStateUUID(stateUUID);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUUID);
         }
         Target target = targetService.newTarget();
         state.getTargets().add(target);
@@ -136,10 +136,10 @@ public class StateServiceImpl implements StateService {
         State state = findByStateUUID(stateUUID);
         Source source = sourceService.findBySourceUUID(sourceUUID);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUUID);
         }
         if (source == null) {
-            throw new NotFoundException("Source[" + sourceUUID + "] not found.");
+            throw new NotFoundException(Source.class, sourceUUID);
         }
         if (!state.getSources().contains(source)) {
             LOGGER.info("State[" + stateUUID + "] not contain Source[" + sourceUUID + "]. Deleting useless.");
@@ -155,10 +155,10 @@ public class StateServiceImpl implements StateService {
         State state = findByStateUUID(stateUUID);
         Target target = targetService.findByTargetUUID(targetUUID);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUUID);
         }
         if (target == null) {
-            throw new NotFoundException("Target[" + targetUUID + "] not found.");
+            throw new NotFoundException(Target.class, targetUUID);
         }
         if (!state.getTargets().contains(target)) {
             LOGGER.info("State[" + stateUUID + "] not contain Target[" + targetUUID + "]. Deleting useless.");
