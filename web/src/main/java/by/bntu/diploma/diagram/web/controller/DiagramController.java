@@ -60,7 +60,7 @@ public class DiagramController {
         Diagram diagram;
         diagram = diagramMapper.fromDTO(diagramDTO);
 
-        if (isExternal) {
+        if (isExternal != null && isExternal) {
             diagram = diagramService.saveExternalDiagram(diagram);
         } else {
             diagram = diagramService.saveDiagram(diagram);
