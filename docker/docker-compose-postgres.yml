@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - diploma-server
+
+  postgres:
+    restart: always
+    image: postgres
+    environment:
+      POSTGRES_DB: diploma
+      POSTGRES_USER: Pavel_Kuropatin
+      POSTGRES_PASSWORD: VA2216w1!
+    ports:
+      - 5432:5432
+
+  diploma-server:
+    restart: always
+    image: maven:3.5-jdk-8
+    working_dir: /diploma-server/
+    volumes:
+      - ./server:/diploma-server
+    ports:
+      - 8085:8085
+    environment:
+      postgres
+      - DB_URL=jdbc:postgresql://postgres:5432/diploma
+      - DB_USER=Pavel_Kuropatin
+      - DB_PASSWORD=VA2216w1!
+      - DB_DIALECT=org.hibernate.dialect.PostgreSQL95Dialect
+      - DB_DRIVER=org.postgresql.Driver
+      - SERVER_PORT=8085
+    command: java -jar /diploma-server/diploma-server.jar
+    depends_on:
+      - postgres

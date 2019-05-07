@@ -27,8 +27,8 @@ public class DiagramServiceImpl implements DiagramService {
     private StateService stateService;
 
     @Override
-    public Diagram findDiagramByUUID(Long diagramUUID) {
-        return diagramRepository.findById(diagramUUID).orElse(null);
+    public Diagram findDiagramByUuid(String diagramUuid) {
+        return diagramRepository.findById(diagramUuid).orElse(null);
     }
 
     @Override
@@ -40,17 +40,18 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Transactional
     public Diagram updateDiagram(Diagram diagram) {
-        Long diagramUUID = diagram.getUuid();
-        if (!diagramRepository.existsById(diagramUUID)) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+        String diagramUuid = diagram.getUuid();
+        if (!diagramRepository.existsById(diagramUuid)) {
+            throw new NotFoundException(Diagram.class, diagramUuid);
         }
         return saveDiagram(diagram);
     }
 
+
     @Override
     @Transactional
-    public void deleteDiagramByUUID(Long diagramUUID) {
-        diagramRepository.deleteById(diagramUUID);
+    public void deleteDiagramByUuid(String diagramUuid) {
+        diagramRepository.deleteById(diagramUuid);
     }
 
     @Override
@@ -70,10 +71,10 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     @Transactional
-    public State newState(Long diagramUUID) {
-        Diagram diagram = findDiagramByUUID(diagramUUID);
+    public State newState(String diagramUuid) {
+        Diagram diagram = findDiagramByUuid(diagramUuid);
         if (diagram == null) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+            throw new NotFoundException(Diagram.class, diagramUuid);
         }
         State newState = stateService.newState();
         diagram.getStates().add(newState);
@@ -83,17 +84,17 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     @Transactional
-    public void deleteState(Long diagramUUID, Long stateUUID) {
-        Diagram diagram = findDiagramByUUID(diagramUUID);
-        State state = stateService.findByStateUUID(stateUUID);
+    public void deleteState(String diagramUuid, String stateUuid) {
+        Diagram diagram = findDiagramByUuid(diagramUuid);
+        State state = stateService.findByStateUuid(stateUuid);
         if (diagram == null) {
-            throw new NotFoundException("Diagram[" + diagramUUID + "] not found.");
+            throw new NotFoundException(Diagram.class, diagramUuid);
         }
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUuid);
         }
         if (!diagram.getStates().contains(state)) {
-            LOGGER.info("Diagram[" + diagramUUID + "] not contain State[" + stateUUID + "]. Deleting useless.");
+            LOGGER.info("Diagram[" + diagramUuid + "] not contain State[" + stateUuid + "]. Deleting useless.");
         } else {
             diagram.getStates().remove(state);
         }

@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.service.impl.integration;
+package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Style;
 import by.bntu.diploma.diagram.repository.StyleRepository;
@@ -40,7 +40,7 @@ class IntegrationStyleServiceImplTest {
         assertNull(style.getUuid());
         assertEquals(0, styleRepository.count());
         styleService.saveStyle(style);
-        assertEquals(1L, (long) style.getUuid());
+        assertNotNull(style.getUuid());
         assertEquals(1, styleRepository.count());
     }
 

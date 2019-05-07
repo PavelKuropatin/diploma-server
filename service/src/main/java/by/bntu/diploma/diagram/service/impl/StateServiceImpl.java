@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,8 +33,8 @@ public class StateServiceImpl implements StateService {
 
 
     @Override
-    public State findByStateUUID(Long stateUUID) {
-        Optional<State> stateOptional = stateRepository.findById(stateUUID);
+    public State findByStateUuid(String stateUuid) {
+        Optional<State> stateOptional = stateRepository.findById(stateUuid);
         return stateOptional.orElse(null);
     }
 
@@ -106,10 +105,10 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public Source newSource(Long stateUUID) {
-        State state = findByStateUUID(stateUUID);
+    public Source newSource(String stateUuid) {
+        State state = findByStateUuid(stateUuid);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUuid);
         }
         Source source = sourceService.newSource();
         state.getSources().add(source);
@@ -119,10 +118,10 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public Target newTarget(Long stateUUID) {
-        State state = findByStateUUID(stateUUID);
+    public Target newTarget(String stateUuid) {
+        State state = findByStateUuid(stateUuid);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUuid);
         }
         Target target = targetService.newTarget();
         state.getTargets().add(target);
@@ -132,17 +131,17 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public void deleteSource(Long stateUUID, Long sourceUUID) {
-        State state = findByStateUUID(stateUUID);
-        Source source = sourceService.findBySourceUUID(sourceUUID);
+    public void deleteSource(String stateUuid, String sourceUuid) {
+        State state = findByStateUuid(stateUuid);
+        Source source = sourceService.findBySourceUuid(sourceUuid);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUuid);
         }
         if (source == null) {
-            throw new NotFoundException("Source[" + sourceUUID + "] not found.");
+            throw new NotFoundException(Source.class, sourceUuid);
         }
         if (!state.getSources().contains(source)) {
-            LOGGER.info("State[" + stateUUID + "] not contain Source[" + sourceUUID + "]. Deleting useless.");
+            LOGGER.info("State[" + stateUuid + "] not contain Source[" + sourceUuid + "]. Deleting useless.");
         } else {
             state.getSources().remove(source);
         }
@@ -151,17 +150,17 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public void deleteTarget(Long stateUUID, Long targetUUID) {
-        State state = findByStateUUID(stateUUID);
-        Target target = targetService.findByTargetUUID(targetUUID);
+    public void deleteTarget(String stateUuid, String targetUuid) {
+        State state = findByStateUuid(stateUuid);
+        Target target = targetService.findByTargetUuid(targetUuid);
         if (state == null) {
-            throw new NotFoundException("State[" + stateUUID + "] not found.");
+            throw new NotFoundException(State.class, stateUuid);
         }
         if (target == null) {
-            throw new NotFoundException("Target[" + targetUUID + "] not found.");
+            throw new NotFoundException(Target.class, targetUuid);
         }
         if (!state.getTargets().contains(target)) {
-            LOGGER.info("State[" + stateUUID + "] not contain Target[" + targetUUID + "]. Deleting useless.");
+            LOGGER.info("State[" + stateUuid + "] not contain Target[" + targetUuid + "]. Deleting useless.");
         } else {
             state.getTargets().remove(target);
         }
@@ -170,10 +169,19 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public State putContainerValue(Long stateUUID, ContainerType type, String param, Double value) {
-        State state = findByStateUUID(stateUUID);
-        Map<String, Double> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
-        container.put(param, value);
+    public State putContainerValue(String stateUuid, ContainerType type, Variable variable) {
+        State state = findByStateUuid(stateUuid);
+        List<Variable> variables = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
+        Optional<Variable> optional = variables.stream()
+                .filter(v -> v.getParam().equals(variable.getParam()))
+                .findFirst();
+        if (optional.isPresent()) {
+            Variable v = optional.get();
+            v.setValue(variable.getValue());
+            v.setFunction(variable.getFunction());
+        } else {
+            variables.add(variable);
+        }
         state = saveState(state);
         return state;
     }

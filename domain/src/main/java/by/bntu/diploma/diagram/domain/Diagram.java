@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -13,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,16 +24,21 @@ import java.util.List;
 public class Diagram {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "uuid", nullable = false)
-    private Long uuid;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "uuid", updatable = false, nullable = false)
+
+    private String uuid;
 
     @Column(name = "name", nullable = false)
     @Size(min = 3, max = 255, message = ValidationMessage.Diagram.NAME_SIZE)
     @NotBlank(message = ValidationMessage.Diagram.NAME_BLANK)
     private String name;
 
-    @Column(name = "description", columnDefinition = "TEXT")
+    @Column(name = "description", columnDefinition = "varchar(MAX)")
     @Size(min = 3, max = 255, message = ValidationMessage.Diagram.DESCRIPTION_SIZE)
     @NotBlank(message = ValidationMessage.Diagram.DESCRIPTION_BLANK)
     private String description;
@@ -54,5 +59,6 @@ public class Diagram {
             states.addAll(otherStates);
         }
     }
+
 
 }

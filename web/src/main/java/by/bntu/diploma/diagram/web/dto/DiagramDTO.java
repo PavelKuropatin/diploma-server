@@ -16,7 +16,7 @@ import java.util.List;
 public class DiagramDTO {
 
     @JsonProperty("uuid")
-    private Long uuid;
+    private String uuid;
 
     @JsonProperty("name")
     private String name;

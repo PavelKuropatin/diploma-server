@@ -1,21 +1,19 @@
 package by.bntu.diploma.diagram.domain;
 
-import by.bntu.diploma.diagram.domain.constraint.ValidContainer;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,9 +24,14 @@ import java.util.Map;
 public class State {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "uuid", nullable = false)
-    private Long uuid;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "uuid", updatable = false, nullable = false)
+
+    private String uuid;
 
     @Column(name = "name", nullable = false)
     @Size(min = 3, max = 255, message = ValidationMessage.State.NAME_SIZE)
@@ -78,33 +81,31 @@ public class State {
     @Builder.Default
     private List<Target> targets = new LinkedList<>();
 
-    @ElementCollection
-    @MapKeyColumn(name = "variable_name")
-    @Column(name = "variable_value", nullable = false)
-    @CollectionTable(name = "input_container", joinColumns = @JoinColumn(name = "state_uuid"))
-    @ValidContainer(type = ContainerType.INPUT)
+    @Valid
+    @NotNull(message = ValidationMessage.State.IC_NULL)
     @Builder.Default
-    private Map<String, Double> inputContainer = new LinkedHashMap<>();
-
     @ElementCollection
-    @MapKeyColumn(name = "variable_name")
-    @Column(name = "variable_value", nullable = false)
-    @CollectionTable(name = "output_container", joinColumns = @JoinColumn(name = "state_uuid"))
-    @ValidContainer(type = ContainerType.OUTPUT)
-    @Builder.Default
-    private Map<String, Double> outputContainer = new LinkedHashMap<>();
+    @CollectionTable(name = "state__input_container")
+    private List<Variable> inputContainer = new LinkedList<>();
 
-    public void setInputContainer(Map<String, Double> otherInputContainer) {
+    @Valid
+    @NotNull(message = ValidationMessage.State.OC_NULL)
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "state__output_container")
+    private List<Variable> outputContainer = new LinkedList<>();
+
+    public void setInputContainer(List<Variable> otherInputContainer) {
         inputContainer.clear();
         if (otherInputContainer != null) {
-            inputContainer.putAll(otherInputContainer);
+            inputContainer.addAll(otherInputContainer);
         }
     }
 
-    public void setOutputContainer(Map<String, Double> otherOutputContainer) {
+    public void setOutputContainer(List<Variable> otherOutputContainer) {
         outputContainer.clear();
         if (otherOutputContainer != null) {
-            outputContainer.putAll(otherOutputContainer);
+            outputContainer.addAll(otherOutputContainer);
         }
     }
 

@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class ConnectionDTO {
 
     @JsonProperty("uuid")
-    private Long targetPointUUID;
+    private String targetUuid;
 
 }

@@ -26,20 +26,20 @@ public class DiagramController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/{uuid}")
-    public DiagramDTO updateDiagram(@PathVariable(name = "uuid") Long diagramUUID,
+    public DiagramDTO updateDiagram(@PathVariable(name = "uuid") String diagramUuid,
                                     @RequestBody DiagramDTO diagramDTO) {
         Diagram diagram = diagramMapper.fromDTO(diagramDTO);
-        diagram.setUuid(diagramUUID);
+        diagram.setUuid(diagramUuid);
         diagram = diagramService.updateDiagram(diagram);
         return diagramMapper.toDTO(diagram);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{uuid}")
-    public DiagramDTO findDiagramByUUID(@PathVariable(name = "uuid") Long diagramUUID) {
-        Diagram diagram = diagramService.findDiagramByUUID(diagramUUID);
+    public DiagramDTO findDiagramByUuid(@PathVariable(name = "uuid") String diagramUuid) {
+        Diagram diagram = diagramService.findDiagramByUuid(diagramUuid);
         if (diagram == null) {
-            throw new RestException(HttpStatus.NOT_FOUND, "Diagram[" + diagramUUID + "] not found.");
+            throw new RestException(HttpStatus.NOT_FOUND, "Diagram[" + diagramUuid + "] not found.");
         }
         return diagramMapper.toDTO(diagram);
     }

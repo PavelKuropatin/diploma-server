@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: nginx:1.13
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - diploma-server
+
+  mysql:
+    restart: always
+    image: mysql/mysql-server:5.7
+    environment:
+      MYSQL_DATABASE: diploma
+      MYSQL_ROOT_PASSWORD: VA2216w1!
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - 3306:3306
+
+  diploma-server:
+    restart: always
+    image: maven:3.5-jdk-8
+    working_dir: /diploma-server/
+    volumes:
+      - ./server:/diploma-server
+    ports:
+      - 8085:8085
+    environment:
+      mysql
+      - DB_URL=jdbc:mysql://mysql:3306/diploma?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USER=root
+      - DB_PASSWORD=VA2216w1!
+      - DB_DIALECT=org.hibernate.dialect.MySQL57Dialect
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - SERVER_PORT=8085
+    command: java -jar /diploma-server/diploma-server.jar
+    depends_on:
+      - mysql

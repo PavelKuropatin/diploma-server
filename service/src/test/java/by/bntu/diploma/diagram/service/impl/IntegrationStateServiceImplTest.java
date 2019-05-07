@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.service.impl.integration;
+package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.*;
 import by.bntu.diploma.diagram.repository.SourceRepository;
@@ -22,7 +22,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.Map;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static by.bntu.diploma.diagram.domain.ContainerType.INPUT;
@@ -35,6 +36,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 @Transactional
 class IntegrationStateServiceImplTest {
 
+    private static final String RANDOM_UUID = UUID.randomUUID().toString();
     private static final String VALID_STR = RandomStringUtils.random(127, true, true);
     private static final int VALID_INT = RandomUtils.nextInt();
 
@@ -61,8 +63,8 @@ class IntegrationStateServiceImplTest {
     private static Stream<Arguments> provideExternalUuids() {
         return Stream.of(
                 Arguments.of(null, null),
-                Arguments.of(1L, 1L),
-                Arguments.of(3L, 3L)
+                Arguments.of(UUID.randomUUID().toString(), null),
+                Arguments.of(null, UUID.randomUUID().toString())
         );
     }
 
@@ -97,7 +99,7 @@ class IntegrationStateServiceImplTest {
         assertNull(state.getUuid());
         assertEquals(0, stateRepository.count());
         stateService.saveState(state);
-        assertEquals(1L, (long) state.getUuid());
+        assertNotNull(state.getUuid());
         assertEquals(1, stateRepository.count());
     }
 
@@ -106,7 +108,7 @@ class IntegrationStateServiceImplTest {
     void newState__returnObj() {
         assertEquals(0, stateRepository.count());
         State state = stateService.newState();
-        assertEquals(1L, (long) state.getUuid());
+        assertNotNull(state.getUuid());
         assertEquals(1, stateRepository.count());
 
     }
@@ -119,7 +121,7 @@ class IntegrationStateServiceImplTest {
         assertEquals(0, targetRepository.count());
         Target target = stateService.newTarget(state.getUuid());
         assertEquals(1, state.getTargets().size());
-        assertEquals(1L, (long) target.getUuid());
+        assertNotNull(target.getUuid());
         assertEquals(1, targetRepository.count());
     }
 
@@ -131,7 +133,7 @@ class IntegrationStateServiceImplTest {
         assertEquals(0, sourceRepository.count());
         Source source = stateService.newSource(state.getUuid());
         assertEquals(1, state.getSources().size());
-        assertEquals(1L, (long) source.getUuid());
+        assertNotNull(source.getUuid());
         assertEquals(1, sourceRepository.count());
     }
 
@@ -151,14 +153,14 @@ class IntegrationStateServiceImplTest {
     @DisplayName("delete non existent source for existent state")
     void deleteSource__nonExistentSourceUuid__returnObj() {
         stateService.saveState(state);
-        assertThrows(NotFoundException.class, () -> stateService.deleteSource(state.getUuid(), 2L));
+        assertThrows(NotFoundException.class, () -> stateService.deleteSource(state.getUuid(), RANDOM_UUID));
     }
 
     @Test
     @DisplayName("delete non existent target for existent state")
     void deleteTarget__nonExistentTargetUuid__returnObj() {
         stateService.saveState(state);
-        assertThrows(NotFoundException.class, () -> stateService.deleteTarget(state.getUuid(), 2L));
+        assertThrows(NotFoundException.class, () -> stateService.deleteTarget(state.getUuid(), RANDOM_UUID));
     }
 
     @Test
@@ -224,7 +226,7 @@ class IntegrationStateServiceImplTest {
     @ParameterizedTest
     @DisplayName("save external state with uuids")
     @MethodSource("provideExternalUuids")
-    void saveExternalStates__returnObj(Long externalStateUuid, Long externalStateStyleUuid) {
+    void saveExternalStates__returnObj(String externalStateUuid, String externalStateStyleUuid) {
 
         stateService.saveState(state);
 
@@ -247,7 +249,7 @@ class IntegrationStateServiceImplTest {
                 .build();
         stateService.saveExternalStates(Collections.singletonList(externalState));
 
-        assertEquals(2, (long) externalState.getUuid());
+        assertNotNull(externalState.getUuid());
         assertEquals(2, stateRepository.count());
     }
 
@@ -255,12 +257,13 @@ class IntegrationStateServiceImplTest {
     @DisplayName("put valid container values")
     @MethodSource("provideContainerParams")
     void putContainerValue_validValues_returnObj(ContainerType type, String param, Double value) {
-        Map<String, Double> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
+        List<Variable> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
         stateService.saveState(state);
         assertTrue(container.isEmpty());
-        stateService.putContainerValue(state.getUuid(), type, param, value);
+        Variable expectedVariable = Variable.builder().param(param).value(value).build();
+        stateService.putContainerValue(state.getUuid(), type, expectedVariable);
         assertEquals(1, container.size());
-        assertEquals(container.get(param), value);
+        assertEquals(expectedVariable, container.get(0));
 
     }
 
@@ -268,7 +271,7 @@ class IntegrationStateServiceImplTest {
     @DisplayName("put container values")
     void findByStateUuid__existentUuid_returnObj() {
         State expected = stateService.saveState(state);
-        State actual = stateService.findByStateUUID(expected.getUuid());
+        State actual = stateService.findByStateUuid(expected.getUuid());
         assertEquals(expected, actual);
     }
 
@@ -283,35 +286,35 @@ class IntegrationStateServiceImplTest {
                         "delete null source for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.deleteSource(null, null))
                 ),
                 dynamicTest(
-                        "delete target for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.deleteTarget(null, 1L))
+                        "delete target for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.deleteTarget(null, RANDOM_UUID))
                 ),
                 dynamicTest(
-                        "delete source for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.deleteSource(null, 1L))
+                        "delete source for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.deleteSource(null, RANDOM_UUID))
                 ),
                 dynamicTest(
-                        "delete target for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.deleteTarget(3L, 1L))
+                        "delete target for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.deleteTarget(RANDOM_UUID, RANDOM_UUID))
                 ),
                 dynamicTest(
-                        "delete source for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.deleteSource(3L, 1L))
+                        "delete source for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.deleteSource(RANDOM_UUID, RANDOM_UUID))
                 ),
                 dynamicTest(
                         "new target for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.newTarget(null))
                 ),
                 dynamicTest(
-                        "new target for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.newTarget(3L))
+                        "new target for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.newTarget(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "new source for null state uuid", () -> assertThrows(DataAccessException.class, () -> stateService.newSource(null))
                 ),
                 dynamicTest(
-                        "new source for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.newSource(3L))
+                        "new source for non existent state uuid", () -> assertThrows(NotFoundException.class, () -> stateService.newSource(RANDOM_UUID))
                 ),
                 dynamicTest(
-                        "find by non existent uuid", () -> assertNull(stateService.findByStateUUID(3L))
+                        "find by non existent uuid", () -> assertNull(stateService.findByStateUuid(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "find by null uuid",
-                        () -> assertThrows(DataAccessException.class, () -> stateService.findByStateUUID(null))
+                        () -> assertThrows(DataAccessException.class, () -> stateService.findByStateUuid(null))
                 ),
                 dynamicTest(
                         "save null states",

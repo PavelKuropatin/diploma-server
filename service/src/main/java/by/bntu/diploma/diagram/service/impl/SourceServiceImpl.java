@@ -46,8 +46,8 @@ public class SourceServiceImpl implements SourceService {
     }
 
     @Override
-    public Source findBySourceUUID(Long sourceUUID) {
-        Optional<Source> sourceEndpointOptional = sourceRepository.findById(sourceUUID);
+    public Source findBySourceUuid(String sourceUuid) {
+        Optional<Source> sourceEndpointOptional = sourceRepository.findById(sourceUuid);
         return sourceEndpointOptional.orElse(null);
     }
 }

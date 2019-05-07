@@ -7,7 +7,6 @@ public final class ValidationMessage {
 
     public static final class Diagram {
         public static final String UUID_NULL = "{diagram.uuid.null}";
-        public static final String UUID_MIN = "{diagram.uuid.min}";
 
         public static final String NAME_BLANK = "{diagram.name.blank}";
         public static final String NAME_SIZE = "{diagram.name.size}";
@@ -22,7 +21,6 @@ public final class ValidationMessage {
     public static final class State {
 
         public static final String UUID_NULL = "{state.uuid.null}";
-        public static final String UUID_MIN = "{state.uuid.min}";
 
         public static final String POS_X_NULL = "{state.position-x.null}";
         public static final String POS_Y_NULL = "{state.position-y.null}";
@@ -42,6 +40,7 @@ public final class ValidationMessage {
         public static final String OC_VALUES = "{state.output-container.values}";
         public static final String TARGETS_NULL = "{state.targets.null}";
         public static final String SOURCES_NULL = "{state.sources.null}";
+        public static final String FUNCTIONS_NULL = "{state.functions.null}";
         public static final String STYLE_NULL = "{style.null}";
 
 
@@ -53,7 +52,6 @@ public final class ValidationMessage {
     public static final class Source {
 
         public static final String UUID_NULL = "{source.uuid.null}";
-        public static final String UUID_MIN = "{source.uuid.min}";
         public static final String CONNECTIONS_NULL = "{source.connections.null}";
 
         private Source() {
@@ -61,13 +59,13 @@ public final class ValidationMessage {
         }
     }
 
-    public static final class Container {
+    public static final class Variable {
 
         public static final String TYPE_NULL = "{container.type.null}";
-        public static final String KEY_BLANK = "{container.key.blank}";
+        public static final String PARAM_BLANK = "{container.key.blank}";
         public static final String VALUE_NULL = "{container.value.null}";
 
-        private Container() {
+        private Variable() {
 
         }
     }
@@ -75,7 +73,6 @@ public final class ValidationMessage {
     public static final class Target {
 
         public static final String UUID_NULL = "{target.uuid.null}";
-        public static final String UUID_MIN = "{target.uuid.min}";
 
         private Target() {
         }

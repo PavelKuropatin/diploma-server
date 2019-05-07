@@ -13,7 +13,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -600,10 +600,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .inputContainer(new HashMap<String, Double>() {
+                .inputContainer(new LinkedList<Variable>() {
                     {
-                        put("", .1);
-                        put("key2", .1);
+                        add(Variable.builder().param("").value(.1).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -617,7 +617,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.IC_VALUES + "[<blank> : 0.1]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.PARAM_BLANK);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -636,10 +636,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .inputContainer(new HashMap<String, Double>() {
+                .inputContainer(new LinkedList<Variable>() {
                     {
-                        put(null, .1);
-                        put("key2", .1);
+                        add(Variable.builder().param(null).value(.1).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -653,7 +653,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.IC_VALUES + "[<null> : 0.1]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.PARAM_BLANK);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -672,10 +672,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .inputContainer(new HashMap<String, Double>() {
+                .inputContainer(new LinkedList<Variable>() {
                     {
-                        put("key1", null);
-                        put("key2", .1);
+                        add(Variable.builder().param("key1").value(null).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -689,7 +689,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.IC_VALUES + "[key1 : <null>]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.VALUE_NULL);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -739,10 +739,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .outputContainer(new HashMap<String, Double>() {
+                .outputContainer(new LinkedList<Variable>() {
                     {
-                        put("", .1);
-                        put("key2", .1);
+                        add(Variable.builder().param("").value(.1).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -756,7 +756,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.OC_VALUES + "[<blank> : 0.1]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.PARAM_BLANK);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -775,10 +775,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .outputContainer(new HashMap<String, Double>() {
+                .outputContainer(new LinkedList<Variable>() {
                     {
-                        put(null, .1);
-                        put("key2", .1);
+                        add(Variable.builder().param(null).value(.1).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -792,7 +792,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.OC_VALUES + "[<null> : 0.1]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.PARAM_BLANK);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
@@ -811,10 +811,10 @@ class StateTest {
                 .template(VALID_STR)
                 .positionX(VALID_INT)
                 .positionY(VALID_INT)
-                .outputContainer(new HashMap<String, Double>() {
+                .outputContainer(new LinkedList<Variable>() {
                     {
-                        put("key1", null);
-                        put("key2", .1);
+                        add(Variable.builder().param("key1").value(null).build());
+                        add(Variable.builder().param("key2").value(.1).build());
                     }
                 })
                 .style(Style.builder()
@@ -828,7 +828,7 @@ class StateTest {
 
         Set<ConstraintViolation<State>> constraintViolations = validator.validate(state);
 
-        List<String> expected = Collections.singletonList(ValidationMessage.State.OC_VALUES + "[key1 : <null>]");
+        List<String> expected = Collections.singletonList(ValidationMessage.Variable.VALUE_NULL);
 
         List<String> actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)

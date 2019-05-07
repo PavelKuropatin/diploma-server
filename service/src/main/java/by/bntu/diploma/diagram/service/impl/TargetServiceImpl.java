@@ -41,8 +41,8 @@ public class TargetServiceImpl implements TargetService {
     }
 
     @Override
-    public Target findByTargetUUID(Long targetUUID) {
-        Optional<Target> targetEndpointOptional = targetRepository.findById(targetUUID);
+    public Target findByTargetUuid(String targetUuid) {
+        Optional<Target> targetEndpointOptional = targetRepository.findById(targetUuid);
         return targetEndpointOptional.orElse(null);
     }
 

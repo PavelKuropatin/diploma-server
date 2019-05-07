@@ -61,12 +61,12 @@ public final class DomainUtils {
 
 
     public static void dropDuplicateTargets(@NotNull List<@Valid State> states, @NotNull List<@Valid Target> targetPool) {
-        Map<Long, Target> targets = targetPool.stream().collect(Collectors.toMap(Target::getUuid, x -> x));
+        Map<String, Target> targets = targetPool.stream().collect(Collectors.toMap(Target::getUuid, x -> x));
         states.forEach(state -> {
             state.getSources().forEach(source -> {
                 source.getConnections().forEach(connection -> {
-                    Long targetUUID = connection.getTarget().getUuid();
-                    connection.setTarget(targets.get(targetUUID));
+                    String targetUuid = connection.getTarget().getUuid();
+                    connection.setTarget(targets.get(targetUuid));
                 });
             });
             state.setTargets(targets.values().stream().filter(target -> state.getTargets().contains(target)).collect(Collectors.toList()));

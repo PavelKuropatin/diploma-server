@@ -5,24 +5,21 @@ import by.bntu.diploma.diagram.domain.State;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface DiagramService {
 
-    Diagram findDiagramByUUID(
-            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
-            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
+    Diagram findDiagramByUuid(
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid
     );
 
     Diagram saveDiagram(@Valid Diagram diagram);
 
     Diagram updateDiagram(@Valid Diagram diagram);
 
-    void deleteDiagramByUUID(
-            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
-            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
+    void deleteDiagramByUuid(
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid
     );
 
     List<Diagram> findAllDiagrams();
@@ -30,15 +27,12 @@ public interface DiagramService {
     Diagram newDiagram();
 
     State newState(
-            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
-            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid
     );
 
     void deleteState(
-            @NotNull(message = ValidationMessage.Diagram.UUID_NULL)
-            @Min(value = 1, message = ValidationMessage.Diagram.UUID_MIN) Long diagramUUID,
-            @NotNull(message = ValidationMessage.State.UUID_NULL)
-            @Min(value = 1, message = ValidationMessage.State.UUID_MIN) Long stateUUID
+            @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid,
+            @NotNull(message = ValidationMessage.State.UUID_NULL) String stateUuid
     );
 
     Diagram saveExternalDiagram(@Valid Diagram diagram);
