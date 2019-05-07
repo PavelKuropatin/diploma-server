@@ -38,7 +38,7 @@ public class Diagram {
     @NotBlank(message = ValidationMessage.Diagram.NAME_BLANK)
     private String name;
 
-    @Column(name = "description", columnDefinition = "varchar(MAX)")
+    @Column(name = "description", nullable = false)
     @Size(min = 3, max = 255, message = ValidationMessage.Diagram.DESCRIPTION_SIZE)
     @NotBlank(message = ValidationMessage.Diagram.DESCRIPTION_BLANK)
     private String description;
