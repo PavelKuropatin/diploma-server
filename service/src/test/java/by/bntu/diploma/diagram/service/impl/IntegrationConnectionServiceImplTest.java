@@ -49,7 +49,7 @@ class IntegrationConnectionServiceImplTest {
 
         connection = connectionService.saveConnection(connection);
 
-        assertEquals(1L, (long) connection.getUuid());
+        assertNotNull(connection.getUuid());
     }
 
     @Test
@@ -62,10 +62,10 @@ class IntegrationConnectionServiceImplTest {
 
         connectionService.saveAllConnections(connections);
 
-        List<Long> actualUuids = connections.stream().map(Connection::getUuid).sorted().collect(Collectors.toList());
-        List<Long> expectedUuids = LongStream.range(1, TEST_SIZE + 1).boxed().collect(Collectors.toList());
-
-        assertEquals(expectedUuids, actualUuids);
+        List<String> actualUuids = connections.stream().map(Connection::getUuid).sorted().collect(Collectors.toList());
+        for (String uuid : actualUuids) {
+            assertNotNull(uuid);
+        }
         assertEquals(TEST_SIZE, connectionRepository.count());
     }
 

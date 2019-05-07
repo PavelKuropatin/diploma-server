@@ -4,18 +4,17 @@ import by.bntu.diploma.diagram.domain.Connection;
 import by.bntu.diploma.diagram.domain.Target;
 import by.bntu.diploma.diagram.repository.ConnectionRepository;
 import by.bntu.diploma.diagram.service.TargetService;
-import by.bntu.diploma.diagram.service.impl.ConnectionServiceImpl;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
@@ -29,33 +28,24 @@ import static org.mockito.Mockito.when;
 class UnitConnectionServiceImplTest {
 
     private static final int TEST_SIZE = 3;
+    private static final String RANDOM_UUID = UUID.randomUUID().toString();
 
-    private final Answer<Connection> setConnectionUuid = new Answer<Connection>() {
-        long sequence = 1;
-
-        @Override
-        public Connection answer(InvocationOnMock invocation) {
-            Connection connection = invocation.getArgument(0);
-            if (connection == null) {
-                throw new NullPointerException();
-            }
-            connection.setUuid(sequence++);
-            return connection;
+    private final Answer<Connection> setConnectionUuid = invocation -> {
+        Connection connection = invocation.getArgument(0);
+        if (connection == null) {
+            throw new NullPointerException();
         }
+        connection.setUuid(UUID.randomUUID().toString());
+        return connection;
     };
 
-    private final Answer<List<Connection>> setConnectionsUuid = new Answer<List<Connection>>() {
-        long sequence = 1;
-
-        @Override
-        public List<Connection> answer(InvocationOnMock invocation) {
-            List<Connection> connections = invocation.getArgument(0);
-            if (connections.contains(null)) {
-                throw new NullPointerException();
-            }
-            connections.forEach(connection -> connection.setUuid(sequence++));
-            return connections;
+    private final Answer<List<Connection>> setConnectionsUuid = invocation -> {
+        List<Connection> connections = invocation.getArgument(0);
+        if (connections.contains(null)) {
+            throw new NullPointerException();
         }
+        connections.forEach(connection -> connection.setUuid(UUID.randomUUID().toString()));
+        return connections;
     };
 
     @InjectMocks
@@ -78,7 +68,7 @@ class UnitConnectionServiceImplTest {
         assertNull(connection.getUuid());
         connection = connectionService.saveConnection(connection);
 
-        assertEquals(1L, (long) connection.getUuid());
+        assertNotNull(connection.getUuid());
     }
 
     @Test
@@ -101,10 +91,10 @@ class UnitConnectionServiceImplTest {
 
         connectionService.saveAllConnections(connections);
 
-        List<Long> actualUuids = connections.stream().map(Connection::getUuid).sorted().collect(Collectors.toList());
-        List<Long> expectedUuids = LongStream.range(1, TEST_SIZE + 1).boxed().collect(Collectors.toList());
-
-        assertEquals(expectedUuids, actualUuids);
+        List<String> actualUuids = connections.stream().map(Connection::getUuid).sorted().collect(Collectors.toList());
+        for (String uuid : actualUuids) {
+            assertNotNull(uuid);
+        }
     }
 
 

@@ -16,18 +16,18 @@ public abstract class ConnectionMapper implements Mapper<Connection, ConnectionD
     @Override
     public abstract Connection fromDTO(ConnectionDTO connectionDTO);
 
-    @Mapping(target = "targetPointUUID", ignore = true)
+    @Mapping(target = "targetUuid", ignore = true)
     @Override
     public abstract ConnectionDTO toDTO(Connection connection);
 
     @AfterMapping
     void setValuesToObj(ConnectionDTO connectionDTO, @MappingTarget Connection connection) {
-        connection.setTarget(Target.builder().uuid(connectionDTO.getTargetPointUUID()).build());
+        connection.setTarget(Target.builder().uuid(connectionDTO.getTargetUuid()).build());
     }
 
     @AfterMapping
     void setValuesToDTO(Connection connection, @MappingTarget ConnectionDTO connectionDTO) {
-        connectionDTO.setTargetPointUUID(connection.getTarget().getUuid());
+        connectionDTO.setTargetUuid(connection.getTarget().getUuid());
     }
 
 

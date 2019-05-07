@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Data
-public class ContainerValueDTO {
+public class VariableDTO {
 
     @JsonProperty("type")
     private String type;
@@ -23,4 +23,6 @@ public class ContainerValueDTO {
     @Builder.Default
     private Double value = .0;
 
+    @JsonProperty("function")
+    private String function;
 }

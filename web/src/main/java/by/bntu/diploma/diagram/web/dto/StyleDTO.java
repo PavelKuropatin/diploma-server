@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class StyleDTO {
 
     @JsonProperty("uuid")
-    private Long uuid;
+    private String uuid;
 
     @JsonProperty("sourceEndpoint")
     private String sourceStyle;

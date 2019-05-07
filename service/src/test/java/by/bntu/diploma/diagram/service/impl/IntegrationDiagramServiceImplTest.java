@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.hamcrest.CoreMatchers.hasItem;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 class IntegrationDiagramServiceImplTest {
 
     private static final String VALID_STR = RandomStringUtils.random(127, true, true);
+    private static final String RANDOM_UUID = UUID.randomUUID().toString();
 
     @Autowired
     private DiagramService diagramService;
@@ -51,9 +53,8 @@ class IntegrationDiagramServiceImplTest {
 
     private static Stream<Arguments> provideExternalUuids() {
         return Stream.of(
-                Arguments.of(null, null),
-                Arguments.of(1L, 1L),
-                Arguments.of(3L, 3L)
+                Arguments.of((String) null),
+                Arguments.of(RANDOM_UUID)
         );
     }
 
@@ -67,9 +68,9 @@ class IntegrationDiagramServiceImplTest {
 
     @Test
     @DisplayName("find by existent uuid")
-    void findDiagramByUUID_existentUuid_returnObj() {
+    void findDiagramByUuid_existentUuid_returnObj() {
         Diagram expected = diagramService.saveDiagram(diagram);
-        Diagram actual = diagramService.findDiagramByUUID(expected.getUuid());
+        Diagram actual = diagramService.findDiagramByUuid(expected.getUuid());
         assertEquals(expected, actual);
     }
 
@@ -79,7 +80,7 @@ class IntegrationDiagramServiceImplTest {
         assertNull(diagram.getUuid());
         assertEquals(0, diagramRepository.count());
         diagramService.saveDiagram(diagram);
-        assertEquals(1L, (long) diagram.getUuid());
+        assertNotNull(diagram.getUuid());
         assertEquals(1, diagramRepository.count());
     }
 
@@ -99,10 +100,10 @@ class IntegrationDiagramServiceImplTest {
 
     @Test
     @DisplayName("delete existent diagram")
-    void deleteDiagramByUUID_validUuid_returnObj() {
+    void deleteDiagramByUuid_validUuid_returnObj() {
         diagramService.saveDiagram(diagram);
         assertEquals(1, diagramRepository.count());
-        diagramService.deleteDiagramByUUID(diagram.getUuid());
+        diagramService.deleteDiagramByUuid(diagram.getUuid());
         assertEquals(0, diagramRepository.count());
     }
 
@@ -120,7 +121,7 @@ class IntegrationDiagramServiceImplTest {
     void newDiagram__returnObj() {
         assertEquals(0, diagramRepository.count());
         Diagram diagram = diagramService.newDiagram();
-        assertEquals(1L, (long) diagram.getUuid());
+        assertNotNull(diagram.getUuid());
         assertEquals(1, diagramRepository.count());
     }
 
@@ -130,7 +131,7 @@ class IntegrationDiagramServiceImplTest {
         diagramService.saveDiagram(diagram);
         assertEquals(0, stateRepository.count());
         State state = diagramService.newState(diagram.getUuid());
-        assertEquals(1L, (long) state.getUuid());
+        assertNotNull(state.getUuid());
         assertEquals(1, stateRepository.count());
     }
 
@@ -153,11 +154,11 @@ class IntegrationDiagramServiceImplTest {
     void deleteState_existentStateAndNotAllowingDiagram_returnObj() {
         diagramService.saveDiagram(diagram);
         diagramService.newState(diagram.getUuid());
-        stateService.newState();
+        State state = stateService.newState();
 
         assertEquals(1, diagram.getStates().size());
 
-        diagramService.deleteState(diagram.getUuid(), 2L);
+        diagramService.deleteState(diagram.getUuid(), state.getUuid());
 
         assertEquals(1, diagram.getStates().size());
 
@@ -169,14 +170,14 @@ class IntegrationDiagramServiceImplTest {
         diagramService.saveDiagram(diagram);
         diagramService.newState(diagram.getUuid());
 
-        assertThrows(NotFoundException.class, () -> diagramService.deleteState(diagram.getUuid(), 2L));
+        assertThrows(NotFoundException.class, () -> diagramService.deleteState(diagram.getUuid(), RANDOM_UUID));
 
     }
 
     @ParameterizedTest
     @DisplayName("save external diagram with uuids")
     @MethodSource("provideExternalUuids")
-    void saveExternalDiagram__returnObj(Long externalDiagramUuid) {
+    void saveExternalDiagram__returnObj(String externalDiagramUuid) {
         diagramService.saveDiagram(diagram);
 
         assertEquals(1, diagramRepository.count());
@@ -188,7 +189,7 @@ class IntegrationDiagramServiceImplTest {
 
         diagramService.saveExternalDiagram(externalDiagram);
 
-        assertEquals(2, (long) externalDiagram.getUuid());
+        assertNotNull(externalDiagram.getUuid());
         assertEquals(2, diagramRepository.count());
     }
 
@@ -197,12 +198,12 @@ class IntegrationDiagramServiceImplTest {
         return Stream.of(
                 dynamicTest(
                         "find diagram by null uuid",
-                        () -> assertThrows(DataAccessException.class, () -> diagramService.findDiagramByUUID(null))
+                        () -> assertThrows(DataAccessException.class, () -> diagramService.findDiagramByUuid(null))
                 ),
 
                 dynamicTest(
                         "find diagram by non existent uuid",
-                        () -> assertNull(diagramService.findDiagramByUUID(3L))
+                        () -> assertNull(diagramService.findDiagramByUuid(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "save null diagram",
@@ -214,11 +215,11 @@ class IntegrationDiagramServiceImplTest {
                 ),
                 dynamicTest(
                         "delete by null diagram uuid",
-                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteDiagramByUUID(null))
+                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteDiagramByUuid(null))
                 ),
                 dynamicTest(
                         "delete by non existent diagram uuid",
-                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteDiagramByUUID(3L))
+                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteDiagramByUuid(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "delete by non null diagram uuid",
@@ -226,7 +227,7 @@ class IntegrationDiagramServiceImplTest {
                 ),
                 dynamicTest(
                         "new state for non existent diagram",
-                        () -> assertThrows(NotFoundException.class, () -> diagramService.newState(3L))
+                        () -> assertThrows(NotFoundException.class, () -> diagramService.newState(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "delete state by existing uuid for null diagram",
@@ -237,7 +238,7 @@ class IntegrationDiagramServiceImplTest {
                 ),
                 dynamicTest(
                         "delete state by non exisitng uuid for null diagram",
-                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteState(null, 3L))
+                        () -> assertThrows(DataAccessException.class, () -> diagramService.deleteState(null, RANDOM_UUID))
                 ),
                 dynamicTest(
                         "delete state by null uuid for null diagram",

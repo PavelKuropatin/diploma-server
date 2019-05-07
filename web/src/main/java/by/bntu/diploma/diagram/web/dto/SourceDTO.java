@@ -16,7 +16,7 @@ import java.util.List;
 public class SourceDTO {
 
     @JsonProperty("uuid")
-    private Long uuid;
+    private String uuid;
 
     @JsonProperty("connections")
     @Builder.Default

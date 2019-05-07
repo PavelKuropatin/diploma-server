@@ -40,7 +40,7 @@ class IntegrationStyleServiceImplTest {
         assertNull(style.getUuid());
         assertEquals(0, styleRepository.count());
         styleService.saveStyle(style);
-        assertEquals(1L, (long) style.getUuid());
+        assertNotNull(style.getUuid());
         assertEquals(1, styleRepository.count());
     }
 

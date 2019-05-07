@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 public class TargetDTO {
 
     @JsonProperty("uuid")
-    private Long uuid;
+    private String uuid;
 }

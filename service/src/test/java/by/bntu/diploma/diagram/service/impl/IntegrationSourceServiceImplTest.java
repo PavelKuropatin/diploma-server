@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 class IntegrationSourceServiceImplTest {
 
     private static final int TEST_SIZE = 3;
+    private static final String RANDOM_UUID = UUID.randomUUID().toString();
 
     @Autowired
     private SourceService sourceService;
@@ -47,7 +49,7 @@ class IntegrationSourceServiceImplTest {
         assertNull(source.getUuid());
         assertEquals(0, sourceRepository.count());
         sourceService.saveSource(source);
-        assertEquals(1L, (long) source.getUuid());
+        assertNotNull(source.getUuid());
         assertEquals(1, sourceRepository.count());
     }
 
@@ -61,10 +63,10 @@ class IntegrationSourceServiceImplTest {
 
         sourceService.saveAllSources(sources);
 
-        List<Long> actualUuids = sources.stream().map(Source::getUuid).sorted().collect(Collectors.toList());
-        List<Long> expectedUuids = LongStream.range(1, TEST_SIZE + 1).boxed().collect(Collectors.toList());
-
-        assertEquals(expectedUuids, actualUuids);
+        List<String> actualUuids = sources.stream().map(Source::getUuid).sorted().collect(Collectors.toList());
+        for (String uuid : actualUuids) {
+            assertNotNull(uuid);
+        }
         assertEquals(TEST_SIZE, sourceRepository.count());
     }
 
@@ -87,21 +89,21 @@ class IntegrationSourceServiceImplTest {
     void newSource() {
         assertEquals(0, sourceRepository.count());
         Source source = sourceService.newSource();
-        assertEquals(1L, (long) source.getUuid());
+        assertNotNull(source.getUuid());
         assertEquals(1, sourceRepository.count());
     }
 
     @Test
     @DisplayName("find by valid uuid")
-    void findBySourceUUID_validUUID_returnObj() {
+    void findBySourceUuid_validUUID_returnObj() {
         Source expected = Source.builder()
                 .connections(Collections.emptyList())
                 .build();
         sourceService.saveSource(expected);
 
-        assertEquals(1L, (long) expected.getUuid());
+        assertNotNull(expected.getUuid());
 
-        Source actual = sourceService.findBySourceUUID(expected.getUuid());
+        Source actual = sourceService.findBySourceUuid(expected.getUuid());
 
         assertEquals(expected, actual);
     }
@@ -110,11 +112,11 @@ class IntegrationSourceServiceImplTest {
     Stream<DynamicTest> dynamicTests() {
         return Stream.of(
                 dynamicTest(
-                        "find by non exist uuid", () -> assertNull(sourceService.findBySourceUUID(3L))
+                        "find by non exist uuid", () -> assertNull(sourceService.findBySourceUuid(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "find by null uuid",
-                        () -> assertThrows(DataAccessException.class, () -> sourceService.findBySourceUUID(null))
+                        () -> assertThrows(DataAccessException.class, () -> sourceService.findBySourceUuid(null))
                 ),
                 dynamicTest(
                         "save null sources",

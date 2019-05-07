@@ -16,9 +16,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 class IntegrationTargetServiceImplTest {
 
     private static final int TEST_SIZE = 3;
+    private static final String RANDOM_UUID = UUID.randomUUID().toString();
 
     @Autowired
     private TargetService targetService;
@@ -43,7 +44,7 @@ class IntegrationTargetServiceImplTest {
         Target target = Target.builder().build();
         assertNull(target.getUuid());
         targetService.saveTarget(target);
-        assertEquals(1L, (long) target.getUuid());
+        assertNotNull(target.getUuid());
         assertEquals(1, targetRepository.count());
     }
 
@@ -56,10 +57,10 @@ class IntegrationTargetServiceImplTest {
                 .collect(Collectors.toList());
         targetService.saveAllTargets(targets);
 
-        List<Long> actualUuids = targets.stream().map(Target::getUuid).sorted().collect(Collectors.toList());
-        List<Long> expectedUuids = LongStream.range(1, TEST_SIZE + 1).boxed().collect(Collectors.toList());
-
-        assertEquals(expectedUuids, actualUuids);
+        List<String> actualUuids = targets.stream().map(Target::getUuid).sorted().collect(Collectors.toList());
+        for (String uuid : actualUuids) {
+            assertNotNull(uuid);
+        }
         assertEquals(TEST_SIZE, targetRepository.count());
     }
 
@@ -82,17 +83,17 @@ class IntegrationTargetServiceImplTest {
     @DisplayName("new target")
     void newTarget__returnObj() {
         Target target = targetService.newTarget();
-        assertEquals(1L, (long) target.getUuid());
+        assertNotNull(target.getUuid());
         assertEquals(1, targetRepository.count());
     }
 
     @Test
     @DisplayName("find by valid uuid")
-    void findByTargetUUID_validUUID_returnObj() {
+    void findByTargetUuid_validUUID_returnObj() {
         Target expected = Target.builder().build();
         targetService.saveTarget(expected);
-        assertEquals(1L, (long) expected.getUuid());
-        Target actual = targetService.findByTargetUUID(expected.getUuid());
+        assertNotNull(expected.getUuid());
+        Target actual = targetService.findByTargetUuid(expected.getUuid());
         assertEquals(expected, actual);
     }
 
@@ -100,11 +101,11 @@ class IntegrationTargetServiceImplTest {
     Stream<DynamicTest> dynamicTests() {
         return Stream.of(
                 dynamicTest(
-                        "find by non exist uuid", () -> assertNull(targetService.findByTargetUUID(3L))
+                        "find by non exist uuid", () -> assertNull(targetService.findByTargetUuid(RANDOM_UUID))
                 ),
                 dynamicTest(
                         "find by null uuid",
-                        () -> assertThrows(DataAccessException.class, () -> targetService.findByTargetUUID(null))
+                        () -> assertThrows(DataAccessException.class, () -> targetService.findByTargetUuid(null))
                 ),
                 dynamicTest(
                         "save null target",

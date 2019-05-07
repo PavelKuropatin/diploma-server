@@ -2,7 +2,6 @@ package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Target;
 import by.bntu.diploma.diagram.repository.TargetRepository;
-import by.bntu.diploma.diagram.service.impl.TargetServiceImpl;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,15 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.provider.Arguments;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,32 +28,22 @@ class UnitTargetServiceImplTest {
 
     private static final int TEST_SIZE = 3;
 
-    private final Answer<Target> setTargetUuid = new Answer<Target>() {
-        long sequence = 1;
-
-        @Override
-        public Target answer(InvocationOnMock invocation) {
-            Target target = invocation.getArgument(0);
-            if (target == null) {
-                throw new NullPointerException();
-            }
-            target.setUuid(sequence++);
-            return target;
+    private final Answer<Target> setTargetUuid = invocation -> {
+        Target target = invocation.getArgument(0);
+        if (target == null) {
+            throw new NullPointerException();
         }
+        target.setUuid(UUID.randomUUID().toString());
+        return target;
     };
 
-    private final Answer<List<Target>> setTargetsUuid = new Answer<List<Target>>() {
-        long sequence = 1;
-
-        @Override
-        public List<Target> answer(InvocationOnMock invocation) {
-            List<Target> targets = invocation.getArgument(0);
-            if (targets.contains(null)) {
-                throw new NullPointerException();
-            }
-            targets.forEach(target -> target.setUuid(sequence++));
-            return targets;
+    private final Answer<List<Target>> setTargetsUuid = invocation -> {
+        List<Target> targets = invocation.getArgument(0);
+        if (targets.contains(null)) {
+            throw new NullPointerException();
         }
+        targets.forEach(target -> target.setUuid(UUID.randomUUID().toString()));
+        return targets;
     };
 
     @InjectMocks
@@ -66,8 +54,8 @@ class UnitTargetServiceImplTest {
 
     private static Stream<Arguments> provideInvalidUuids() {
         return Stream.of(
-                Arguments.of(3L),
-                Arguments.of((Long) null)
+                Arguments.of(UUID.randomUUID()),
+                Arguments.of((UUID) null)
         );
     }
 
@@ -84,7 +72,7 @@ class UnitTargetServiceImplTest {
 
         targetService.saveTarget(target);
 
-        assertEquals(1L, (long) target.getUuid());
+        assertNotNull(target.getUuid());
         assertEquals(1, targetRepository.count());
     }
 
@@ -115,10 +103,10 @@ class UnitTargetServiceImplTest {
 
         targetService.saveAllTargets(targets);
 
-        List<Long> actualUuids = targets.stream().map(Target::getUuid).sorted().collect(Collectors.toList());
-        List<Long> expectedUuids = LongStream.range(1, TEST_SIZE + 1).boxed().collect(Collectors.toList());
-
-        assertEquals(expectedUuids, actualUuids);
+        List<String> actualUuids = targets.stream().map(Target::getUuid).sorted().collect(Collectors.toList());
+        for (String uuid : actualUuids) {
+            assertNotNull(uuid);
+        }
         assertEquals(TEST_SIZE, targetRepository.count());
     }
 
@@ -149,40 +137,40 @@ class UnitTargetServiceImplTest {
 
         assertEquals(0, targetRepository.count());
         Target target = targetService.newTarget();
-        assertEquals(1L, (long) target.getUuid());
+        assertNotNull(target.getUuid());
         assertEquals(1, targetRepository.count());
     }
 
     @Test
     @DisplayName("find by valid uuid")
-    void findByTargetUUID_validUUID_returnObj() {
+    void findByTargetUuid_validUUID_returnObj() {
         Target expected = Target.builder().build();
 
         when(targetRepository.save(any(Target.class))).thenAnswer(setTargetUuid);
-        when(targetRepository.findById(anyLong())).thenReturn(Optional.of(expected));
+        when(targetRepository.findById(any(String.class))).thenReturn(Optional.of(expected));
 
         targetService.saveTarget(expected);
 
-        Target actual = targetService.findByTargetUUID(expected.getUuid());
+        Target actual = targetService.findByTargetUuid(expected.getUuid());
         assertEquals(expected, actual);
     }
 
     @Test
     @DisplayName("find by valid uuid")
-    void findByTargetUUID_nonExistentUuid_returnException() {
+    void findByTargetUuid_nonExistentUuid_returnException() {
 
-        when(targetRepository.findById(anyLong())).thenReturn(Optional.empty());
-        Target actual = targetService.findByTargetUUID(3L);
+        when(targetRepository.findById(any(String.class))).thenReturn(Optional.empty());
+        Target actual = targetService.findByTargetUuid(UUID.randomUUID().toString());
         assertNull(actual);
 
     }
 
     @Test
     @DisplayName("find by invalid uuid")
-    void findByTargetUUID_nullUuid_returnException() {
+    void findByTargetUuid_nullUuid_returnException() {
 
-        when(targetRepository.findById(nullable(Long.class))).thenReturn(Optional.empty());
-        Target actual = targetService.findByTargetUUID(null);
+        when(targetRepository.findById(nullable(String.class))).thenReturn(Optional.empty());
+        Target actual = targetService.findByTargetUuid(null);
         assertNull(actual);
 
     }

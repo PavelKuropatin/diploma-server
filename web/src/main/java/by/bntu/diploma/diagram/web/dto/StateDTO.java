@@ -17,7 +17,7 @@ import java.util.Map;
 public class StateDTO {
 
     @JsonProperty("uuid")
-    private Long uuid;
+    private String uuid;
 
     @JsonProperty("name")
     private String name;

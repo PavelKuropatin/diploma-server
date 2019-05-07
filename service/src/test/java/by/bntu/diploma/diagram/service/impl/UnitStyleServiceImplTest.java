@@ -2,15 +2,15 @@ package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Style;
 import by.bntu.diploma.diagram.repository.StyleRepository;
-import by.bntu.diploma.diagram.service.impl.StyleServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,15 +33,10 @@ class UnitStyleServiceImplTest {
     void saveStyle_validObj_returnObj() {
         Style style = Style.builder().build();
         when(styleRepository.count()).thenReturn(0L, 1L);
-        when(styleRepository.save(any(Style.class))).thenAnswer(new Answer<Style>() {
-            long sequence = 1;
-
-            @Override
-            public Style answer(InvocationOnMock invocation) {
-                Style style = invocation.getArgument(0);
-                style.setUuid(sequence++);
-                return style;
-            }
+        when(styleRepository.save(any(Style.class))).thenAnswer((Answer<Style>) invocation -> {
+            Style style1 = invocation.getArgument(0);
+            style1.setUuid(UUID.randomUUID().toString());
+            return style1;
         });
 
         assertNull(style.getUuid());
@@ -49,7 +44,7 @@ class UnitStyleServiceImplTest {
 
         styleService.saveStyle(style);
 
-        assertEquals(1L, (long) style.getUuid());
+        assertNotNull(style.getUuid());
         assertEquals(1, styleRepository.count());
     }
 
