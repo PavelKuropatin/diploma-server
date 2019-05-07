@@ -36,6 +36,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                 .map(Connection::getTarget)
                 .collect(Collectors.toList());
         targetService.saveAllTargets(targetsToSave);
+        connections.forEach(connection -> connection.setUuid(null));
         return connectionRepository.saveAll(connections);
     }
 

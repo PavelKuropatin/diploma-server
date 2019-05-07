@@ -30,6 +30,10 @@ public class TargetServiceImpl implements TargetService {
     @Override
     @Transactional
     public List<Target> saveAllTargets(List<Target> targets) {
+        targets.stream()
+                .filter(target -> target.getUuid() != null)
+                .filter(target -> !targetRepository.existsById(target.getUuid()))
+                .forEach(target -> target.setUuid(null));
         return targetRepository.saveAll(targets);
     }
 

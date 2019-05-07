@@ -28,6 +28,10 @@ public class StyleServiceImpl implements StyleService {
     @Override
     @Transactional
     public List<Style> saveAllStyles(List<@Valid Style> styles) {
+        styles.stream()
+                .filter(style -> style.getUuid() != null)
+                .filter(style -> !styleRepository.existsById(style.getUuid()))
+                .forEach(style -> style.setUuid(null));
         return styleRepository.saveAll(styles);
     }
 }

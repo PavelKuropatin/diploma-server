@@ -47,6 +47,10 @@ public class StateServiceImpl implements StateService {
         styleService.saveAllStyles(styles);
         targetService.saveAllTargets(targets);
         sourceService.saveAllSources(sources);
+        states.stream()
+                .filter(state -> state.getUuid() != null)
+                .filter(state -> !stateRepository.existsById(state.getUuid()))
+                .forEach(state -> state.setUuid(null));
         return stateRepository.saveAll(states);
     }
 
