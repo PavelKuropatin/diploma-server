@@ -1,6 +1,5 @@
 package by.bntu.diploma.diagram.domain;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -18,43 +17,27 @@ import static org.hamcrest.CoreMatchers.hasItems;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class StateTest {
-
-    private static final String VALID_STR = RandomStringUtils.random(127, true, true);
+class VariableTest {
 
     private static Validator validator;
-    private static Style style;
 
     @BeforeAll
     static void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
-
-        style = Style.builder()
-                .sourceAnchorStyle(VALID_STR)
-                .sourceStyle(VALID_STR)
-                .targetAnchorStyle(VALID_STR)
-                .targetStyle(VALID_STR)
-                .build();
-
     }
 
-    @ParameterizedTest(name = "run #[{index}] {5}")
+    @ParameterizedTest(name = "run #[{index}] {3}")
     @DisplayName("parametrized")
-    @CsvFileSource(resources = "/state.csv", numLinesToSkip = 1)
-    void validate__expectedMessage(String name, String color, String template, Double positionX, Double positionY, String messages) {
-
-        State state = State.builder()
-                .name(name)
-                .color(color)
-                .template(template)
-                .positionX(positionX)
-                .positionY(positionY)
-                .style(style)
+    @CsvFileSource(resources = "/variable.csv", numLinesToSkip = 1)
+    void validate__expectedMessage(String param, Double value, String function, String messages) {
+        Variable variable = Variable.builder()
+                .param(param)
+                .value(value)
+                .function(function)
                 .build();
 
-
-        List<String> actual = validator.validate(state).stream()
+        List<String> actual = validator.validate(variable).stream()
                 .map(ConstraintViolation::getMessage)
                 .sorted()
                 .collect(Collectors.toList());

@@ -38,6 +38,7 @@ public class DiagramServiceImpl implements DiagramService {
         return diagramRepository.save(diagram);
     }
 
+    @Override
     @Transactional
     public Diagram updateDiagram(Diagram diagram) {
         String diagramUuid = diagram.getUuid();
@@ -47,6 +48,14 @@ public class DiagramServiceImpl implements DiagramService {
         return saveDiagram(diagram);
     }
 
+    @Override
+    @Transactional
+    public Diagram saveExternalDiagram(Diagram diagram) {
+        diagram.setUuid(null);
+        diagram.getStates().forEach(state -> state.setUuid(null));
+        stateService.saveExternalStates(diagram.getStates());
+        return diagramRepository.save(diagram);
+    }
 
     @Override
     @Transactional
@@ -101,12 +110,5 @@ public class DiagramServiceImpl implements DiagramService {
         saveDiagram(diagram);
     }
 
-    @Override
-    @Transactional
-    public Diagram saveExternalDiagram(Diagram diagram) {
-        diagram.setUuid(null);
-        diagram.getStates().forEach(state -> state.setUuid(null));
-        stateService.saveExternalStates(diagram.getStates());
-        return diagramRepository.save(diagram);
-    }
+
 }

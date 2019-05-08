@@ -108,7 +108,7 @@ class IntegrationDiagramServiceImplTest {
     }
 
     @Test
-    @DisplayName("delete existent diagram")
+    @DisplayName("find all diagrams")
     void findAllDiagrams__returnObj() {
         diagramService.saveDiagram(diagram);
         List<Diagram> diagrams = diagramService.findAllDiagrams();

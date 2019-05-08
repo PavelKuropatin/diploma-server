@@ -55,15 +55,15 @@ public class State {
 
     @Column(name = "position_x", nullable = false)
     @NotNull(message = ValidationMessage.State.POS_X_NULL)
-    private Integer positionX;
+    private Double positionX;
 
     @Column(name = "position_y", nullable = false)
     @NotNull(message = ValidationMessage.State.POS_Y_NULL)
-    private Integer positionY;
+    private Double positionY;
 
     @Valid
     @OneToMany
-    @JoinTable(name = "states__sources",
+    @JoinTable(name = "state__source",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
     )
@@ -73,13 +73,21 @@ public class State {
 
     @Valid
     @OneToMany
-    @JoinTable(name = "states__targets",
+    @JoinTable(name = "state__target",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)
     )
     @NotNull(message = ValidationMessage.State.TARGETS_NULL)
     @Builder.Default
     private List<Target> targets = new LinkedList<>();
+
+    @Valid
+    @NotNull(message = ValidationMessage.State.OC_NULL)
+    @Builder.Default
+    @ElementCollection
+    @CollectionTable(name = "connections",
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"state_uuid", "target_uuid", "source_uuid"})})
+    private List<Connection> connections = new LinkedList<>();
 
     @Valid
     @NotNull(message = ValidationMessage.State.IC_NULL)
@@ -89,7 +97,7 @@ public class State {
     private List<Variable> inputContainer = new LinkedList<>();
 
     @Valid
-    @NotNull(message = ValidationMessage.State.OC_NULL)
+    @NotNull(message = ValidationMessage.State.CONNECTIONS_NULL)
     @Builder.Default
     @ElementCollection
     @CollectionTable(name = "state__output_container")
@@ -120,6 +128,14 @@ public class State {
         targets.clear();
         if (otherTargets != null) {
             targets.addAll(otherTargets);
+        }
+    }
+
+
+    public void setConnections(List<Connection> otherConnections) {
+        connections.clear();
+        if (otherConnections != null) {
+            connections.addAll(otherConnections);
         }
     }
 

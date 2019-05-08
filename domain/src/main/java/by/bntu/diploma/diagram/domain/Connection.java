@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -15,19 +15,13 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Data
-@Entity
-@Table(name = "connection")
+@Embeddable
 public class Connection {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(name = "uuid", updatable = false, nullable = false)
-
-    private String uuid;
+    @Valid
+    @NotNull(message = ValidationMessage.Connection.SOURCE_NULL)
+    @ManyToOne(targetEntity = Source.class)
+    private Source source;
 
     @Valid
     @NotNull(message = ValidationMessage.Connection.TARGET_NULL)

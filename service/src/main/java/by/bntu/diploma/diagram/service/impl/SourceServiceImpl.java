@@ -1,11 +1,8 @@
 package by.bntu.diploma.diagram.service.impl;
 
-import by.bntu.diploma.diagram.domain.Connection;
 import by.bntu.diploma.diagram.domain.Source;
 import by.bntu.diploma.diagram.repository.SourceRepository;
-import by.bntu.diploma.diagram.service.ConnectionService;
 import by.bntu.diploma.diagram.service.SourceService;
-import by.bntu.diploma.diagram.service.utils.DomainUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,20 +18,20 @@ import java.util.Optional;
 public class SourceServiceImpl implements SourceService {
 
     private SourceRepository sourceRepository;
-    private ConnectionService connectionService;
 
     @Override
     @Transactional
     public Source saveSource(Source source) {
-        connectionService.saveAllConnections(source.getConnections());
         return sourceRepository.save(source);
     }
 
     @Override
     @Transactional
     public List<Source> saveAllSources(List<Source> sources) {
-        List<Connection> connections = DomainUtils.extractConnectionsFromSources(sources);
-        connectionService.saveAllConnections(connections);
+        sources.stream()
+                .filter(source -> source.getUuid() != null)
+                .filter(source -> !sourceRepository.existsById(source.getUuid()))
+                .forEach(source -> source.setUuid(null));
         return sourceRepository.saveAll(sources);
     }
 
