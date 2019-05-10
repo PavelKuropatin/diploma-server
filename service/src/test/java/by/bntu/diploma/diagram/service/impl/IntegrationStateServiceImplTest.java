@@ -38,7 +38,7 @@ class IntegrationStateServiceImplTest {
 
     private static final String RANDOM_UUID = UUID.randomUUID().toString();
     private static final String VALID_STR = RandomStringUtils.random(127, true, true);
-    private static final int VALID_INT = RandomUtils.nextInt();
+    private static final double VALID_DOUBLE = RandomUtils.nextDouble();
 
     @Autowired
     private StateService stateService;
@@ -81,8 +81,8 @@ class IntegrationStateServiceImplTest {
                 .name(VALID_STR)
                 .color(VALID_STR)
                 .template(VALID_STR)
-                .positionX(VALID_INT)
-                .positionY(VALID_INT)
+                .positionX(VALID_DOUBLE)
+                .positionY(VALID_DOUBLE)
                 .style(Style.builder()
                         .sourceStyle(VALID_STR)
                         .sourceAnchorStyle(VALID_STR)
@@ -237,8 +237,8 @@ class IntegrationStateServiceImplTest {
                 .name(VALID_STR)
                 .color(VALID_STR)
                 .template(VALID_STR)
-                .positionX(VALID_INT)
-                .positionY(VALID_INT)
+                .positionX(VALID_DOUBLE)
+                .positionY(VALID_DOUBLE)
                 .style(Style.builder()
                         .uuid(externalStateStyleUuid)
                         .sourceStyle(VALID_STR)

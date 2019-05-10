@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -25,7 +26,7 @@ public class Connection {
 
     @Valid
     @NotNull(message = ValidationMessage.Connection.TARGET_NULL)
-    @ManyToOne(targetEntity = Target.class)
+    @OneToOne(targetEntity = Target.class, orphanRemoval = true)
     private Target target;
 
 }
