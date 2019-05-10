@@ -32,4 +32,8 @@ public class Variable {
     @NullOrSize(min = 1, max = 255, message = ValidationMessage.Variable.FUNC_NULL_OR_SIZE)
     @Column(name = "_function")
     private String function;
+
+    public enum Type {
+        INPUT, OUTPUT
+    }
 }

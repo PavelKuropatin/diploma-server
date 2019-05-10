@@ -164,9 +164,12 @@ public class StateServiceImpl implements StateService {
 
     @Override
     @Transactional
-    public State putContainerValue(String stateUuid, ContainerType type, Variable variable) {
+    public State putVariable(String stateUuid, Variable.Type type, Variable variable) {
         State state = findByStateUuid(stateUuid);
-        List<Variable> variables = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
+        if (state == null) {
+            throw new NotFoundException(State.class, stateUuid);
+        }
+        List<Variable> variables = type == Variable.Type.INPUT ? state.getInputContainer() : state.getOutputContainer();
         Optional<Variable> optional = variables.stream()
                 .filter(v -> v.getParam().equals(variable.getParam()))
                 .findFirst();
@@ -177,6 +180,19 @@ public class StateServiceImpl implements StateService {
         } else {
             variables.add(variable);
         }
+        state = saveState(state);
+        return state;
+    }
+
+    @Override
+    @Transactional
+    public State deleteVariable(String stateUuid, Variable.Type type, String param) {
+        State state = findByStateUuid(stateUuid);
+        if (state == null) {
+            throw new NotFoundException(State.class, stateUuid);
+        }
+        List<Variable> variables = type == Variable.Type.INPUT ? state.getInputContainer() : state.getOutputContainer();
+        variables.removeIf(variable -> variable.getParam().equals(param));
         state = saveState(state);
         return state;
     }

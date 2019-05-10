@@ -1,6 +1,5 @@
 package by.bntu.diploma.diagram.web.controller;
 
-import by.bntu.diploma.diagram.domain.ContainerType;
 import by.bntu.diploma.diagram.domain.State;
 import by.bntu.diploma.diagram.domain.Variable;
 import by.bntu.diploma.diagram.service.StateService;
@@ -21,15 +20,25 @@ public class StateController {
     private StateService stateService;
     private Mapper<State, StateDTO> stateMapper;
     private Mapper<Variable, VariableDTO> variableMapper;
-    private Converter<String, ContainerType> converter;
+    private Converter<String, Variable.Type> converter;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PutMapping("/{uuid}/container")
-    public StateDTO putContainerValue(@PathVariable(name = "uuid") String stateUuid,
-                                      @RequestBody VariableDTO variableDTO) {
-        ContainerType type = converter.convert(variableDTO.getType());
+    public StateDTO putVariable(@PathVariable(name = "uuid") String stateUuid,
+                                @RequestBody VariableDTO variableDTO) {
+        Variable.Type type = converter.convert(variableDTO.getType());
         Variable variable = this.variableMapper.fromDTO(variableDTO);
-        State state = stateService.putContainerValue(stateUuid, type, variable);
+        State state = stateService.putVariable(stateUuid, type, variable);
+        return stateMapper.toDTO(state);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/{uuid}/container")
+    public StateDTO dropVariable(@PathVariable(name = "uuid") String stateUuid,
+                                 @RequestBody VariableDTO variableDTO) {
+        String param = variableDTO.getParam();
+        Variable.Type type = converter.convert(variableDTO.getType());
+        State state = stateService.deleteVariable(stateUuid, type, param);
         return stateMapper.toDTO(state);
     }
 

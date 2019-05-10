@@ -1,9 +1,13 @@
 package by.bntu.diploma.diagram.service;
 
-import by.bntu.diploma.diagram.domain.*;
+import by.bntu.diploma.diagram.domain.Source;
+import by.bntu.diploma.diagram.domain.State;
+import by.bntu.diploma.diagram.domain.Target;
+import by.bntu.diploma.diagram.domain.Variable;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -40,10 +44,17 @@ public interface StateService {
             @NotNull(message = ValidationMessage.Target.UUID_NULL) String targetUuid
     );
 
-    State putContainerValue(
+    State putVariable(
             @NotNull(message = ValidationMessage.State.UUID_NULL) String stateUuid,
-            @NotNull(message = ValidationMessage.Variable.TYPE_NULL) ContainerType type,
+            @NotNull(message = ValidationMessage.Variable.TYPE_NULL) Variable.Type type,
             @Valid Variable variable
+    );
+
+
+    State deleteVariable(
+            @NotNull(message = ValidationMessage.State.UUID_NULL) String stateUuid,
+            @NotNull(message = ValidationMessage.Variable.TYPE_NULL) Variable.Type type,
+            @NotBlank String param
     );
 
 }

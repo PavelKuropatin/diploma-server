@@ -4,6 +4,7 @@ services:
 
   nginx:
     image: nginx:1.13
+    container_name: diploma_nginx
     restart: always
     ports:
       - 80:80
@@ -11,25 +12,27 @@ services:
     volumes:
       - ./nginx:/etc/nginx/conf.d
     depends_on:
-      - diploma-server
+      - server
 
   mssql:
     restart: always
+    container_name: diploma_mssql
     image: mcr.microsoft.com/mssql/server:2017-latest
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: VA2216w1!
-    ports:
-      - 1433:1433
+  #    ports:
+  #      - 14330:1433
 
-  diploma-server:
+  server:
     restart: always
+    container_name: diploma_back
     image: maven:3.5-jdk-8
     working_dir: /diploma-server/
     volumes:
       - ./server:/diploma-server
-    ports:
-      - 8085:8085
+    #    ports:
+    #      - 8085:8085
     environment:
       - DB_URL=jdbc:sqlserver://mssql:1433;database=master
       - DB_USER=sa

@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static by.bntu.diploma.diagram.domain.ContainerType.INPUT;
-import static by.bntu.diploma.diagram.domain.ContainerType.OUTPUT;
+import static by.bntu.diploma.diagram.domain.Variable.Type.INPUT;
+import static by.bntu.diploma.diagram.domain.Variable.Type.OUTPUT;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.DynamicTest.dynamicTest;
 
@@ -255,13 +255,13 @@ class UnitStateServiceImplTest {
     @ParameterizedTest
     @DisplayName("put valid container values")
     @MethodSource("provideContainerParams")
-    void putContainerValue_validValues_returnObj(ContainerType type, String param, Double value) {
-        List<Variable> container = type == ContainerType.INPUT ? state.getInputContainer() : state.getOutputContainer();
+    void putContainerValue_validValues_returnObj(Variable.Type type, String param, Double value) {
+        List<Variable> container = type == Variable.Type.INPUT ? state.getInputContainer() : state.getOutputContainer();
         stateService.saveState(state);
         assertTrue(container.isEmpty());
         Variable expectedVariable = Variable.builder().param(param).value(value).build();
 
-        stateService.putContainerValue(state.getUuid(), type, expectedVariable);
+        stateService.putVariable(state.getUuid(), type, expectedVariable);
         assertEquals(1, container.size());
         assertEquals(expectedVariable, container.get(0));
 
