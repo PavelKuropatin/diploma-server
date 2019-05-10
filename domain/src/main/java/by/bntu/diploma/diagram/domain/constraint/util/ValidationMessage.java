@@ -34,15 +34,14 @@ public final class ValidationMessage {
         public static final String COLOR_BLANK = "{state.color.blank}";
         public static final String COLOR_SIZE = "{state.color.size}";
 
-        public static final String IC_NULL = "{state.input-container.null}";
-        public static final String IC_VALUES = "{state.input-container.values}";
-        public static final String OC_NULL = "{state.output-container.null}";
-        public static final String OC_VALUES = "{state.output-container.values}";
         public static final String TARGETS_NULL = "{state.targets.null}";
         public static final String SOURCES_NULL = "{state.sources.null}";
-        public static final String FUNCTIONS_NULL = "{state.functions.null}";
-        public static final String STYLE_NULL = "{style.null}";
+        public static final String CONNECTIONS_NULL = "{state.connections.null}";
 
+        public static final String STYLE_NULL = "{state.style.null}";
+
+        public static final String IC_NULL = "{state.input-container.null}";
+        public static final String OC_NULL = "{state.output-container.null}";
 
         private State() {
 
@@ -52,7 +51,6 @@ public final class ValidationMessage {
     public static final class Source {
 
         public static final String UUID_NULL = "{source.uuid.null}";
-        public static final String CONNECTIONS_NULL = "{source.connections.null}";
 
         private Source() {
 
@@ -61,9 +59,11 @@ public final class ValidationMessage {
 
     public static final class Variable {
 
-        public static final String TYPE_NULL = "{container.type.null}";
-        public static final String PARAM_BLANK = "{container.key.blank}";
-        public static final String VALUE_NULL = "{container.value.null}";
+        public static final String TYPE_NULL = "{variable.type.null}";
+        public static final String PARAM_BLANK = "{variable.param.blank}";
+        public static final String PARAM_SIZE = "{variable.param.size}";
+        public static final String VALUE_NULL = "{variable.value.null}";
+        public static final String FUNC_NULL_OR_SIZE = "{variable.function.null-or-size}";
 
         private Variable() {
 
@@ -101,7 +101,8 @@ public final class ValidationMessage {
 
     public static final class Connection {
 
-        public static final String TARGET_NULL = "{target.null}";
+        public static final String TARGET_NULL = "{connection.target.null}";
+        public static final String SOURCE_NULL = "{connection.source.null}";
 
         private Connection() {
 

@@ -23,6 +23,6 @@ public class VariableDTO {
     @Builder.Default
     private Double value = .0;
 
-    @JsonProperty("function")
+    @JsonProperty("stringFunction")
     private String function;
 }

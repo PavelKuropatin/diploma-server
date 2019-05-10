@@ -3,23 +3,34 @@ package by.bntu.diploma.diagram.domain;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 class ConnectionTest {
 
     private static Validator validator;
+
+    private static Stream<Arguments> provideObj() {
+        return Stream.of(
+                Arguments.of(null, null, new String[]{ValidationMessage.Connection.SOURCE_NULL, ValidationMessage.Connection.TARGET_NULL}),
+                Arguments.of(Source.builder().build(), null, new String[]{ValidationMessage.Connection.TARGET_NULL}),
+                Arguments.of(null, Target.builder().build(), new String[]{ValidationMessage.Connection.SOURCE_NULL}),
+                Arguments.of(Source.builder().build(), Target.builder().build(), new String[0])
+        );
+    }
 
     @BeforeAll
     static void setUp() {
@@ -27,34 +38,24 @@ class ConnectionTest {
         validator = factory.getValidator();
     }
 
-    @Test
-    @DisplayName("target null")
-    void validate_targetObjectNull_expectedMessage() {
+    @ParameterizedTest
+    @DisplayName("any source & targets")
+    @MethodSource("provideObj")
+    void validate___expectedMessage(Source source, Target target, String[] messages) {
         Connection connection = Connection.builder()
-                .target(null)
+                .source(source)
+                .target(target)
                 .build();
 
         Set<ConstraintViolation<Connection>> constraintViolations = validator.validate(connection);
-        List<String> expected = Collections.singletonList(ValidationMessage.Connection.TARGET_NULL);
+        List<String> expected = Arrays.asList(messages);
 
-        List<String> actual = constraintViolations.stream()
+        String[] actual = constraintViolations.stream()
                 .map(ConstraintViolation::getMessage)
                 .sorted()
-                .collect(Collectors.toList());
+                .toArray(String[]::new);
 
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    @DisplayName("target not null")
-    void validate_targetObjectNotNull_expectedNoMessage() {
-        Connection connection = Connection.builder()
-                .target(new Target())
-                .build();
-
-        Set<ConstraintViolation<Connection>> constraintViolations = validator.validate(connection);
-
-        assertTrue(constraintViolations.isEmpty());
+        assertThat(expected, hasItems(actual));
     }
 
 }

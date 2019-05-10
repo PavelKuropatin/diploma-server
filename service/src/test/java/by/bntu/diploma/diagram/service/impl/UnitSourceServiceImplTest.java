@@ -2,7 +2,6 @@ package by.bntu.diploma.diagram.service.impl;
 
 import by.bntu.diploma.diagram.domain.Source;
 import by.bntu.diploma.diagram.repository.SourceRepository;
-import by.bntu.diploma.diagram.service.ConnectionService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,16 +50,12 @@ class UnitSourceServiceImplTest {
     @Mock
     private SourceRepository sourceRepository;
 
-    @Mock
-    private ConnectionService connectionService;
-
     @Test
     @DisplayName("save valid source")
     void saveSource_validSource_returnObj() {
         when(sourceRepository.save(any(Source.class))).thenAnswer(setSourceUuid);
         when(sourceRepository.count()).thenReturn(0L, 1L);
         Source source = Source.builder()
-                .connections(Collections.emptyList())
                 .build();
         assertNull(source.getUuid());
         assertEquals(0, sourceRepository.count());
@@ -111,7 +105,6 @@ class UnitSourceServiceImplTest {
     @DisplayName("find by valid uuid")
     void findBySourceUuid_validUUID_returnObj() {
         Source expected = Source.builder()
-                .connections(Collections.emptyList())
                 .build();
         when(sourceRepository.save(any(Source.class))).thenAnswer(setSourceUuid);
         when(sourceRepository.findById(any(String.class))).thenReturn(Optional.of(expected));

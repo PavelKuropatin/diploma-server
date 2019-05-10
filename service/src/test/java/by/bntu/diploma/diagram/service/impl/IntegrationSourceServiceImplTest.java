@@ -15,7 +15,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -44,7 +43,7 @@ class IntegrationSourceServiceImplTest {
     @DisplayName("save valid source")
     void saveSource() {
         Source source = Source.builder()
-                .connections(Collections.emptyList())
+//                .connections(Collections.emptyList())
                 .build();
         assertNull(source.getUuid());
         assertEquals(0, sourceRepository.count());
@@ -97,7 +96,7 @@ class IntegrationSourceServiceImplTest {
     @DisplayName("find by valid uuid")
     void findBySourceUuid_validUUID_returnObj() {
         Source expected = Source.builder()
-                .connections(Collections.emptyList())
+//                .connections(Collections.emptyList())
                 .build();
         sourceService.saveSource(expected);
 
@@ -122,10 +121,10 @@ class IntegrationSourceServiceImplTest {
                         "save null sources",
                         () -> assertThrows(NullPointerException.class, () -> sourceService.saveAllSources(null))
                 ),
-                dynamicTest(
-                        "save invalid source",
-                        () -> assertThrows(NullPointerException.class, () -> sourceService.saveSource(Source.builder().connections(null).build()))
-                ),
+//                dynamicTest(
+//                        "save invalid source",
+//                        () -> assertThrows(NullPointerException.class, () -> sourceService.saveSource(Source.builder().connections(null).build()))
+//                ),
                 dynamicTest(
                         "save null source",
                         () -> assertThrows(NullPointerException.class, () -> sourceService.saveSource(null))

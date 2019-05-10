@@ -1,5 +1,6 @@
 package by.bntu.diploma.diagram.domain;
 
+import by.bntu.diploma.diagram.domain.constraint.NullOrSize;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,12 +22,14 @@ public class Variable {
 
     @NotBlank(message = ValidationMessage.Variable.PARAM_BLANK)
     @Column(name = "param", nullable = false)
+    @Size(min = 1, max = 30, message = ValidationMessage.Variable.PARAM_SIZE)
     private String param;
 
     @NotNull(message = ValidationMessage.Variable.VALUE_NULL)
     @Column(name = "value", nullable = false)
     private Double value;
 
+    @NullOrSize(min = 1, max = 255, message = ValidationMessage.Variable.FUNC_NULL_OR_SIZE)
     @Column(name = "_function")
     private String function;
 }

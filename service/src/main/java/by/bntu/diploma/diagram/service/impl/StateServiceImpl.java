@@ -41,12 +41,16 @@ public class StateServiceImpl implements StateService {
     @Override
     @Transactional
     public List<State> saveAllStates(List<State> states) {
+        DomainUtils.dropDuplicateRefs(states);
+
         List<Style> styles = DomainUtils.extractStyleFromStates(states);
         List<Target> targets = DomainUtils.extractTargetsFromStates(states);
         List<Source> sources = DomainUtils.extractSourcesFromStates(states);
+
         styleService.saveAllStyles(styles);
         targetService.saveAllTargets(targets);
         sourceService.saveAllSources(sources);
+
         states.stream()
                 .filter(state -> state.getUuid() != null)
                 .filter(state -> !stateRepository.existsById(state.getUuid()))
@@ -58,19 +62,6 @@ public class StateServiceImpl implements StateService {
     @Transactional
     public List<State> saveExternalStates(List<State> states) {
         states.forEach(state -> state.setUuid(null));
-        List<Style> styles = DomainUtils.extractStyleFromStates(states);
-        styles.forEach(style -> style.setUuid(null));
-
-        List<Target> targets = DomainUtils.extractTargetsFromStates(states);
-
-        DomainUtils.dropDuplicateTargets(states, targets);
-
-        targets.forEach(target -> target.setUuid(null));
-
-        List<Source> sources = DomainUtils.extractSourcesFromStates(states);
-        sources.forEach(source -> source.setUuid(null));
-
-
         return saveAllStates(states);
     }
 
@@ -97,8 +88,8 @@ public class StateServiceImpl implements StateService {
                         .sourceStyle("endpoint-style-right")
                         .targetStyle("endpoint-style-left")
                         .build())
-                .positionX(10)
-                .positionY(10)
+                .positionX(.10)
+                .positionY(.10)
                 .template("action")
                 .build();
         state = saveState(state);
