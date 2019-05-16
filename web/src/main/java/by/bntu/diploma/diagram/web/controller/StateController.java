@@ -32,7 +32,7 @@ public class StateController {
         return stateMapper.toDTO(state);
     }
 
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{uuid}/container")
     public StateDTO dropVariable(@PathVariable(name = "uuid") String stateUuid,
                                  @RequestBody VariableDTO variableDTO) {

@@ -62,7 +62,7 @@ public class State {
     private Double positionY;
 
     @Valid
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(name = "state__source",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
@@ -72,7 +72,7 @@ public class State {
     private List<Source> sources = new LinkedList<>();
 
     @Valid
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(name = "state__target",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)

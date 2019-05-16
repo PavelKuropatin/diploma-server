@@ -44,7 +44,7 @@ public class DiagramController {
         return diagramMapper.toDTO(diagram);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<ViewDiagramDTO> getDiagramsInfo() {
         return diagramService.findAllDiagrams()

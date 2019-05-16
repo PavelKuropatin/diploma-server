@@ -1,1 +1,1 @@
-web: ls & java -Dserver.port=$PORT -jar /app/web/target/diploma-server.jar
+web: ls & java -jar /app/web/target/diploma-server.jar
