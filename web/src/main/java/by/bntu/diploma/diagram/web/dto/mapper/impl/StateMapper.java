@@ -48,8 +48,8 @@ public abstract class StateMapper implements Mapper<State, StateDTO> {
 
     @AfterMapping
     void convertContainersForEntity(StateDTO stateDTO, @MappingTarget State state) {
-        state.setInputContainer(convertToVariables(stateDTO.getInputContainer()));
-        state.setOutputContainer(convertToVariables(stateDTO.getOutputContainer()));
+        state.setInputContainer(convertToVariables(stateDTO.getInputContainer(), Variable.Type.INPUT));
+        state.setOutputContainer(convertToVariables(stateDTO.getOutputContainer(), Variable.Type.OUTPUT));
         convertConnectionsForEntity(stateDTO, state);
     }
 
@@ -92,7 +92,7 @@ public abstract class StateMapper implements Mapper<State, StateDTO> {
         state.setConnections(stateConnections);
     }
 
-    private List<Variable> convertToVariables(List<Map<String, Object>> vars) {
+    private List<Variable> convertToVariables(List<Map<String, Object>> vars, Variable.Type type) {
         return vars.stream().map(var -> {
             String param = var.get(KEY) + StringUtils.EMPTY;
             Object objValue = var.get(VALUE);
@@ -104,6 +104,7 @@ public abstract class StateMapper implements Mapper<State, StateDTO> {
             return Variable.builder()
                     .param(param)
                     .value(value)
+                    .type(type)
                     .function(function)
                     .build();
         }).collect(Collectors.toList());
