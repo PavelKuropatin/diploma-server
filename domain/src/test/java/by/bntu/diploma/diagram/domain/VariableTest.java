@@ -2,6 +2,7 @@ package by.bntu.diploma.diagram.domain;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -27,6 +28,7 @@ class VariableTest {
         validator = factory.getValidator();
     }
 
+    @Disabled
     @ParameterizedTest(name = "run #[{index}] {3}")
     @DisplayName("parametrized")
     @CsvFileSource(resources = "/variable.csv", numLinesToSkip = 1)

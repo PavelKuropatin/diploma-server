@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.web.configuration;
+package by.bntu.diploma.diagram.web.http;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;

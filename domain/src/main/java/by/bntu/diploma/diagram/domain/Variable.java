@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -32,6 +34,11 @@ public class Variable {
     @NullOrSize(min = 1, max = 255, message = ValidationMessage.Variable.FUNC_NULL_OR_SIZE)
     @Column(name = "_function")
     private String function;
+
+    @NotNull(message = ValidationMessage.Variable.TYPE_NULL)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "_type")
+    private Type type;
 
     public enum Type {
         INPUT, OUTPUT
