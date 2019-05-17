@@ -114,7 +114,6 @@ class UnitTargetServiceImplTest {
     @DisplayName("save invalid targets")
     void saveAllConnections_containsInvalidConnection_returnException() {
         when(targetRepository.count()).thenReturn(0L);
-        when(targetRepository.saveAll(anyList())).thenAnswer(setTargetsUuid);
 
         List<Target> targets = IntStream.range(0, TEST_SIZE)
                 .boxed()

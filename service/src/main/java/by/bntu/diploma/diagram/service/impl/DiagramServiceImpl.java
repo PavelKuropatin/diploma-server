@@ -93,7 +93,7 @@ public class DiagramServiceImpl implements DiagramService {
 
     @Override
     @Transactional
-    public void deleteState(String diagramUuid, String stateUuid) {
+    public Diagram deleteState(String diagramUuid, String stateUuid) {
         Diagram diagram = findDiagramByUuid(diagramUuid);
         State state = stateService.findByStateUuid(stateUuid);
         if (diagram == null) {
@@ -107,8 +107,12 @@ public class DiagramServiceImpl implements DiagramService {
         } else {
             diagram.getStates().remove(state);
         }
-        saveDiagram(diagram);
+        diagram = saveDiagram(diagram);
+        return diagram;
     }
 
-
+    @Override
+    public Diagram findByStateUuid(String stateUuid) {
+        return diagramRepository.findByStateUuid(stateUuid);
+    }
 }

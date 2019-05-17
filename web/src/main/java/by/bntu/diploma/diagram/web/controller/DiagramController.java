@@ -1,8 +1,10 @@
 package by.bntu.diploma.diagram.web.controller;
 
 import by.bntu.diploma.diagram.domain.Diagram;
+import by.bntu.diploma.diagram.domain.State;
 import by.bntu.diploma.diagram.service.DiagramService;
 import by.bntu.diploma.diagram.web.dto.DiagramDTO;
+import by.bntu.diploma.diagram.web.dto.StateDTO;
 import by.bntu.diploma.diagram.web.dto.ViewDiagramDTO;
 import by.bntu.diploma.diagram.web.dto.mapper.Mapper;
 import by.bntu.diploma.diagram.web.exception.RestException;
@@ -23,6 +25,7 @@ public class DiagramController {
     private DiagramService diagramService;
     private Mapper<Diagram, DiagramDTO> diagramMapper;
     private Mapper<Diagram, ViewDiagramDTO> viewSchemaMapper;
+    private Mapper<State, StateDTO> stateMapper;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PutMapping("/{uuid}")
@@ -44,7 +47,7 @@ public class DiagramController {
         return diagramMapper.toDTO(diagram);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<ViewDiagramDTO> getDiagramsInfo() {
         return diagramService.findAllDiagrams()
@@ -55,7 +58,7 @@ public class DiagramController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping
-    public DiagramDTO saveDiagram(@RequestParam(name = "external_source", required = false, defaultValue = "false") Boolean isExternal,
+    public DiagramDTO saveDiagram(@RequestParam(name = "external", required = false, defaultValue = "false") Boolean isExternal,
                                   @RequestBody DiagramDTO diagramDTO) {
         Diagram diagram;
         diagram = diagramMapper.fromDTO(diagramDTO);
@@ -69,4 +72,31 @@ public class DiagramController {
         return diagramMapper.toDTO(diagram);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/{uuid}/state")
+    public StateDTO createState(@PathVariable(name = "uuid") String diagramUuid) {
+        State state = diagramService.newState(diagramUuid);
+        return stateMapper.toDTO(state);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/{diagram_uuid}/state/{state_uuid}")
+    public DiagramDTO deleteState(@PathVariable(name = "diagram_uuid") String diagramUuid,
+                                  @PathVariable(name = "state_uuid") String stateUuid) {
+        Diagram diagram = diagramService.deleteState(diagramUuid, stateUuid);
+        return diagramMapper.toDTO(diagram);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/new")
+    public DiagramDTO createDiagram() {
+        Diagram diagram = diagramService.newDiagram();
+        return diagramMapper.toDTO(diagram);
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @DeleteMapping("/{diagram_uuid}")
+    public void deleteDiagram(@PathVariable(name = "diagram_uuid") String diagramUuid) {
+        diagramService.deleteDiagramByUuid(diagramUuid);
+    }
 }

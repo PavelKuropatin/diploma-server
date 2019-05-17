@@ -1,6 +1,5 @@
 package by.bntu.diploma.diagram.domain;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,7 +23,5 @@ public class Source {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "uuid", updatable = false, nullable = false)
-
     private String uuid;
-
 }

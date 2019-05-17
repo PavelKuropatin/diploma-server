@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -62,7 +63,7 @@ public class State {
     private Double positionY;
 
     @Valid
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(name = "state__source",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "source_uuid", nullable = false)
@@ -72,7 +73,7 @@ public class State {
     private List<Source> sources = new LinkedList<>();
 
     @Valid
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.REMOVE)
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
     @JoinTable(name = "state__target",
             joinColumns = @JoinColumn(name = "state_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "target_uuid", nullable = false)
@@ -93,14 +94,16 @@ public class State {
     @NotNull(message = ValidationMessage.State.IC_NULL)
     @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "state__input_container")
+    @CollectionTable(name = "state__variable")
+    @Where(clause = "_type = 'INPUT'")
     private List<Variable> inputContainer = new LinkedList<>();
 
     @Valid
     @NotNull(message = ValidationMessage.State.CONNECTIONS_NULL)
     @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "state__output_container")
+    @CollectionTable(name = "state__variable")
+    @Where(clause = "_type = 'OUTPUT'")
     private List<Variable> outputContainer = new LinkedList<>();
 
     public void setInputContainer(List<Variable> otherInputContainer) {

@@ -127,7 +127,7 @@ class IntegrationSourceServiceImplTest {
 //                ),
                 dynamicTest(
                         "save null source",
-                        () -> assertThrows(NullPointerException.class, () -> sourceService.saveSource(null))
+                        () -> assertThrows(DataAccessException.class, () -> sourceService.saveSource(null))
                 )
         );
     }

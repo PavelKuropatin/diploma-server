@@ -1,4 +1,4 @@
-package by.bntu.diploma.diagram.web.configuration;
+package by.bntu.diploma.diagram.web.config;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;

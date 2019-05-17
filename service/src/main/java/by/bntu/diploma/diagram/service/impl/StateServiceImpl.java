@@ -65,7 +65,6 @@ public class StateServiceImpl implements StateService {
         return saveAllStates(states);
     }
 
-
     @Override
     @Transactional
     public State saveState(State state) {
@@ -136,11 +135,17 @@ public class StateServiceImpl implements StateService {
             throw new NotFoundException(Source.class, sourceUuid);
         }
         if (!state.getSources().contains(source)) {
-            LOGGER.info("State[" + stateUuid + "] not contain Source[" + sourceUuid + "]. Deleting useless.");
-        } else {
-            state.getSources().remove(source);
+            throw new RuntimeException("State[" + stateUuid + "] not contain Source[" + sourceUuid + "]. Deleting useless.");
         }
-        saveState(state);
+
+        List<State> states = stateRepository.findBySourceReference(sourceUuid);
+
+        states.forEach(s -> {
+            s.getConnections().removeIf(c -> c.getSource().getUuid().equals(sourceUuid));
+            s.getSources().removeIf(ss -> ss.getUuid().equals(sourceUuid));
+        });
+
+        saveAllStates(states);
     }
 
     @Override
@@ -155,44 +160,118 @@ public class StateServiceImpl implements StateService {
             throw new NotFoundException(Target.class, targetUuid);
         }
         if (!state.getTargets().contains(target)) {
-            LOGGER.info("State[" + stateUuid + "] not contain Target[" + targetUuid + "]. Deleting useless.");
-        } else {
-            state.getTargets().remove(target);
+            throw new RuntimeException("State[" + stateUuid + "] not contain Target[" + targetUuid + "]. Deleting useless.");
         }
-        saveState(state);
+
+        List<State> states = stateRepository.findByTargetReference(targetUuid);
+
+        states.forEach(s -> {
+            s.getConnections().removeIf(c -> c.getTarget().getUuid().equals(targetUuid));
+            s.getTargets().removeIf(t -> t.getUuid().equals(targetUuid));
+        });
+
+        saveAllStates(states);
     }
 
     @Override
     @Transactional
-    public State putVariable(String stateUuid, Variable.Type type, Variable variable) {
+    public State putVariable(String stateUuid, Variable variable) {
         State state = findByStateUuid(stateUuid);
         if (state == null) {
             throw new NotFoundException(State.class, stateUuid);
         }
-        List<Variable> variables = type == Variable.Type.INPUT ? state.getInputContainer() : state.getOutputContainer();
+
+        List<Variable> variables;
+        Variable.Type type = variable.getType();
+        if (type == Variable.Type.INPUT) {
+            variable.setFunction(null);
+            variables = state.getInputContainer();
+        } else {
+            variables = state.getOutputContainer();
+        }
+
         Optional<Variable> optional = variables.stream()
                 .filter(v -> v.getParam().equals(variable.getParam()))
                 .findFirst();
         if (optional.isPresent()) {
-            Variable v = optional.get();
-            v.setValue(variable.getValue());
-            v.setFunction(variable.getFunction());
-        } else {
-            variables.add(variable);
+            throw new IllegalArgumentException("Already exist");
         }
+
+        variables.add(variable);
         state = saveState(state);
         return state;
     }
 
     @Override
     @Transactional
-    public State deleteVariable(String stateUuid, Variable.Type type, String param) {
+    public State deleteVariable(String stateUuid, Variable variable) {
         State state = findByStateUuid(stateUuid);
         if (state == null) {
             throw new NotFoundException(State.class, stateUuid);
         }
-        List<Variable> variables = type == Variable.Type.INPUT ? state.getInputContainer() : state.getOutputContainer();
-        variables.removeIf(variable -> variable.getParam().equals(param));
+
+        List<Variable> variables;
+        if (variable.getType() == Variable.Type.INPUT) {
+            variables = state.getInputContainer();
+        } else {
+            variables = state.getOutputContainer();
+        }
+
+        Optional<Variable> optional = variables.stream()
+                .filter(v -> v.getParam().equals(variable.getParam()))
+                .findFirst();
+        if (!optional.isPresent()) {
+            throw new IllegalArgumentException("Do not exist");
+        }
+
+        variables.removeIf(v -> v.getParam().equals(variable.getParam()));
+        state = saveState(state);
+        return state;
+    }
+
+    @Override
+    @Transactional
+    public State addConnection(String stateUuid, Connection connection) {
+        State state = findByStateUuid(stateUuid);
+        if (state == null) {
+            throw new NotFoundException(State.class, stateUuid);
+        }
+        Source source = sourceService.findBySourceUuid(connection.getSource().getUuid());
+        if (source == null) {
+            throw new NotFoundException(Source.class, connection.getSource().getUuid());
+        }
+        Target target = targetService.findByTargetUuid(connection.getTarget().getUuid());
+        if (target == null) {
+            throw new NotFoundException(Target.class, connection.getTarget().getUuid());
+        }
+
+        connection.setSource(source);
+        connection.setTarget(target);
+
+        state.getConnections().add(connection);
+        state = saveState(state);
+        return state;
+    }
+
+    @Override
+    @Transactional
+    public State deleteConnection(String stateUuid, Connection connection) {
+        State state = findByStateUuid(stateUuid);
+        if (state == null) {
+            throw new NotFoundException(State.class, stateUuid);
+        }
+        Source source = sourceService.findBySourceUuid(connection.getSource().getUuid());
+        if (source == null) {
+            throw new NotFoundException(Source.class, connection.getSource().getUuid());
+        }
+        Target target = targetService.findByTargetUuid(connection.getTarget().getUuid());
+        if (target == null) {
+            throw new NotFoundException(Target.class, connection.getTarget().getUuid());
+        }
+        if (!state.getConnections().contains(connection)) {
+            throw new RuntimeException("Do not exist");
+        }
+        state.getConnections().remove(connection);
         state = saveState(state);
         return state;
     }

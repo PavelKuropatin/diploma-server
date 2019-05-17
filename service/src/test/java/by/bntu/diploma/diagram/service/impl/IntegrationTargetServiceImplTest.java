@@ -73,7 +73,7 @@ class IntegrationTargetServiceImplTest {
                 .collect(Collectors.toList());
 
         targets.set(RandomUtils.nextInt(0, targets.size()), null);
-        assertThrows(DataAccessException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             targetService.saveAllTargets(targets);
         }, "Target object must be not null");
 

@@ -30,11 +30,14 @@ public interface DiagramService {
             @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid
     );
 
-    void deleteState(
+    Diagram deleteState(
             @NotNull(message = ValidationMessage.Diagram.UUID_NULL) String diagramUuid,
             @NotNull(message = ValidationMessage.State.UUID_NULL) String stateUuid
     );
 
     Diagram saveExternalDiagram(@Valid Diagram diagram);
 
+    Diagram findByStateUuid(
+            @NotNull(message = ValidationMessage.State.UUID_NULL) String stateUuid
+    );
 }

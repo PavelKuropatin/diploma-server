@@ -38,9 +38,9 @@ public final class DomainUtils {
 
     public static void dropDuplicateRefs(@NotNull List<@Valid State> states) {
         Map<String, Target> targets = extractTargetsFromStates(states).stream()
-                .collect(Collectors.toMap(Target::getUuid, x -> x));
+                .collect(Collectors.toMap(Target::getUuid, t -> t, (t1, t2) -> t1));
         Map<String, Source> sources = extractSourcesFromStates(states).stream()
-                .collect(Collectors.toMap(Source::getUuid, x -> x));
+                .collect(Collectors.toMap(Source::getUuid, s -> s, (s1, s2) -> s1));
         states.forEach(state -> state.getConnections()
                 .forEach(connection -> {
                     connection.setSource(sources.get(connection.getSource().getUuid()));
