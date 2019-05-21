@@ -37,7 +37,7 @@ public class Variable {
 
     @NotNull(message = ValidationMessage.Variable.TYPE_NULL)
     @Enumerated(EnumType.STRING)
-    @Column(name = "_type")
+    @Column(name = "_type", nullable = false)
     private Type type;
 
     public enum Type {

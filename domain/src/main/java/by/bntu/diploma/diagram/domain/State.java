@@ -1,5 +1,6 @@
 package by.bntu.diploma.diagram.domain;
 
+import by.bntu.diploma.diagram.domain.constraint.NullOrMin;
 import by.bntu.diploma.diagram.domain.constraint.util.ValidationMessage;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,6 +62,10 @@ public class State {
     @Column(name = "position_y", nullable = false)
     @NotNull(message = ValidationMessage.State.POS_Y_NULL)
     private Double positionY;
+
+    @NullOrMin
+    @Column(name = "model_position")
+    private Integer modelPosition;
 
     @Valid
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)

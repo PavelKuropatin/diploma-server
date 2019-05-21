@@ -51,6 +51,9 @@ public class StateDTO {
     private Integer positionX;
 
     @JsonProperty("y")
-    private Integer positionY;
+    private Double positionY;
+
+    @JsonProperty("targetId")
+    private Double modelPosition;
 
 }

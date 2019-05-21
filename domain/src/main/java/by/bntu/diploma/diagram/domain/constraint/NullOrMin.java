@@ -13,10 +13,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD, PARAMETER})
 @Retention(RUNTIME)
-@Repeatable(NullOrSize.List.class)
+@Repeatable(NullOrMin.List.class)
 @Documented
-@Constraint(validatedBy = NullOrSizeValidator.class)
-public @interface NullOrSize {
+@Constraint(validatedBy = NullOrMinValidator.class)
+public @interface NullOrMin {
 
     String message() default "";
 
@@ -26,12 +26,10 @@ public @interface NullOrSize {
 
     int min() default 0;
 
-    int max() default 2147483647;
-
     @Target({FIELD, PARAMETER})
     @Retention(RUNTIME)
     @Documented
     @interface List {
-        NullOrSize[] value();
+        NullOrMin[] value();
     }
 }

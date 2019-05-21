@@ -11,7 +11,7 @@ public class RestException extends RuntimeException {
     }
 
     public RestException(HttpStatus httpStatus, Throwable e) {
-        this(httpStatus, null, e);
+        this(httpStatus, e.getMessage(), e);
     }
 
     public RestException(HttpStatus otherHttpStatus, String message, Throwable e) {
