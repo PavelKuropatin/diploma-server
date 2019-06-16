@@ -222,7 +222,7 @@ class IntegrationStateServiceImplTest {
         stateService.saveState(state);
 
         assertEquals(2, sourceRepository.count());
-        assertThrows(IllegalArgumentException.class, () -> stateService.deleteSource(state.getUuid(), source.getUuid()));
+        assertThrows(NotFoundException.class, () -> stateService.deleteSource(state.getUuid(), source.getUuid()));
 
         assertEquals(1, state.getSources().size());
         assertEquals(2, sourceRepository.count());

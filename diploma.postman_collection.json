@@ -1,0 +1,610 @@
+{
+  "info": {
+    "_postman_id": "3cf8f469-6f1c-2e13-01a2-15aa79397d77",
+    "name": "diploma",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "add diagram#1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"diagram#1 name\",\r\n  \"description\": \"diagram#1 description\",\r\n  \"modules\": [\r\n\t{\r\n    \t\"name\": \"d#1.state#1 name\",\r\n    \t\"template\": \"action\",\r\n    \t\"color\": \"#CC1A55\",\r\n    \t\"endpointStyle\": {\r\n    \t\t\"targetEndpoint\": \"endpoint-style-left\",\r\n    \t\t\"sourceEndpoint\": \"endpoint-style-right\",\r\n    \t\t\"targetAnchor\": \"LeftMiddle\",\r\n    \t\t\"sourceAnchor\": \"RightMiddle\"\r\n    \t},\r\n    \t\"inputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v1\",\r\n        \t\t\"value\": 0,\r\n        \t\t\"function\" : \"v1**2\"\r\n        \t},\r\n        \t{\r\n    \t    \t\"label\": \"v2\",\r\n\t        \t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v3\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"outputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v4\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v5\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v6\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"sources\": [\r\n        \t{\r\n        \t\t\"uuid\": 1,\r\n        \t\t\"connections\": [\r\n            \t\t{\r\n            \t\t\t\"uuid\": 2\r\n            \t\t}\r\n        \t\t]\r\n        \t}\r\n    \t],\r\n    \t\"targets\": [\r\n        \t{\r\n        \t\t\"uuid\": 1\r\n        \t}\r\n    \t],\r\n\t\t\"x\": 394.75,\r\n    \t\"y\": 285.1875\r\n    },\r\n    {\r\n    \t\"name\": \"d#1.state#2 name\",\r\n    \t\"template\": \"action\",\r\n    \t\"color\": \"#CC1A55\",\r\n    \t\"endpointStyle\": {\r\n    \t\t\"targetEndpoint\": \"endpoint-style-left\",\r\n    \t\t\"sourceEndpoint\": \"endpoint-style-right\",\r\n    \t\t\"targetAnchor\": \"LeftMiddle\",\r\n    \t\t\"sourceAnchor\": \"RightMiddle\"\r\n\t\t},\r\n    \t\"inputContainer\": [\r\n    \t\t{\r\n    \t\t\t\"label\": \"v1\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n    \t    \t\"label\": \"v2\",\r\n\t        \t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v3\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"outputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v4\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v5\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v6\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"sources\": [\r\n        \t{\r\n        \t\t\"uuid\": 2,\r\n        \t\t\"connections\": [\r\n            \t\t{\r\n            \t\t\t\"uuid\": 1\r\n            \t\t}\r\n        \t\t]\r\n        \t}\r\n    \t],\r\n    \t\"targets\": [\r\n\t        {\r\n        \t\t\"uuid\": 2\r\n        \t}\r\n    \t],\r\n    \t\"x\": 385,\r\n    \t\"y\": 560\r\n    }\r\n  ]\r\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}/api/diagram?external_source=true",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram"
+          ],
+          "query": [
+            {
+              "key": "external_source",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "add diagram#2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "\t{\r\n  \"name\": \"diagram#2 name\",\r\n  \"description\": \"diagram#2 description\",\r\n  \"modules\": [\r\n\t{\r\n    \t\"name\": \"d#2.state#1 name\",\r\n    \t\"template\": \"action\",\r\n    \t\"color\": \"#CC1A55\",\r\n    \t\"endpointStyle\": {\r\n    \t\t\"targetEndpoint\": \"endpoint-style-left\",\r\n    \t\t\"sourceEndpoint\": \"endpoint-style-right\",\r\n    \t\t\"targetAnchor\": \"LeftMiddle\",\r\n    \t\t\"sourceAnchor\": \"RightMiddle\"\r\n    \t},\r\n    \t\"inputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v1\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n    \t    \t\"label\": \"v2\",\r\n\t        \t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v3\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"outputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v4\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v5\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v6\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n        \"sources\": [\r\n            {\r\n                \"uuid\": 3,\r\n                \"connections\": [\r\n                    {\r\n                        \"uuid\": 4\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"targets\": [\r\n            {\r\n                \"uuid\": 3\r\n            }\r\n        ],\r\n    \t\"x\": 321.1875,\r\n    \t\"y\": 155.8125\r\n    },\r\n    {\r\n    \t\"name\": \"d#2.state#2 name\",\r\n    \t\"template\": \"action\",\r\n    \t\"color\": \"#CC1A55\",\r\n    \t\"endpointStyle\": {\r\n    \t\t\"targetEndpoint\": \"endpoint-style-left\",\r\n    \t\t\"sourceEndpoint\": \"endpoint-style-right\",\r\n    \t\t\"targetAnchor\": \"LeftMiddle\",\r\n    \t\t\"sourceAnchor\": \"RightMiddle\"\r\n    \t},\r\n    \t\"inputContainer\": [\r\n    \t\t{\r\n    \t\t\t\"label\": \"v1\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n    \t    \t\"label\": \"v2\",\r\n\t        \t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v3\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n    \t\"outputContainer\": [\r\n        \t{\r\n        \t\t\"label\": \"v4\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v5\",\r\n        \t\t\"value\": 0\r\n        \t},\r\n        \t{\r\n        \t\t\"label\": \"v6\",\r\n        \t\t\"value\": 0\r\n        \t}\r\n    \t],\r\n        \"sources\": [\r\n            {\r\n                \"uuid\": 4,\r\n                \"connections\": [\r\n                    {\r\n                        \"uuid\": 3\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"targets\": [\r\n            {\r\n                \"uuid\": 4\r\n            }\r\n        ],\r\n    \t\"x\": 833.4375,\r\n    \t\"y\": 172.5\r\n    }\r\n  ]\r\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}/api/diagram?external_source=true",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram"
+          ],
+          "query": [
+            {
+              "key": "external_source",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get diagrams",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update diagram#1",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\":\"diagram#1 name\",\n  \"description\":\"diagram#1 description\",\n  \"modules\": [\n    {\n    \t\"uuid\" : \"25d939f7-0e91-4113-a6c1-6e8144e0fb1c\",\n        \"name\": \"d#1.state#1 name\",\n        \"template\": \"action\",\n        \"color\" : \"#CC1A55\",\n        \"endpointStyle\": {\n        \t\"targetEndpoint\": \"endpoint-circle-style-left\",\n        \t\"sourceEndpoint\": \"endpoint-style-right\",\n            \"sourceAnchor\": \"RightMiddle\",\n            \"targetAnchor\": \"LeftMiddle\"\n    \t},\n        \"sources\": [\n            {\n                \"uuid\": 1,\n                \"connections\": [\n                    {\n                        \"uuid\": 2\n                    }\n                ]\n            }\n        ],\n        \"targets\": [\n            {\n                \"uuid\": 1\n            }\n        ],\n        \"x\": 435.9999656677246,\n        \"y\": 530.0156116485596\n    },\n    {\n        \"name\": \"d#1.state#2 name\",\n        \"template\": \"action\",\n        \"color\" : \"#CC1A55\",\n        \"endpointStyle\": {\n        \t\"targetEndpoint\": \"endpoint-circle-style-left\",\n        \t\"sourceEndpoint\": \"endpoint-style-right\",\n            \"sourceAnchor\": \"RightMiddle\",\n            \"targetAnchor\": \"LeftMiddle\"\n    \t},\n        \"sources\": [\n            {\n                \"uuid\": 2,\n                \"connections\": [\n                    {\n                        \"uuid\": 1\n                    }\n                ]\n            }\n        ],\n        \"targets\": [\n            {\n                \"uuid\": 2\n            }\n        ],\n        \"x\": -134.05558268229169,\n        \"y\": 71.20312584771051\n    }\n]\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}/api/diagram/a8ab11d6-aaa3-49f5-bd40-d4fa3e4cab87",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram",
+            "a8ab11d6-aaa3-49f5-bd40-d4fa3e4cab87"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update diagram#2",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\":\"diagram#2 name\",\n  \"description\":\"diagram#2 description\",\n  \"modules\": [\n    {\n        \"name\": \"d#2.state#1 name\",\n        \"template\": \"action\",\n        \"color\" : \"#CC1A55\",\n        \"endpointStyle\": {\n        \t\"targetEndpoint\": \"endpoint-circle-style-left\",\n        \t\"sourceEndpoint\": \"endpoint-style-right\",\n            \"sourceAnchor\": \"RightMiddle\",\n            \"targetAnchor\": \"LeftMiddle\"\n    \t},\n        \"sources\": [\n            {\n                \"uuid\": 3,\n                \"connections\": [\n                    {\n                        \"uuid\": 4\n                    }\n                ]\n            }\n        ],\n        \"targets\": [\n            {\n                \"uuid\": 3\n            }\n        ],\n        \"x\": 435.9999656677246,\n        \"y\": 530.0156116485596\n    },\n    {\n        \"name\": \"d#2.state#2 name\",\n        \"template\": \"action\",\n        \"color\" : \"#CC1A55\",\n        \"endpointStyle\": {\n        \t\"targetEndpoint\": \"endpoint-circle-style-left\",\n        \t\"sourceEndpoint\": \"endpoint-style-right\",\n            \"sourceAnchor\": \"RightMiddle\",\n            \"targetAnchor\": \"LeftMiddle\"\n    \t},\n        \"sources\": [\n            {\n                \"uuid\": 4,\n                \"connections\": [\n                    {\n                        \"uuid\": 3\n                    }\n                ]\n            }\n        ],\n        \"targets\": [\n            {\n                \"uuid\": 4\n            }\n        ],\n        \"x\": -134.05558268229169,\n        \"y\": 71.20312584771051\n    }\n]\n}"
+        },
+        "url": {
+          "raw": "http://{{host}}/api/diagram/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get new diagram",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/new",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "new"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get diagram #1",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/688b3c63-8a91-49f1-b401-8362240f82bc",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "688b3c63-8a91-49f1-b401-8362240f82bc"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get diagram#2",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}/api/diagram/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "del diagram#1",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}/api/diagram/1",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "del diagram#2",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://{{host}}/api/diagram/2",
+          "protocol": "http",
+          "host": [
+            "{{host}}"
+          ],
+          "path": [
+            "api",
+            "diagram",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get new state",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/10c9c678-ed35-4e37-a06f-a3ed6a40145b/state",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "10c9c678-ed35-4e37-a06f-a3ed6a40145b",
+            "state"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete state",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/688b3c63-8a91-49f1-b401-8362240f82bc/state/c8acdfba-4326-4e28-9903-d6458570030d",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "688b3c63-8a91-49f1-b401-8362240f82bc",
+            "state",
+            "c8acdfba-4326-4e28-9903-d6458570030d"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "put cont value",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"type\":\"INPUT\",\n\t\"param\":\"as\",\n\t\"value\": 0\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/container",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "container"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "del cont value",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"type\" : \"inPUT\",\n\t\"param\":\"a\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/container",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "container"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get new source",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/source",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "source"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get new target",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/target",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "target"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "add connection",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"uuid\": \"7df92cb8-d52d-4457-b46f-fd55f7147a76\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/source/ca219a58-6a17-4751-b71b-6c828fce18dc/connection",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "source",
+            "ca219a58-6a17-4751-b71b-6c828fce18dc",
+            "connection"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete connection",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "type": "text",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"uuid\": \"af799e66-4287-44c4-beb9-b1379f05a772\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/source/ca219a58-6a17-4751-b71b-6c828fce18dc/connection",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "source",
+            "ca219a58-6a17-4751-b71b-6c828fce18dc",
+            "connection"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete target",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/state/103c0f6d-5809-4172-adc3-c9870383e302/target/7df92cb8-d52d-4457-b46f-fd55f7147a76",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "state",
+            "103c0f6d-5809-4172-adc3-c9870383e302",
+            "target",
+            "7df92cb8-d52d-4457-b46f-fd55f7147a76"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete source",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/688b3c63-8a91-49f1-b401-8362240f82bc/state/c8acdfba-4326-4e28-9903-d6458570030d",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "688b3c63-8a91-49f1-b401-8362240f82bc",
+            "state",
+            "c8acdfba-4326-4e28-9903-d6458570030d"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/server/api/diagram/10c9c678-ed35-4e37-a06f-a3ed6a40145b/export?format=json",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/10c9c678-ed35-4e37-a06f-a3ed6a40145b/export?format=json",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "10c9c678-ed35-4e37-a06f-a3ed6a40145b",
+            "export"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "json"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/server/api/diagram/import?format=xml",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<DiagramDTO><uuid>10c9c678-ed35-4e37-a06f-a3ed6a40145b</uuid><name>Diagram name222</name><description>Diagram description</description><modules><modules><uuid>8d28f8ea-83d8-421c-b73b-36f232b52d90</uuid><name>New State</name><color>1</color><template>action</template><endpointStyle><uuid>01502dd3-b1a4-4013-9d68-2035ded17200</uuid><sourceEndpoint>endpoint-style-right</sourceEndpoint><targetEndpoint>endpoint-style-left</targetEndpoint><sourceAnchor>RightMiddle</sourceAnchor><targetAnchor>LeftMiddle</targetAnchor></endpointStyle><sources><sources><uuid>aab46376-3735-4f72-b09c-90c95612c063</uuid><connections/></sources></sources><targets><targets><uuid>7ff6cf9d-ce58-45c7-b08a-efaacd7bcd93</uuid></targets></targets><inputContainer><inputContainer><label>ф</label><value>0.0</value></inputContainer></inputContainer><outputContainer/><x>0</x><y>0.1</y><targetId/></modules><modules><uuid>3b82c9d5-38ce-460a-941c-a747437e45e6</uuid><name>New State</name><color>#CC1A55</color><template>action</template><endpointStyle><uuid>8cb93b9e-d958-4ee0-b8c7-aaa981088402</uuid><sourceEndpoint>endpoint-style-right</sourceEndpoint><targetEndpoint>endpoint-style-left</targetEndpoint><sourceAnchor>RightMiddle</sourceAnchor><targetAnchor>LeftMiddle</targetAnchor></endpointStyle><sources><sources><uuid>a09e5ee0-4662-400e-850c-cdcd071eb3e4</uuid><connections/></sources></sources><targets><targets><uuid>edd6046d-1a1e-4cd3-a2d7-238a79031cb0</uuid></targets></targets><inputContainer><inputContainer><label>ф</label><value>2.0</value></inputContainer></inputContainer><outputContainer/><x>0</x><y>0.1</y><targetId/></modules></modules></DiagramDTO>"
+        },
+        "url": {
+          "raw": "http://localhost:8080/server/api/diagram/import?format=xml",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "server",
+            "api",
+            "diagram",
+            "import"
+          ],
+          "query": [
+            {
+              "key": "format",
+              "value": "xml"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
