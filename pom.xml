@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>by.bntu.diploma</groupId>
+    <groupId>by.bntu.diagram</groupId>
     <artifactId>diploma-server</artifactId>
     <version>1.0</version>
     <modules>
@@ -12,6 +12,7 @@
         <module>repository</module>
         <module>web</module>
         <module>service</module>
+        <module>starter</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -38,7 +39,7 @@
         <javax-persistence.version>2.2</javax-persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
 
-        <start-class>by.bntu.diploma.diagram.web.Boot</start-class>
+        <start-class>by.bntu.diagram.web.by.bntu.diagram.Boot</start-class>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
 
         <commons-collections4.version>4.3</commons-collections4.version>
