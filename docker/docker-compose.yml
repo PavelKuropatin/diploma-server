@@ -28,9 +28,9 @@ services:
     restart: always
     container_name: diploma_back
     image: maven:3.5-jdk-8
-    working_dir: /diploma-server/
+    working_dir: /constructor-server/
     volumes:
-      - ./server:/diploma-server
+      - ./server:/constructor-server
     #    ports:
     #      - 8085:8085
     environment:
@@ -40,6 +40,6 @@ services:
       - DB_DIALECT=org.hibernate.dialect.SQLServer2012Dialect
       - DB_DRIVER=com.microsoft.sqlserver.jdbc.SQLServerDriver
       - SERVER_PORT=8085
-    command: java -jar /diploma-server/diploma-server.jar
+    command: java -jar /constructor-server/constructor-server.jar
     depends_on:
       - mssql
