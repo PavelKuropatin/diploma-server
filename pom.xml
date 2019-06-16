@@ -12,7 +12,7 @@
         <module>repository</module>
         <module>web</module>
         <module>service</module>
-        <module>starter</module>
+        <module>boot</module>
     </modules>
     <packaging>pom</packaging>
 

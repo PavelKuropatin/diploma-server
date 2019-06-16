@@ -146,17 +146,17 @@ public class StateServiceImpl implements StateService {
             throw new NotFoundException(Source.class, sourceUuid);
         }
         if (!state.getSources().contains(source)) {
-            throw new RuntimeException("State[" + stateUuid + "] not contain Source[" + sourceUuid + "]. Deleting useless.");
+            throw new NotFoundException("State[" + stateUuid + "] not contain Source[" + sourceUuid + "]. Deleting useless.");
         }
 
         List<State> states = stateRepository.findBySourceReference(sourceUuid);
-
         DomainUtils.dropSources(states, state.getSources());
 
         states.forEach(s -> {
             s.getConnections().removeIf(c -> c.getSource().getUuid().equals(sourceUuid));
             s.getSources().removeIf(ss -> ss.getUuid().equals(sourceUuid));
         });
+        state.getSources().removeIf(ss -> ss.getUuid().equals(sourceUuid));
 
         saveAllStates(states);
     }
@@ -173,12 +173,12 @@ public class StateServiceImpl implements StateService {
             throw new NotFoundException(Target.class, targetUuid);
         }
         if (!state.getTargets().contains(target)) {
-            throw new RuntimeException("State[" + stateUuid + "] not contain Target[" + targetUuid + "]. Deleting useless.");
+            throw new IllegalArgumentException("State[" + stateUuid + "] not contain Target[" + targetUuid + "]. Deleting useless.");
         }
 
         List<State> states = stateRepository.findByTargetReference(targetUuid);
-
         DomainUtils.dropTargets(states, state.getTargets());
+        state.getTargets().removeIf(t -> t.getUuid().equals(target.getUuid()));
 
         saveAllStates(states);
     }
@@ -279,7 +279,7 @@ public class StateServiceImpl implements StateService {
             throw new NotFoundException(Target.class, connection.getTarget().getUuid());
         }
         if (!state.getConnections().contains(connection)) {
-            throw new RuntimeException("Do not exist");
+            throw new IllegalArgumentException("Do not exist");
         }
         state.getConnections().remove(connection);
         state = saveState(state);

@@ -136,7 +136,7 @@ class UnitStateServiceImplTest {
         assertEquals(1, sourceRepository.count());
     }
 
-    @Disabled
+
     @Test
     @DisplayName("delete source for existent state")
     void deleteSource__existentUuid__returnObj() {
@@ -177,7 +177,7 @@ class UnitStateServiceImplTest {
         assertThrows(DataAccessException.class, () -> stateService.deleteTarget(state.getUuid(), null));
     }
 
-    @Disabled
+
     @Test
     @DisplayName("delete target for existent state")
     void deleteTarget__existentUuid__returnObj() {
@@ -190,7 +190,7 @@ class UnitStateServiceImplTest {
         assertEquals(0, state.getTargets().size());
     }
 
-    @Disabled
+
     @Test
     @DisplayName("delete existent target for not allowing existent state")
     void deleteTarget__existentUuidAndNotAllowingState__return() {
@@ -203,12 +203,12 @@ class UnitStateServiceImplTest {
 
         assertEquals(2, targetRepository.count());
 
-        stateService.deleteTarget(state.getUuid(), target.getUuid());
+        assertThrows(IllegalArgumentException.class, () -> stateService.deleteTarget(state.getUuid(), target.getUuid()));
         assertEquals(1, state.getTargets().size());
         assertEquals(2, targetRepository.count());
     }
 
-    @Disabled
+
     @Test
     @DisplayName("delete existent source for not allowing existent state")
     void deleteSource__existentUuidAndNotAllowingState__return() {
@@ -221,7 +221,8 @@ class UnitStateServiceImplTest {
 
         assertEquals(2, sourceRepository.count());
 
-        stateService.deleteSource(state.getUuid(), source.getUuid());
+        assertThrows(IllegalArgumentException.class, () -> stateService.deleteSource(state.getUuid(), source.getUuid()));
+
         assertEquals(1, state.getSources().size());
         assertEquals(2, sourceRepository.count());
     }

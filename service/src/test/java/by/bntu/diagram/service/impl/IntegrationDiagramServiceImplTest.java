@@ -158,7 +158,7 @@ class IntegrationDiagramServiceImplTest {
 
         assertEquals(1, diagram.getStates().size());
 
-        diagramService.deleteState(diagram.getUuid(), state.getUuid());
+        assertThrows(IllegalArgumentException.class, () -> diagramService.deleteState(diagram.getUuid(), state.getUuid()));
 
         assertEquals(1, diagram.getStates().size());
 
