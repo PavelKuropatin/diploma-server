@@ -49,4 +49,23 @@ public final class DomainUtils {
         );
     }
 
+
+    public static void dropTargets(@NotNull List<@Valid State> states, @NotNull List<@Valid Target> targets) {
+        targets.forEach(t -> {
+            states.forEach(st -> {
+                st.getConnections().removeIf(c -> c.getTarget().getUuid().equals(t.getUuid()));
+            });
+        });
+    }
+
+    public static void dropSources(@NotNull List<@Valid State> states, @NotNull List<@Valid Source> sources) {
+        sources.forEach(s -> {
+            states.forEach(st -> {
+                st.getConnections().removeIf(c -> c.getSource().getUuid().equals(s.getUuid()));
+            });
+        });
+
+    }
+
+
 }

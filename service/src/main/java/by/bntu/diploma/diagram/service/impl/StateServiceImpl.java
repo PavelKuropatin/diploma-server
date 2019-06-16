@@ -9,8 +9,6 @@ import by.bntu.diploma.diagram.service.TargetService;
 import by.bntu.diploma.diagram.service.exception.NotFoundException;
 import by.bntu.diploma.diagram.service.utils.DomainUtils;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +21,6 @@ import java.util.Optional;
 @Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class StateServiceImpl implements StateService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(StateServiceImpl.class);
 
     private StateRepository stateRepository;
     private TargetService targetService;
@@ -140,6 +136,8 @@ public class StateServiceImpl implements StateService {
 
         List<State> states = stateRepository.findBySourceReference(sourceUuid);
 
+        DomainUtils.dropSources(states, state.getSources());
+
         states.forEach(s -> {
             s.getConnections().removeIf(c -> c.getSource().getUuid().equals(sourceUuid));
             s.getSources().removeIf(ss -> ss.getUuid().equals(sourceUuid));
@@ -165,10 +163,7 @@ public class StateServiceImpl implements StateService {
 
         List<State> states = stateRepository.findByTargetReference(targetUuid);
 
-        states.forEach(s -> {
-            s.getConnections().removeIf(c -> c.getTarget().getUuid().equals(targetUuid));
-            s.getTargets().removeIf(t -> t.getUuid().equals(targetUuid));
-        });
+        DomainUtils.dropTargets(states, state.getTargets());
 
         saveAllStates(states);
     }

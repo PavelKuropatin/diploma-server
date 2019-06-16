@@ -91,7 +91,7 @@ public class State {
     @NotNull(message = ValidationMessage.State.OC_NULL)
     @Builder.Default
     @ElementCollection
-    @CollectionTable(name = "connections",
+    @CollectionTable(name = "connection",
             uniqueConstraints = {@UniqueConstraint(columnNames = {"state_uuid", "target_uuid", "source_uuid"})})
     private List<Connection> connections = new LinkedList<>();
 

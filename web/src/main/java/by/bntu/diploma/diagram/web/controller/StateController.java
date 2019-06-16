@@ -34,7 +34,7 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @DeleteMapping("/{uuid}/container")
+    @PostMapping("/{uuid}/container")
     public StateDTO deleteVariable(@PathVariable(name = "uuid") String stateUuid,
                                    @RequestBody VariableDTO variableDTO) {
         Variable variable = this.variableMapper.fromDTO(variableDTO);
@@ -96,6 +96,4 @@ public class StateController {
         return stateMapper.toDTO(state);
 
     }
-
-
 }

@@ -25,10 +25,7 @@ public class Diagram {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-            name = "UUID",
-            strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "uuid", updatable = false, nullable = false)
 
     private String uuid;
@@ -45,7 +42,7 @@ public class Diagram {
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "diagrams__states",
+    @JoinTable(name = "diagram__state",
             joinColumns = @JoinColumn(name = "diagram_uuid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "state_uuid", nullable = false)
     )
@@ -59,6 +56,4 @@ public class Diagram {
             states.addAll(otherStates);
         }
     }
-
-
 }

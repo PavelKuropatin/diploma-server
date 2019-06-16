@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 public abstract class ConnectionMapper implements Mapper<Connection, ConnectionDTO> {
 
     @Mapping(target = "target", ignore = true)
+    @Mapping(target = "source", ignore = true)
     @Override
     public abstract Connection fromDTO(ConnectionDTO connectionDTO);
 

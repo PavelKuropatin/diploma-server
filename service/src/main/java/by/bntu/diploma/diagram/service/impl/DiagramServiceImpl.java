@@ -6,9 +6,8 @@ import by.bntu.diploma.diagram.repository.DiagramRepository;
 import by.bntu.diploma.diagram.service.DiagramService;
 import by.bntu.diploma.diagram.service.StateService;
 import by.bntu.diploma.diagram.service.exception.NotFoundException;
+import by.bntu.diploma.diagram.service.utils.DomainUtils;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +19,6 @@ import java.util.List;
 @Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class DiagramServiceImpl implements DiagramService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DiagramServiceImpl.class);
 
     private DiagramRepository diagramRepository;
     private StateService stateService;
@@ -103,10 +100,11 @@ public class DiagramServiceImpl implements DiagramService {
             throw new NotFoundException(State.class, stateUuid);
         }
         if (!diagram.getStates().contains(state)) {
-            LOGGER.info("Diagram[" + diagramUuid + "] not contain State[" + stateUuid + "]. Deleting useless.");
-        } else {
-            diagram.getStates().remove(state);
+            throw new IllegalArgumentException("Diagram[" + diagramUuid + "] not contain State[" + stateUuid + "]. Deleting useless.");
         }
+        DomainUtils.dropSources(diagram.getStates(), state.getSources());
+        DomainUtils.dropTargets(diagram.getStates(), state.getTargets());
+        diagram.getStates().remove(state);
         diagram = saveDiagram(diagram);
         return diagram;
     }
