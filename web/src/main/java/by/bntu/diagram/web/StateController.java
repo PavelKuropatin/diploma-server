@@ -25,8 +25,8 @@ public class StateController {
     private Mapper<Connection, ConnectionDTO> connectionMapper;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PutMapping("/{uuid}/container")
-    public StateDTO putVariable(@PathVariable(name = "uuid") String stateUuid,
+    @PostMapping("/{uuid}/container/create")
+    public StateDTO createVariable(@PathVariable(name = "uuid") String stateUuid,
                                 @RequestBody VariableDTO variableDTO) {
         Variable variable = this.variableMapper.fromDTO(variableDTO);
         State state = stateService.putVariable(stateUuid, variable);
@@ -34,7 +34,7 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping("/{uuid}/container")
+    @PostMapping("/{uuid}/container/delete")
     public StateDTO deleteVariable(@PathVariable(name = "uuid") String stateUuid,
                                    @RequestBody VariableDTO variableDTO) {
         Variable variable = this.variableMapper.fromDTO(variableDTO);
@@ -43,14 +43,14 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{uuid}/source")
+    @PostMapping("/{uuid}/source/create")
     public SourceDTO createSource(@PathVariable(name = "uuid") String stateUuid) {
         Source source = stateService.newSource(stateUuid);
         return sourceMapper.toDTO(source);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{state_uuid}/source/{source_uuid}")
+    @PostMapping("/{state_uuid}/source/{source_uuid}/delete")
     public DiagramDTO deleteSource(@PathVariable(name = "state_uuid") String stateUuid,
                                    @PathVariable(name = "source_uuid") String sourceUuid) {
         stateService.deleteSource(stateUuid, sourceUuid);
@@ -59,14 +59,14 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{uuid}/target")
+    @PostMapping("/{uuid}/target/create")
     public TargetDTO createTarget(@PathVariable(name = "uuid") String stateUuid) {
         Target target = stateService.newTarget(stateUuid);
         return targetMapper.toDTO(target);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{state_uuid}/target/{target_uuid}")
+    @PostMapping("/{state_uuid}/target/{target_uuid}/delete")
     public DiagramDTO deleteTarget(@PathVariable(name = "state_uuid") String stateUuid,
                                    @PathVariable(name = "target_uuid") String targetUuid) {
         stateService.deleteTarget(stateUuid, targetUuid);
@@ -75,7 +75,7 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/{state_uuid}/source/{source_uuid}/connection")
+    @PostMapping("/{state_uuid}/source/{source_uuid}/connection/create")
     public StateDTO createConnection(@PathVariable(name = "state_uuid") String stateUuid,
                                      @PathVariable(name = "source_uuid") String sourceUuid,
                                      @RequestBody ConnectionDTO connectionDTO) {
@@ -86,7 +86,7 @@ public class StateController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping("/{state_uuid}/source/{source_uuid}/connection")
+    @PostMapping("/{state_uuid}/source/{source_uuid}/connection/delete")
     public StateDTO deleteConnection(@PathVariable(name = "state_uuid") String stateUuid,
                                      @PathVariable(name = "source_uuid") String sourceUuid,
                                      @RequestBody ConnectionDTO connectionDTO) {
