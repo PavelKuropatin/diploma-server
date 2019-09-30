@@ -1,1 +1,1 @@
-web: ls & java -jar /app/web/target/constructor-server.jar
+web: ls & java -Dspring.profiles.active=prod -jar /app/web/target/constructor-server.jar

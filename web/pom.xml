@@ -44,6 +44,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>by.bntu.diagram</groupId>
+            <artifactId>sockets-communication</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -92,7 +98,7 @@
     </profiles>
 
     <build>
-        <finalName>${parent.artifactId}</finalName>
+        <finalName>${project.parent.artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
