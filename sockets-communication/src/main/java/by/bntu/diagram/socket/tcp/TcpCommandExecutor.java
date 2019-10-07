@@ -22,9 +22,11 @@ public class TcpCommandExecutor implements Runnable {
     private int times;
     private int pause;
     private String uuid;
+    private MessageProcessor processor;
 
-    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause, boolean isInfinite) {
+    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause, MessageProcessor processor, boolean isInfinite) {
         this.uuid = UUID.randomUUID().toString();
+        this.processor = processor;
         this.container = container;
         this.host = host;
         this.port = port;
@@ -33,8 +35,8 @@ public class TcpCommandExecutor implements Runnable {
         this.pause = pause;
     }
 
-    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause) {
-        this(container, host, port, command, pause, true);
+    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause, MessageProcessor processor) {
+        this(container, host, port, command, pause, processor, true);
     }
 
     public String getUuid() {
@@ -51,13 +53,17 @@ public class TcpCommandExecutor implements Runnable {
 
             do {
 
-                LOGGER.info("Send " + command);
+                LOGGER.info("send: " + command);
                 response = sendMessage(in, out);
-                LOGGER.info("response " + response);
 
+                LOGGER.info("process: " + response);
+                processor.process(response);
+
+                LOGGER.info("start pause..");
                 Thread.sleep(pause);
 
             } while (isRun);
+
             LOGGER.info("Success finished Command(" + uuid + ")");
 
         } catch (IOException | InterruptedException e) {

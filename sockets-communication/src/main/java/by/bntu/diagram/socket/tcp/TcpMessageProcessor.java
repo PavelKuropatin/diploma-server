@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Profile("socket")
-public class TcpMessageProcessor {
+public class TcpMessageProcessor implements MessageProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TcpMessageProcessor.class);
 
@@ -20,8 +20,9 @@ public class TcpMessageProcessor {
     @Autowired
     private SimpMessagingTemplate template;
 
-    public void process(String data) {
-        LOGGER.info("process message : " + data);
+    public void process(String message) {
+        LOGGER.info("process message : " + message);
+        this.template.convertAndSend(destination, message);
     }
 
 }

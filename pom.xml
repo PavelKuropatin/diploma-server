@@ -10,9 +10,9 @@
     <modules>
         <module>domain</module>
         <module>repository</module>
-        <module>web</module>
         <module>service</module>
         <module>sockets-communication</module>
+        <module>web</module>
     </modules>
     <packaging>pom</packaging>
 

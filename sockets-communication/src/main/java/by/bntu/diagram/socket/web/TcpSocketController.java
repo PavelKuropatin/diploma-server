@@ -1,6 +1,8 @@
 package by.bntu.diagram.socket.web;
 
+import by.bntu.diagram.socket.tcp.MessageProcessor;
 import by.bntu.diagram.socket.tcp.TcpCommandExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/socket")
 public class TcpSocketController {
+
+    @Autowired
+    private MessageProcessor messageProcessor;
 
     private Map<String, TcpCommandExecutor> container = new HashMap<>();
 
@@ -33,7 +38,7 @@ public class TcpSocketController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/start")
     public String startReceiveMessages(@RequestParam(name = "host") String host, @RequestParam(name = "port") int port, @RequestParam(name = "pause") int pause) {
-        TcpCommandExecutor executor = new TcpCommandExecutor(container, host, port, "get", pause);
+        TcpCommandExecutor executor = new TcpCommandExecutor(container, host, port, "get", pause, messageProcessor);
         String uuid = executor.getUuid();
         new Thread(executor).start();
         container.put(uuid, executor);
