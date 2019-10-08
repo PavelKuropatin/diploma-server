@@ -37,18 +37,21 @@ public class TcpSocketController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/start")
-    public String startReceiveMessages(@RequestParam(name = "host") String host, @RequestParam(name = "port") int port, @RequestParam(name = "pause") int pause) {
+    public Map<String, String> startReceiveMessages(@RequestParam(name = "host") String host, @RequestParam(name = "port") int port, @RequestParam(name = "pause") int pause) {
         TcpCommandExecutor executor = new TcpCommandExecutor(container, host, port, "get", pause, messageProcessor);
         String uuid = executor.getUuid();
         new Thread(executor).start();
         container.put(uuid, executor);
-        return uuid;
+        Map<String, String> data = new HashMap<>();
+        data.put("uuid", uuid);
+        return data;
     }
 
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/stop")
-    public void stopReceiveMessages(@RequestBody String uuid) {
+    public void stopReceiveMessages(@RequestBody Map<String, String> data) {
+        String uuid = data.get("uuid");
         TcpCommandExecutor executor = container.get(uuid);
         if (executor != null) {
             executor.stop();
