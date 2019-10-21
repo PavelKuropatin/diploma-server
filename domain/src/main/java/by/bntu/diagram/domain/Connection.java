@@ -6,10 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -29,5 +26,9 @@ public class Connection {
     @NotNull(message = ValidationMessage.Connection.TARGET_NULL)
     @OneToOne(targetEntity = Target.class, cascade = CascadeType.ALL)
     private Target target;
+
+    @Column(name = "is_visible", nullable = false)
+    @Builder.Default
+    private Boolean visible = true;
 
 }

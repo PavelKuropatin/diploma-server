@@ -92,14 +92,15 @@ public class StateServiceImpl implements StateService {
         state = State.builder()
                 .color("#CC1A55")
                 .name("New State")
+                .alias("new_state")
                 .style(Style.builder()
                         .sourceAnchorStyle("RightMiddle")
                         .targetAnchorStyle("LeftMiddle")
                         .sourceStyle("endpoint-style-right")
                         .targetStyle("endpoint-style-left")
                         .build())
-                .positionX(.10)
-                .positionY(.10)
+                .positionX(10.0)
+                .positionY(10.0)
                 .template("action")
                 .build();
         state = saveState(state);

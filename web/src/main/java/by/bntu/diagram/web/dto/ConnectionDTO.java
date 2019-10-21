@@ -15,4 +15,7 @@ public class ConnectionDTO {
     @JsonProperty("uuid")
     private String targetUuid;
 
+    @JsonProperty("is_visible")
+    private Boolean visible;
+
 }

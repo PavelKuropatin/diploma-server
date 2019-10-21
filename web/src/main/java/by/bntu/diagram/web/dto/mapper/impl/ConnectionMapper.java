@@ -22,6 +22,9 @@ public abstract class ConnectionMapper implements Mapper<Connection, ConnectionD
 
     @AfterMapping
     void setValuesToObj(ConnectionDTO connectionDTO, @MappingTarget Connection connection) {
+        if (connection.getVisible() == null) {
+            connection.setVisible(true);
+        }
         connection.setTarget(Target.builder().uuid(connectionDTO.getTargetUuid()).build());
     }
 

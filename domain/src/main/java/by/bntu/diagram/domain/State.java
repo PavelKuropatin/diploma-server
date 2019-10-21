@@ -32,21 +32,25 @@ public class State {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "uuid", updatable = false, nullable = false)
-
     private String uuid;
 
     @Column(name = "name", nullable = false)
-    @Size(min = 3, max = 255, message = ValidationMessage.State.NAME_SIZE)
+    @Size(min = 1, max = 255, message = ValidationMessage.State.NAME_SIZE)
     @NotBlank(message = ValidationMessage.State.NAME_BLANK)
     private String name;
 
+    @Column(name = "alias", nullable = false)
+    @Size(min = 1, max = 255, message = ValidationMessage.State.ALIAS_SIZE)
+    @NotBlank(message = ValidationMessage.State.ALIAS_BLANK)
+    private String alias;
+
     @Column(name = "template", nullable = false)
-    @Size(min = 3, max = 255, message = ValidationMessage.State.TEMPLATE_SIZE)
+    @Size(min = 1, max = 255, message = ValidationMessage.State.TEMPLATE_SIZE)
     @NotBlank(message = ValidationMessage.State.TEMPLATE_BLANK)
     private String template;
 
     @Column(name = "color", nullable = false)
-    @Size(min = 3, max = 255, message = ValidationMessage.State.COLOR_SIZE)
+    @Size(min = 1, max = 255, message = ValidationMessage.State.COLOR_SIZE)
     @NotBlank(message = ValidationMessage.State.COLOR_BLANK)
     private String color;
 
