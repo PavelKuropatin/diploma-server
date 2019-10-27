@@ -31,9 +31,6 @@ public final class ValidationMessage {
         public static final String NAME_BLANK = "{state.name.blank}";
         public static final String NAME_SIZE = "{state.name.size}";
 
-        public static final String ALIAS_BLANK = "{state.name.blank}";
-        public static final String ALIAS_SIZE = "{state.name.size}";
-
         public static final String COLOR_BLANK = "{state.color.blank}";
         public static final String COLOR_SIZE = "{state.color.size}";
 

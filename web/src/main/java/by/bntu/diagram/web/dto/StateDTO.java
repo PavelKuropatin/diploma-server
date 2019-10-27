@@ -25,9 +25,6 @@ public class StateDTO {
     @JsonProperty("color")
     private String color;
 
-    @JsonProperty("alias")
-    private String alias;
-
     @JsonProperty("template")
     private String template;
 

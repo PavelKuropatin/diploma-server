@@ -20,11 +20,11 @@ public class TcpCommandExecutor implements Runnable {
     private String command;
     private boolean isRun;
     private int times;
-    private int pause;
+    private int interval;
     private String uuid;
     private MessageProcessor processor;
 
-    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause, MessageProcessor processor, boolean isInfinite) {
+    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int interval, MessageProcessor processor, boolean isInfinite) {
         this.uuid = UUID.randomUUID().toString();
         this.processor = processor;
         this.container = container;
@@ -32,11 +32,11 @@ public class TcpCommandExecutor implements Runnable {
         this.port = port;
         this.command = command;
         this.isRun = isInfinite;
-        this.pause = pause;
+        this.interval = interval;
     }
 
-    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int pause, MessageProcessor processor) {
-        this(container, host, port, command, pause, processor, true);
+    public TcpCommandExecutor(Map<String, TcpCommandExecutor> container, String host, int port, String command, int interval, MessageProcessor processor) {
+        this(container, host, port, command, interval, processor, true);
     }
 
     public String getUuid() {
@@ -48,7 +48,6 @@ public class TcpCommandExecutor implements Runnable {
         try (Socket clientSocket = new Socket(host, port);
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {
-
             String response;
 
             do {
@@ -59,8 +58,8 @@ public class TcpCommandExecutor implements Runnable {
                 LOGGER.info("process: " + response);
                 processor.process(response);
 
-                LOGGER.info("start pause..");
-                Thread.sleep(pause);
+                LOGGER.info("start interval..");
+                Thread.sleep(interval);
 
             } while (isRun);
 

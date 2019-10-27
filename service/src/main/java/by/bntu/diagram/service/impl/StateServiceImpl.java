@@ -92,7 +92,6 @@ public class StateServiceImpl implements StateService {
         state = State.builder()
                 .color("#CC1A55")
                 .name("New State")
-                .alias("new_state")
                 .style(Style.builder()
                         .sourceAnchorStyle("RightMiddle")
                         .targetAnchorStyle("LeftMiddle")

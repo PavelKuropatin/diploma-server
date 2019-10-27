@@ -39,11 +39,6 @@ public class State {
     @NotBlank(message = ValidationMessage.State.NAME_BLANK)
     private String name;
 
-    @Column(name = "alias", nullable = false)
-    @Size(min = 1, max = 255, message = ValidationMessage.State.ALIAS_SIZE)
-    @NotBlank(message = ValidationMessage.State.ALIAS_BLANK)
-    private String alias;
-
     @Column(name = "template", nullable = false)
     @Size(min = 1, max = 255, message = ValidationMessage.State.TEMPLATE_SIZE)
     @NotBlank(message = ValidationMessage.State.TEMPLATE_BLANK)
