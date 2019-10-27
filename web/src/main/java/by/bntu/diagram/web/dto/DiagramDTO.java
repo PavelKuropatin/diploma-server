@@ -24,7 +24,7 @@ public class DiagramDTO {
     @JsonProperty("description")
     private String description;
 
-    @JsonProperty("modules")
+    @JsonProperty("states")
     @Builder.Default
     private List<StateDTO> states = new LinkedList<>();
 

@@ -37,8 +37,8 @@ public class TcpSocketController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/start")
-    public Map<String, String> startReceiveMessages(@RequestParam(name = "host") String host, @RequestParam(name = "port") int port, @RequestParam(name = "pause") int pause) {
-        TcpCommandExecutor executor = new TcpCommandExecutor(container, host, port, "get", pause, messageProcessor);
+    public Map<String, String> startReceiveMessages(@RequestParam(name = "host") String host, @RequestParam(name = "port") int port, @RequestParam(name = "interval") int interval) {
+        TcpCommandExecutor executor = new TcpCommandExecutor(container, host, port, "get", interval, messageProcessor);
         String uuid = executor.getUuid();
         new Thread(executor).start();
         container.put(uuid, executor);
