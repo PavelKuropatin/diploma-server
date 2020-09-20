@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>by.bntu.diagram</groupId>
+    <groupId>by.bntu.constructor</groupId>
     <artifactId>constructor-server</artifactId>
     <version>1.0</version>
     <modules>
@@ -41,7 +41,7 @@
         <mysql.version>8.0.14</mysql.version>
         <spring.version>5.1.10.RELEASE</spring.version>
         <spring-integration.version>5.1.7.RELEASE</spring-integration.version>
-        <start-class>by.bntu.diagram.web.Boot</start-class>
+        <start-class>by.bntu.schema.web.Boot</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <postgresql.version>42.2.5</postgresql.version>
