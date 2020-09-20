@@ -26,7 +26,7 @@ public class BlockController {
     private final Mapper<Connection, ConnectionDTO> connectionMapper;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping(value = "/{uuid}/vars/create", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{uuid}/vars/create")
     public BlockDTO createVariable(@PathVariable(name = "uuid") String blockUuid,
                                    @RequestBody VariableDTO variableDTO) {
         Variable variable = this.variableMapper.fromDTO(variableDTO);
@@ -35,7 +35,7 @@ public class BlockController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/{uuid}/vars/delete", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{uuid}/vars/delete")
     public BlockDTO deleteVariable(@PathVariable(name = "uuid") String blockUuid,
                                    @RequestBody VariableDTO variableDTO) {
         Variable variable = this.variableMapper.fromDTO(variableDTO);
@@ -44,14 +44,14 @@ public class BlockController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{uuid}/input/create", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{uuid}/input/create")
     public InputDTO createInput(@PathVariable(name = "uuid") String blockUuid) {
         Input input = blockService.newInput(blockUuid);
         return inputMapper.toDTO(input);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/delete", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/delete")
     public SchemaDTO deleteInput(@PathVariable(name = "block_uuid") String blockUuid,
                                  @PathVariable(name = "input_uuid") String inputUuid) {
         blockService.deleteInput(blockUuid, inputUuid);
@@ -60,14 +60,14 @@ public class BlockController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{uuid}/output/create", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{uuid}/output/create")
     public OutputDTO createOutput(@PathVariable(name = "uuid") String blockUuid) {
         Output output = blockService.newOutput(blockUuid);
         return outputMapper.toDTO(output);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping(value = "/{block_uuid}/output/{output_uuid}/delete", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{block_uuid}/output/{output_uuid}/delete")
     public SchemaDTO deleteOutput(@PathVariable(name = "block_uuid") String blockUuid,
                                   @PathVariable(name = "output_uuid") String outputUuid) {
         blockService.deleteOutput(blockUuid, outputUuid);
@@ -76,7 +76,7 @@ public class BlockController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/connection/create", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/connection/create")
     public BlockDTO createConnection(@PathVariable(name = "block_uuid") String blockUuid,
                                      @PathVariable(name = "input_uuid") String inputUuid,
                                      @RequestBody ConnectionDTO connectionDTO) {
@@ -87,7 +87,7 @@ public class BlockController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/connection/delete", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{block_uuid}/input/{input_uuid}/connection/delete")
     public BlockDTO deleteConnection(@PathVariable(name = "block_uuid") String blockUuid,
                                      @PathVariable(name = "input_uuid") String inputUuid,
                                      @RequestBody ConnectionDTO connectionDTO) {

@@ -18,10 +18,9 @@ public class WebCorsPolicyConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(originHosts.split(","))
                 .allowCredentials(true)
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
+                .allowedMethods("*")
                 .maxAge(3600)
-                .allowedHeaders("authorization", "content-type", "xsrf-token")
-                .exposedHeaders("xsrf-token")
-        ;
+                .allowedHeaders("Authorization", "Content-Type", "xsrf-token", "Access-Control-Request-Method")
+                .exposedHeaders("xsrf-token");
     }
 }

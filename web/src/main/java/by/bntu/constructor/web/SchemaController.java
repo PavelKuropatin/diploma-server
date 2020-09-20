@@ -29,7 +29,7 @@ public class SchemaController {
     private final Mapper<Block, BlockDTO> blockMapper;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PutMapping(value = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PutMapping(value = "/{uuid}")
     public SchemaDTO updateSchema(@PathVariable(name = "uuid") String schemaUuid,
                                   @RequestBody SchemaDTO schemaDTO) {
         Schema schema = schemaMapper.fromDTO(schemaDTO);
@@ -39,7 +39,7 @@ public class SchemaController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{uuid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{uuid}")
     public SchemaDTO findSchemaByUuid(@PathVariable(name = "uuid") String schemaUuid) {
         Schema schema = schemaService.findBySchemaUuid(schemaUuid);
         if (schema == null) {
@@ -49,7 +49,7 @@ public class SchemaController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping
     public List<ViewSchemaDTO> getSchemasInfo() {
         return schemaService.findAllSchemas()
                 .stream()
@@ -58,7 +58,7 @@ public class SchemaController {
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping
     public SchemaDTO saveSchema(@RequestParam(name = "external",
             required = false, defaultValue = "false") Boolean isExternal,
                                 @RequestBody SchemaDTO schemaDTO) {
@@ -75,14 +75,14 @@ public class SchemaController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/{uuid}/block", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/{uuid}/block")
     public BlockDTO createBlock(@PathVariable(name = "uuid") String schemaUuid) {
         Block block = schemaService.newBLock(schemaUuid);
         return blockMapper.toDTO(block);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping(value = "/{schema_uuid}/block/{block_uuid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{schema_uuid}/block/{block_uuid}")
     public SchemaDTO deleteBlock(@PathVariable(name = "schema_uuid") String schemaUuid,
                                  @PathVariable(name = "block_uuid") String blockUuid) {
         Schema schema = schemaService.deleteBlock(schemaUuid, blockUuid);
@@ -90,14 +90,14 @@ public class SchemaController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/new", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/new")
     public SchemaDTO createSchema() {
         Schema schema = schemaService.newSchema();
         return schemaMapper.toDTO(schema);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
-    @DeleteMapping(value = "/{schema_uuid}", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{schema_uuid}")
     public void deleteSchema(@PathVariable(name = "schema_uuid") String schemaUuid) {
         schemaService.deleteSchemaByUuid(schemaUuid);
     }

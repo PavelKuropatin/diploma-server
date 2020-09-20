@@ -25,7 +25,7 @@ public class FormatController {
     private final Mapper<Schema, SchemaDTO> schemaMapper;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "/{uuid}/export", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{uuid}/export")
     public String exportSchema(@PathVariable(name = "uuid") String schemaUuid, @RequestParam("format") Format format) {
         Schema schema = schemaService.findBySchemaUuid(schemaUuid);
         if (schema == null) {
@@ -36,7 +36,7 @@ public class FormatController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PostMapping(value = "/import", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/import")
     public SchemaDTO importSchema(@RequestBody String data, @RequestParam("format") Format format) {
         SchemaDTO schemaDto = formatConverters.get(format).from(data);
         Schema schema = schemaMapper.fromDTO(schemaDto);
