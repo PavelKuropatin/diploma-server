@@ -11,3 +11,12 @@ Accept: application/json
 GET http://localhost:8080/api/schema/76248210-73f0-4524-8c52-334812192faa
 Content-Type: application/json
 Accept: application/json
+
+
+###
+GET http://localhost:8080/api/image
+Content-Type: application/json
+Accept: application/json
+
+###
+GET https://api.cloudinary.com/v1_1/diagram-constructor/resources/image?max_results=15
