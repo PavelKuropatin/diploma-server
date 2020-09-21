@@ -1,4 +1,4 @@
-package by.bntu.constructor.socket.config;
+package by.bntu.constructor.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

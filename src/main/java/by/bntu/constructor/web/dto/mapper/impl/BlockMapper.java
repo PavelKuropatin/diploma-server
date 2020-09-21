@@ -28,7 +28,7 @@ public abstract class BlockMapper implements Mapper<Block, BlockDTO> {
 
     private static final String KEY = "label";
     private static final String VALUE = "value";
-    private static final String FUNCTION = "stringFunction";
+    private static final String FUNCTION = "expression";
 
     @Autowired
     private Mapper<Connection, ConnectionDTO> connectionMapper;
