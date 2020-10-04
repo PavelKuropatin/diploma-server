@@ -3,12 +3,12 @@ package by.bntu.constructor.web;
 import by.bntu.constructor.domain.*;
 import by.bntu.constructor.service.BlockService;
 import by.bntu.constructor.service.SchemaService;
+import by.bntu.constructor.service.SettingsService;
 import by.bntu.constructor.web.dto.*;
 import by.bntu.constructor.web.dto.mapper.Mapper;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +25,7 @@ public class BlockController {
     private final Mapper<Input, InputDTO> inputMapper;
     private final Mapper<Output, OutputDTO> outputMapper;
     private final Mapper<Connection, ConnectionDTO> connectionMapper;
+    private final Mapper<Settings, SettingsDTO> settingsMapper;
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @PostMapping(value = "/{uuid}/vars/create")
@@ -97,5 +98,22 @@ public class BlockController {
         Block block = blockService.deleteConnection(blockUuid, connection);
         return blockMapper.toDTO(block);
 
+    }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping(value = "/{block_uuid}/settings")
+    public SettingsDTO saveSettings(@PathVariable(name = "block_uuid") String blockUuid,
+                                    @RequestBody SettingsDTO settingsDTO) {
+        Block block = blockService.findByBlockUuid(blockUuid);
+        block.setSettings(settingsMapper.fromDTO(settingsDTO));
+        block = blockService.saveBlock(block);
+        return settingsMapper.toDTO(block.getSettings());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/{block_uuid}")
+    public BlockDTO findBlock(@PathVariable(name = "block_uuid") String blockUuid) {
+        Block block = blockService.findByBlockUuid(blockUuid);
+        return blockMapper.toDTO(block);
     }
 }

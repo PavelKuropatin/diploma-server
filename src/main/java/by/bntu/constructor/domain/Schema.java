@@ -42,10 +42,6 @@ public class Schema {
 
     @Valid
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinTable(name = "schemas__blocks",
-            joinColumns = @JoinColumn(name = "schema_uuid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "block_uuid", nullable = false)
-    )
     @NotNull(message = ValidationMessage.Schema.BLOCKS_NULL)
     @Builder.Default
     private List<Block> blocks = new ArrayList<>();

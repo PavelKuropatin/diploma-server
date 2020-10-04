@@ -53,6 +53,9 @@ public class BlockDTO {
     @JsonProperty("y")
     private Double positionY;
 
+    @JsonProperty("settings")
+    private SettingsDTO settings;
+
     @JsonProperty("targetId")
     private Double modelPosition;
 

@@ -2,10 +2,7 @@ package by.bntu.constructor.service.impl;
 
 import by.bntu.constructor.domain.*;
 import by.bntu.constructor.repository.BlockRepository;
-import by.bntu.constructor.service.BlockService;
-import by.bntu.constructor.service.InputService;
-import by.bntu.constructor.service.OutputService;
-import by.bntu.constructor.service.StyleService;
+import by.bntu.constructor.service.*;
 import by.bntu.constructor.service.exception.NotFoundException;
 import by.bntu.constructor.service.utils.DomainUtils;
 import lombok.AllArgsConstructor;
@@ -14,10 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Transactional
 @Validated
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class BlockServiceImpl implements BlockService {
@@ -26,6 +23,7 @@ public class BlockServiceImpl implements BlockService {
     private final OutputService outputService;
     private final InputService inputService;
     private final StyleService styleService;
+    private final SettingsService settingsService;
 
 
     @Override
@@ -35,17 +33,18 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public List<Block> saveAllBlocks(List<Block> blocks) {
         DomainUtils.dropDuplicateRefs(blocks);
 
         List<Style> styles = DomainUtils.extractStyleFromBlock(blocks);
         List<Output> outputs = DomainUtils.extractOutputsFromBlocks(blocks);
         List<Input> inputs = DomainUtils.extractInputsFromBlocks(blocks);
+        List<Settings> settings = DomainUtils.extractSettingsFromBlocks(blocks);
 
         styleService.saveAllStyles(styles);
         outputService.saveAllOutputs(outputs);
         inputService.saveAllInputs(inputs);
+        settingsService.saveAllSettings(settings);
 
         blocks.stream()
                 .filter(block -> block.getUuid() != null)
@@ -55,7 +54,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public List<Block> saveExternalBlocks(List<Block> blocks) {
         blocks.forEach(block -> block.setUuid(null));
 
@@ -77,16 +75,15 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public Block saveBlock(Block block) {
         styleService.saveStyle(block.getStyle());
         outputService.saveAllOutputs(block.getOutputs());
         inputService.saveAllInputs(block.getInputs());
+        settingsService.saveSettings(block.getSettings());
         return blockRepository.save(block);
     }
 
     @Override
-    @Transactional
     public Block newBlock() {
         Block block;
         block = Block.builder()
@@ -100,16 +97,16 @@ public class BlockServiceImpl implements BlockService {
                         .build())
                 .positionX(10.0)
                 .positionY(10.0)
+                .settings(Settings.builder().build())
                 .template("action")
                 .build();
+        block.getInputs().add(Input.builder().build());
+        block.getOutputs().add(Output.builder().build());
         block = saveBlock(block);
-        newInput(block.getUuid());
-        newOutput(block.getUuid());
         return block;
     }
 
     @Override
-    @Transactional
     public Input newInput(String blockUuid) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {
@@ -122,7 +119,18 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
+    public Settings newSettings(String blockUuid) {
+        Block block = findByBlockUuid(blockUuid);
+        if (block == null) {
+            throw new NotFoundException(Block.class, blockUuid);
+        }
+        Settings settings = settingsService.newSettings();
+        block.setSettings(settings);
+        saveBlock(block);
+        return settings;
+    }
+
+    @Override
     public Output newOutput(String blockUuid) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {
@@ -135,7 +143,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public void deleteInput(String blockUuid, String inputUuid) {
         Block block = findByBlockUuid(blockUuid);
         Input input = inputService.findByInputUuid(inputUuid);
@@ -162,7 +169,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public void deleteOutput(String blockUuid, String outputUuid) {
         Block block = findByBlockUuid(blockUuid);
         Output output = outputService.findByOutputUuid(outputUuid);
@@ -184,7 +190,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public Block putVar(String blockUuid, Variable variable) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {
@@ -213,7 +218,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public Block deleteVar(String blockUuid, Variable variable) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {
@@ -240,7 +244,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public Block addConnection(String blockUuid, Connection connection) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {
@@ -264,7 +267,6 @@ public class BlockServiceImpl implements BlockService {
     }
 
     @Override
-    @Transactional
     public Block deleteConnection(String blockUuid, Connection connection) {
         Block block = findByBlockUuid(blockUuid);
         if (block == null) {

@@ -68,20 +68,12 @@ public class Block {
 
     @Valid
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinTable(name = "blocks__inputs",
-            joinColumns = @JoinColumn(name = "block_uuid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "input_uuid", nullable = false)
-    )
     @NotNull(message = ValidationMessage.Block.INPUTS_NULL)
     @Builder.Default
     private List<Input> inputs = new LinkedList<>();
 
     @Valid
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinTable(name = "blocks__outputs",
-            joinColumns = @JoinColumn(name = "block_uuid", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "output_uuid", nullable = false)
-    )
     @NotNull(message = ValidationMessage.Block.OUTPUTS_NULL)
     @Builder.Default
     private List<Output> outputs = new LinkedList<>();
@@ -109,6 +101,11 @@ public class Block {
     @CollectionTable(name = "blocks__variables")
     @Where(clause = "_type = 'OUTPUT'")
     private List<Variable> outputVars = new LinkedList<>();
+
+    @Valid
+    @OneToOne
+    @NotNull(message = ValidationMessage.Block.SETTINGS_NULL)
+    private Settings settings;
 
     public void setInputVars(List<Variable> otherInputVars) {
         inputVars.clear();

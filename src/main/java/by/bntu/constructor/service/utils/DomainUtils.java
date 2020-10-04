@@ -1,9 +1,6 @@
 package by.bntu.constructor.service.utils;
 
-import by.bntu.constructor.domain.Block;
-import by.bntu.constructor.domain.Input;
-import by.bntu.constructor.domain.Output;
-import by.bntu.constructor.domain.Style;
+import by.bntu.constructor.domain.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -20,6 +17,13 @@ public final class DomainUtils {
         return blocks.stream()
                 .map(Block::getOutputs)
                 .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+
+
+    public static List<Settings> extractSettingsFromBlocks(@NotNull List<@Valid Block> blocks) {
+        return blocks.stream()
+                .map(Block::getSettings)
                 .collect(Collectors.toList());
     }
 

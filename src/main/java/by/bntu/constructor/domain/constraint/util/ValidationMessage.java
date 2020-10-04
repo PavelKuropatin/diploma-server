@@ -43,6 +43,8 @@ public final class ValidationMessage {
         public static final String INPUT_VARS_NULL = "{block.input-vars.null}";
         public static final String OUTPUT_VARS_NULL = "{block.output-vars.null}";
 
+        public static final String SETTINGS_NULL = "{block.settings.null}";
+
         private Block() {
 
         }
@@ -106,6 +108,26 @@ public final class ValidationMessage {
 
         private Connection() {
 
+        }
+    }
+
+    public static final class Settings {
+        public static final String ACTIONS_NULL = "{settings.actions.null}";
+
+        private Settings() {
+        }
+    }
+
+    public static final class Action {
+        public static final String CONDITION_BLANK = "{action.condition.blank}";
+        public static final String CONDITION_SIZE = "{action.condition.size}";
+        public static final String TYPE_BLANK = "{action.type.blank}";
+        public static final String TYPE_SIZE = "{action.type.size}";
+        public static final String VALUE_BLANK = "{action.value.blank}";
+        public static final String VALUE_SIZE = "{action.value.size}";
+        public static final String NUMBER_NULL = "{action.number.null}";
+
+        private Action() {
         }
     }
 }

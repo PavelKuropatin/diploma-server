@@ -17,7 +17,7 @@ public class Boot {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Boot.class, args);
-        Arrays.stream(context.getBeanDefinitionNames())
-                .sorted().forEach(System.out::println);
+//        Arrays.stream(context.getBeanDefinitionNames())
+//                .sorted().forEach(System.out::println);
     }
 }

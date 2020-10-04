@@ -4,9 +4,9 @@ import by.bntu.constructor.domain.Block;
 import by.bntu.constructor.domain.Connection;
 import by.bntu.constructor.domain.Input;
 import by.bntu.constructor.domain.Variable;
+import by.bntu.constructor.web.dto.BlockDTO;
 import by.bntu.constructor.web.dto.ConnectionDTO;
 import by.bntu.constructor.web.dto.InputDTO;
-import by.bntu.constructor.web.dto.BlockDTO;
 import by.bntu.constructor.web.dto.mapper.Mapper;
 import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.AfterMapping;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.groupingBy;
 
-@org.mapstruct.Mapper(componentModel = "spring", uses = {InputMapper.class, OutputMapper.class, StyleMapper.class})
+@org.mapstruct.Mapper(componentModel = "spring", uses = {InputMapper.class, OutputMapper.class, StyleMapper.class, SettingsMapper.class})
 public abstract class BlockMapper implements Mapper<Block, BlockDTO> {
 
     private static final String KEY = "label";

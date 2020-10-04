@@ -10,7 +10,7 @@ import javax.validation.ConstraintViolationException;
 
 import static org.springframework.http.HttpStatus.*;
 
-@RestControllerAdvice
+//@RestControllerAdvice
 public class Handler {
 
 
@@ -31,6 +31,7 @@ public class Handler {
 
     private ResponseEntity<ResponseError> from(Exception e, HttpStatus status) {
         ResponseError responseError = new ResponseError(status.value(), e.getMessage());
+        System.out.println(e.getMessage());
         return new ResponseEntity<>(responseError, status);
     }
 

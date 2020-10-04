@@ -26,6 +26,10 @@ public interface BlockService {
             @NotNull(message = ValidationMessage.Block.UUID_NULL) String blockUuid
     );
 
+    Settings newSettings(
+            @NotNull(message = ValidationMessage.Block.UUID_NULL)
+                                 String blockUuid);
+
     Output newOutput(
             @NotNull(message = ValidationMessage.Block.UUID_NULL) String blockUuid
     );

@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <version>2.3.4.RELEASE</version>
         <relativePath/>
     </parent>
 
@@ -40,7 +40,7 @@
         <mapstruct.version>1.2.0.Final</mapstruct.version>
         <mssql-jdbc.version>7.3.0.jre8-preview</mssql-jdbc.version>
         <mysql.version>8.0.14</mysql.version>
-        <spring.version>5.1.10.RELEASE</spring.version>
+        <spring.version>5.2.9.RELEASE</spring.version>
         <spring-integration.version>5.1.7.RELEASE</spring-integration.version>
         <start-class>by.bntu.schema.web.Boot</start-class>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
